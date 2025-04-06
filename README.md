@@ -16,7 +16,11 @@ This is a simple Django application that allows users to create and vote on poll
         ```bash
         venv\Scripts\activate
         ```
-    * **If you** *
+    * **If you have an error of "Unauthorized access"**
+         ```bash
+        Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+        ```
+        then try again 
 4.  **Install Dependencies:**
     ```bash
     pip install -r requirements.txt
