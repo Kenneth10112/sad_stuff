@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Layout</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background-color: #003366;
+            color: #fff;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar-left {
+            font-size: 24px;
+        }
+
+        .topbar-right {
+            font-size: 14px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .topbar-right button {
+            background: none;
+            border:none;
+            color: #fff;
+        }
+
+
+        .topbar p {
+            padding: 5px;
+        }
+
+        .topbar-right button:first-child{
+            padding-right: 20px;
+        }
+
+
+        .topbar-right button:nth-child(2) {
+            width: 220px;
+            text-align: center;
+            border-radius: 8px;
+
+        }
+
+        .topbar-right button:nth-child(3) {
+            width: 80px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .topbar-right button:nth-child(2):hover , button:nth-child(3):hover {
+            background-color: #002952;
+        }
+
+        .main-container {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        aside {
+            background-color: #080808;
+            color: #fff;
+            padding: 5px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .aside-container-1 {
+            background-color: #191919;
+            padding: 3px;
+            height: calc(100% - 35px);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .search-bar {
+            margin-bottom: 8px;
+        }
+
+        .search-bar input::placeholder{
+            color: #999;
+            opacity: 0.8;
+            font-size: 0.8em;
+        }
+
+        .search-bar input[type="text"] {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 6px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.9em;
+        }
+
+        .action-section {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 8px;
+            border-color: #333;
+            padding: 3px;
+            border-style: solid;
+            border-width: 1px;
+        }
+
+        .action-section label {
+            font-size: 0.9em;
+        }
+
+        .action-section select {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 6px;
+            font-size: 0.9em;
+        }
+
+        .action-section button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            margin-left: 5px;
+            padding: 6px 10px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .action-section button:hover {
+            background-color: #333333;
+
+        }
+
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .item {
+            background-color: #222;
+            padding: 5px;
+            display: flex;
+            align-items: center;
+            border-radius: 3px;
+        }
+
+        .item input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        .item .number {
+            flex-grow: 1;
+            font-size: 0.9em;
+        }
+
+        .item button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 5px 8px;
+            cursor: pointer;
+            font-size: 0.8em;
+            border-radius: 3px;
+        }
+
+        main {
+            background-color: #0a0a0a;
+            border: #333 5px solid;
+            color: #fff;
+            padding: 10px 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .main-header {
+            margin-bottom: 20px; 
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .main-header h1 {
+            font-size: 2em; 
+            margin: 0;
+        }
+
+        .main-header button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .main-header button:hover {
+            background-color: #333333;
+            
+        }
+
+
+        .attribute-row {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px; 
+            gap: 15px; 
+        }
+
+        .attribute-row label {
+            width: 150px; 
+            text-align: left;
+            font-size: 1em;
+        }
+
+        .attribute-row input[type="text"],
+        .attribute-row input[type="number"],
+        .attribute-row select {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 8px;
+            flex-grow: 1;
+            box-sizing: border-box;
+            font-size: 1em;
+        }
+
+        .attribute-row select {
+            padding: 7px;
+        }
+
+        .attribute-row-date {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-grow: 1;
+        }
+
+        .attribute-row-date input[type="text"] {
+            padding: 8px;
+            font-size: 1em;
+            background-color: #333;
+        }
+
+        .attribute-row-date button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 8px 10px;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .attribute-row-date button:hover {
+            background-color: #333333;
+            
+        }
+
+
+        .attribute-row-date button.calendar-button {
+            font-size: 1.2em;
+            padding: 8px 10px;
+        }
+
+        .main-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .main-actions button {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1em;
+            border-radius: 5px; 
+        }
+
+        .main-actions button:hover {
+            background-color: #333333;
+        }
+
+        .main-actions button:nth-child(4) { 
+            background-color: #e07a5f; 
+        }
+
+        .main-actions button:nth-child(4):hover { 
+            background-color: #AB3F21; 
+        }
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="topbar-left">
+            <p style="margin: 0;">Digiledger</p>
+        </div>
+        <div class="topbar-right">
+            <p style="margin: 0;">Welcome, Kenneth (Role)</p>
+            <button style="margin: 0;">Change account information</button>
+            <button style="margin: 0;">Log out</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <aside>
+            <div class="aside-container-1">
+                <div class="search-bar">
+                    <input type="text" placeholder="Start typing to filter...">
+                </div>
+                <div class="action-section">
+                    <label for="action">Action:</label>
+                    <select id="action">
+                        <option value="option1">---------</option>
+                        <option value="option2">Delete</option>
+                    </select>
+                    <button>Go</button>
+                </div>
+                <div class="item-list">
+                    <div class="item">
+                        <input type="checkbox">
+                        <span class="number">12307512</span>
+                    </div>
+                    <div class="item">
+                        <input type="checkbox">
+                        <span class="number">4234235235</span>
+                    </div>
+                    <div class="item">
+                        <input type="checkbox">
+                        <span class="number">123523</span>
+                    </div>
+                    <div class="item">
+                        <input type="checkbox">
+                        <span class="number">57456456</span>
+                    </div>
+                    <div class="item">
+                        <input type="checkbox">
+                        <span class="number">696796</span>
+                    </div>
+                    <div class="item">
+                        <input type="checkbox">
+                        <span class="number">45674</span>
+                    </div>
+                    <div class="item">
+                        <input type="checkbox">
+                        <span class="number">757456</span>
+                    </div>
+                    <div class="item">
+                        <input type="checkbox">
+                        <span class="number">45456</span>
+                    </div>
+                </div>
+            </div>
+        </aside>
+        <main>
+            <div class="main-header">
+                <h1>Change Transaction</h1>
+                <button>HISTORY</button>
+            </div>
+
+            <div class="main-attributes">
+                <div class="attribute-row">
+                    <label for="transaction-id">Transaction ID:</label>
+                    <input type="text" id="transaction-id" value="1234567890" readonly>
+                </div>
+                <div class="attribute-row">
+                    <label for="monetary-value">Monetary Value:</label>
+                    <input type="number" id="monetary-value" value="100.00">
+                </div>
+                <div class="attribute-row">
+                    <label for="classification">Classification:</label>
+                    <select id="classification">
+                        <option value="revenue" selected>Revenue -</option>
+                        <option value="expense">Expense</option>
+                        <option value="asset">Asset</option>
+                        <option value="liability">Liability</option>
+                        <option value="equity">Equity</option>
+                    </select>
+                </div>
+                <div class="attribute-row">
+                    <label for="date-encoded">Date Encoded:</label>
+                    <div class="attribute-row-date">
+                        <input type="text" id="date-encoded" value="2025-04-09">
+                        <button class="today-button">Today</button>
+                        <button class="calendar-button">📅</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="main-actions">
+                <button>SAVE</button>
+                <button>Save and add another</button>
+                <button>Save and continue editing</button>
+                <button >Delete</button>
+            </div>
+        </main>
+    </div>
+
+</body>
+</html>

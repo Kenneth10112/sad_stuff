@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Sidebar</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            background-color: #f9f9f9; /* Light background for body */
+        }
+        .sidebar {
+            width: 250px;
+            background: #ffffff; /* White background for sidebar */
+            color: #333; /* Dark text for sidebar */
+            padding: 15px;
+            transition: width 0.3s;
+            border-right: 1px solid #e0e0e0; /* Subtle border to separate sidebar */
+        }
+        .sidebar.hidden {
+            width: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar li {
+            padding: 10px;
+            cursor: pointer;
+            transition: background 0.3s;
+            border-bottom: 1px solid #e0e0e0; /* Light border for list items */
+        }
+        .sidebar li:last-child {
+          border-bottom: none;
+        }
+        .sidebar li:hover {
+            background: #f0f0f0; /* Light gray hover effect */
+        }
+        .content {
+            flex: 1;
+            padding: 20px;
+            background-color: #f9f9f9; /* Same as body background */
+        }
+        .toggle-btn {
+            margin-bottom: 10px;
+            cursor: pointer;
+            background: #e0e0e0; /* Light gray button background */
+            color: #333; /* Dark text for button */
+            border: none;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .toggle-btn:hover {
+          background: #d0d0d0;
+        }
+        iframe {
+            width: 100%;
+            height: 80vh;
+            border: none;
+            background-color: #ffffff; /* White background for iframe */
+        }
+        .accountbar {
+            background-color: #ffffff; /* White background, same as sidebar */
+            color: #333; /* Dark text, same as sidebar text */
+            padding: 10px; /* Adjust padding as needed */
+            cursor: pointer; /* Optional: Make it look clickable */
+            transition: background-color 0.3s; /* Smooth transition for hover */
+            border-bottom: 1px solid #e0e0e0; /* Light border at the bottom */
+        }
+        .accountbar:hover {
+            background-color: #f0f0f0; /* Light gray on hover, same as sidebar li:hover */
+        }
+        .accountbar h2, .accountbar p {
+            margin: 0; /* Remove default margins from h1 and p */
+        }
+
+    </style>
+</head>
+<body>
+    <div class="sidebar" id="sidebar">
+        <div class="accountbar" id="accountbar" onclick="showPortfolio('../../iframes/account_manage.html')">
+            <h2>Admin, Kenneth</h1>
+            <p>Tap to modifify user information </p>
+        </div>
+        <ul>
+            <li onclick="showPortfolio('kenneth.html')">kenneth</li>
+            <li onclick="showPortfolio('bob.html')">Bob</li>
+        </ul>
+    </div>
+    <div class="content">
+        <button class="toggle-btn" onclick="toggleSidebar()">Toggle Sidebar</button>
+        <iframe id="portfolio-frame" src=""></iframe>
+    </div>
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("hidden");
+        }
+        function showPortfolio(page) {
+            document.getElementById("portfolio-frame").src = page;
+        }
+    </script>
+</body>
+</html>

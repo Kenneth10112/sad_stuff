@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Management</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        /* Optional: Style for input fields */
+        .editable-input {
+            border: 1px solid #e2e8f0; /* Tailwind's border-gray-200 */
+            border-radius: 0.375rem; /* Tailwind's rounded-md */
+            padding: 0.5rem;           /* Tailwind's p-2 */
+            width: 100%;
+            box-sizing: border-box;  /* Ensure padding doesn't affect width */
+            margin-bottom: 0.25rem; /* Tailwind's mb-1 */
+            font-size: 1rem;         /* Tailwind's text-base */
+        }
+        .editable-input:focus {
+            outline: none;
+            border-color: #3b82f6;  /* Tailwind's border-blue-500 */
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15); /* Tailwind's ring-blue-500 with opacity */
+        }
+    </style>
+</head>
+<body class="bg-gray-100 p-6 rounded-lg">
+    <div class="max-w-2xl mx-auto bg-white shadow-md rounded-lg p-8">
+        <h1 class="text-2xl font-semibold text-gray-800 mb-6 text-center">Account Management</h1>
+
+        <div id="user-data" class="space-y-4">
+            <div class="bg-gray-50 rounded-md p-4">
+                <h2 class="text-lg font-semibold text-gray-700">User Information</h2>
+                <p><span class="font-medium text-gray-800">ID:</span> <span id="user-id" class="text-gray-600">Loading...</span></p>
+                <div class="flex flex-col">
+                    <label for="user-name" class="font-medium text-gray-800">Name:</label>
+                    <input type="text" id="user-name" value="Loading..." class="editable-input">
+                </div>
+                <div class="flex flex-col">
+                    <label for="entity-type" class="font-medium text-gray-800">Entity Type:</label>
+                    <input type="text" id="entity-type" value="Loading..." class="editable-input">
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-md p-4">
+                <h2 class="text-lg font-semibold text-gray-700">Login Credentials</h2>
+                <div class="flex flex-col">
+                    <label for="username" class="font-medium text-gray-800">Username:</label>
+                    <input type="text" id="username" value="Loading..." class="editable-input">
+                </div>
+            </div>
+
+            <div class="bg-gray-50 rounded-md p-4">
+                <h2 class="text-lg font-semibold text-gray-700">Contact Information</h2>
+                <div class="flex flex-col">
+                    <label for="email" class="font-medium text-gray-800">Email:</label>
+                    <input type="text" id="email" value="Loading..." class="editable-input">
+                </div>
+                <div class="flex flex-col">
+                    <label for="phone-number" class="font-medium text-gray-800">Phone Number:</label>
+                    <input type="text" id="phone-number" value="Loading..." class="editable-input">
+                </div>
+            </div>
+        </div>
+        <div class="mt-6">
+            <button id="save-button" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-md shadow-md focus:outline-none focus:shadow-outline w-full">
+                Save Changes
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Sample data (replace with actual data from your backend)
+        const userData = {
+            user: {
+                id: 1,
+                name: "John Doe",
+                entity_type: "Customer",
+                entity_type_id: 1
+            },
+            loginCredentials: {
+                username: "johndoe"
+            },
+            contactInformation: {
+                email: "john.doe@example.com",
+                phoneNumber: "123-456-7890"
+            }
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Populate the input fields with the data
+            document.getElementById('user-id').textContent = userData.user.id;
+            document.getElementById('user-name').value = userData.user.name;
+            document.getElementById('entity-type').value = userData.user.entity_type;
+            document.getElementById('username').value = userData.loginCredentials.username;
+            document.getElementById('email').value = userData.contactInformation.email;
+            document.getElementById('phone-number').value = userData.contactInformation.phoneNumber;
+
+            const saveButton = document.getElementById('save-button');
+            saveButton.addEventListener('click', () => {
+                // In a real application, you would send the updated data to your backend
+                const updatedData = {
+                    user: {
+                        name: document.getElementById('user-name').value,
+                        entity_type: document.getElementById('entity-type').value,
+                    },
+                    loginCredentials: {
+                        username: document.getElementById('username').value,
+                    },
+                    contactInformation: {
+                        email: document.getElementById('email').value,
+                        phoneNumber: document.getElementById('phone-number').value,
+                    },
+                };
+                console.log(updatedData); // For demonstration
+                alert('Changes saved! (Data sent to console - update logic not included).');
+            });
+        });
+    </script>
+</body>
+</html>
