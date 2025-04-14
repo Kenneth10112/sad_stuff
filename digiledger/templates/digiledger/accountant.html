@@ -355,38 +355,14 @@
                     <button>Go</button>
                 </div>
                 <div class="item-list">
-                    <div class="item">
-                        <input type="checkbox">
-                        <span class="number">12307512</span>
-                    </div>
-                    <div class="item">
-                        <input type="checkbox">
-                        <span class="number">4234235235</span>
-                    </div>
-                    <div class="item">
-                        <input type="checkbox">
-                        <span class="number">123523</span>
-                    </div>
-                    <div class="item">
-                        <input type="checkbox">
-                        <span class="number">57456456</span>
-                    </div>
-                    <div class="item">
-                        <input type="checkbox">
-                        <span class="number">696796</span>
-                    </div>
-                    <div class="item">
-                        <input type="checkbox">
-                        <span class="number">45674</span>
-                    </div>
-                    <div class="item">
-                        <input type="checkbox">
-                        <span class="number">757456</span>
-                    </div>
-                    <div class="item">
-                        <input type="checkbox">
-                        <span class="number">45456</span>
-                    </div>
+                    {% for transact in transactions %}
+                        <div class="item">
+                            <input type="checkbox">
+                            <span class="number">{{ transact.reference_id }}</span>
+                        </div>
+                    {% empty %}
+                        <p>No items available.</p>
+                    {% endfor %}
                 </div>
             </div>
             <div class="aside-container-1-bottom" style="align-self: center;">
