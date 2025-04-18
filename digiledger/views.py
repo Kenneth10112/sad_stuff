@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .models import FinancialTransactions
+from .models import LoginCredential
 from django.views.decorators.csrf import csrf_exempt
 
 def index(request):
