@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grid Layout (Single File)</title>
+    <style>
+        .main-div {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr); /* 2 columns, each taking equal space */
+            grid-auto-rows: max-content; /* Row height determined by the tallest item in that row */
+            gap: 20px; /* Adds space between grid items */
+            padding: 20px;
+            border: 2px solid #000;
+        }
+
+        .child-div {
+            padding: 15px;
+            border: 1px solid #ccc;
+            background-color: #f9f9f9;
+            /* The div will grow based on its content (the p tags) */
+        }
+
+        .child-div p {
+            margin-bottom: 10px; /* Space between paragraphs */
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="main-div">
+        <div class="child-div"></div>
+        <div class="child-div"></div>
+        <div class="child-div"></div>
+        <div class="child-div"></div>
+        <div class="child-div"></div>
+        <div class="child-div"></div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const childDivs = document.querySelectorAll('.child-div');
+
+            childDivs.forEach(div => {
+                // Generate a random number of paragraphs (e.g., between 1 and 10)
+                const numParagraphs = Math.floor(Math.random() * 10) + 1;
+
+                for (let i = 0; i < numParagraphs; i++) {
+                    const p = document.createElement('p');
+                    p.textContent = `This is paragraph ${i + 1} inside this div. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.`;
+                    div.appendChild(p);
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Layout</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: sans-serif;
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background-color: #003366;
+            color: #fff;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .topbar-left {
+            font-size: 24px;
+        }
+
+        .topbar-right {
+            font-size: 14px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .topbar-right button {
+            background: none;
+            border:none;
+            color: #fff;
+        }
+
+        .topbar p, button{
+            padding: 5px;
+            text-align: center;
+
+        }
+
+        .topbar-right button:first-child{
+            padding-right: 20px;
+        }
+
+
+        .topbar-right button:nth-child(2) {
+            width: 220px;
+            border-radius: 8px;
+
+        }
+
+        .topbar-right button:nth-child(3) {
+            width: 180px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .topbar-right button:nth-child(4) {
+            width: 80px;
+            text-align: center;
+            border-radius: 8px;
+        }
+
+        .topbar-right button:nth-child(2):hover , button:nth-child(3):hover , button:nth-child(4):hover {
+            background-color: #002952;
+        }
+
+        #navigation {
+            display: flex;
+        }
+
+        #navigation button {
+            width: 100%;
+            background-color: #555;
+            color: #fff;
+            border: solid 3px #333333;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        #navigation button:hover {
+            background-color: #333333;
+        }
+
+        .main-container {
+            display: flex;
+            flex-grow: 1;
+        }
+
+        aside {
+            background-color: #080808; /* Slightly lighter black */
+            color: #fff;
+            padding: 5px;
+            width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .aside-container-1 {
+            flex-direction: row;
+            background-color: #111111; /* Slightly lighter black */
+            padding-bottom: 2px;
+            height: auto;
+            font-size: 18px;
+            text-align: center;
+        }
+
+        .aside-container-2 {
+            background-color: #191919; /* Slightly lighter black */
+            padding: 3px;
+            height: calc(100% - 35px);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        #record-note{
+            font-size: 13px;
+            align-self: center;
+            padding: 3px;
+        }
+
+        .search-bar {
+            margin-bottom: 8px;
+        }
+
+        .search-bar input::placeholder{
+            color: #999;
+            opacity: 0.8;
+            font-size: 0.8em;
+        }
+
+        .search-bar input[type="text"] {
+            background-color: #333;
+            color: #fff;
+            border: none;
+            padding: 6px;
+            width: 100%;
+            box-sizing: border-box;
+            font-size: 0.9em;
+        }
+
+        .section-list {
+            align-items: center;
+        }
+
+        .sections{
+            height: fit-content;
+            margin-left: 3px;
+        }
+
+        .item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 2px;
+            border: 2px solid #333333;
+        }
+
+        .section-buttons {
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+
+        .section-buttons:hover {
+            background-color: #333333;
+        }
+
+
+        #add-section {
+            border: solid 2px #333333;
+            width: 100%;
+            background-color: #555;
+            color: #fff;
+        }
+
+        #add-section:hover {
+            background-color: #333333;
+        }
+        
+        .aside-container-3 button{
+            background-color: #555;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-size: 1em;
+            width: 100%;
+        }
+
+        .aside-container-3 button:hover {
+            background-color: #333333;
+        }
+
+        main {
+            background-color: #0a0a0a; /* Slightly lighter black */
+            border: #333 5px solid;
+            color: #fff;
+            padding: 10px 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="topbar">
+        <div class="topbar-left">
+            <p style="margin: 0;">Digiledger</p>
+        </div>
+        <div class="topbar-right">
+            <p style="margin: 0;">Welcome, Kenneth (Role)</p>
+            <button style="margin: 0;">Change account information</button>
+            <button>Manage record types</button>
+            <button style="margin: 0;">Log out</button>
+        </div>
+    </div>
+
+    <div id="navigation">
+        <button id="journals-nav">Journals</button>
+        <button id="ledgers-nav">Ledgers</button>
+        <button id="others-nav">Others</button>
+    </div>
+
+    <div class="main-container">
+        <aside>
+            <div class="aside-container-1">
+                <h1>General Record</h1>
+
+            </div>
+
+            <div class="aside-container-2">
+                <span id="record-note">Record Sections</span>
+                <div class="search-bar">
+                    <input type="text" placeholder="Start typing to filter...">
+                </div>
+                <div class="section-list">
+                    <div class="item">
+                        <span class="sections">Section 1</span>
+                        <button class="section-buttons">Edit</button>
+                    </div>
+                    <div class="item">
+                        <span class="sections">Section 2</span>
+                        <button class="section-buttons">Edit</button>
+                    </div>
+                    <div class="item">
+                        <span class="sections">Section 3</span>
+                        <button class="section-buttons">Edit</button>
+                    </div>
+                    <div class="item">
+                        <button id="add-section">Add Section+</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="aside-container-3">
+                <button>New Entry</button>
+            </div>
+
+        </aside>
+        <main>
+            <div class="ledger-div">
+                <div class="journals">
+                    <div>
+                        
+                    </div>
+                </div>
+                <div class="ledgers">
+                    <table>
+                        <tr>
+                            <th>Account Name</th>
+                        </tr>
+                        <tr>
+                            <th>Debit</th>
+                            <th>Credit</th>
+                        </tr>
+                    </table>
+                </div>
+                <div class="others">
+
+                </div>
+
+            </div>
+        </main>
+
+        <script>            
+            const button_ledgers = document.getElementById("ledgers-nav");
+            const button_journals = document.getElementById("journals-nav");
+            const button_others = document.getElementById("others-nav");
+            
+
+            document.addEventListener("DOMContentLoaded", 
+            function(){
+                document.querySelector('.ledgers').style.display = 'none';
+                document.querySelector('.journals').style.display = 'none';
+                document.querySelector('.others').style.display = 'none';
+            });
+
+            button_ledgers.addEventListener("click", 
+                function(){
+                    document.querySelector('.ledgers').style.display = 'block';
+                    document.querySelector('.journals').style.display = 'none';
+                    document.querySelector('.others').style.display = 'none';
+                });
+                
+            button_journals.addEventListener("click", 
+                function(){
+                    document.querySelector('.ledgers').style.display = 'none';
+                    document.querySelector('.journals').style.display = 'block';
+                    document.querySelector('.others').style.display = 'none';
+                });
+                
+            button_others.addEventListener("click", 
+                function(){
+                    document.querySelector('.ledgers').style.display = 'none';
+                    document.querySelector('.journals').style.display = 'none';
+                    document.querySelector('.others').style.display = 'block';
+                });
+                
+        </script>
+
+</body>
+</html>

@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html, body {
+            height: 100%;
+            margin: 0;
+
+        }
+
+        body {
+            background-color: antiquewhite;
+            display: grid;
+            grid-template-areas: 
+                "topbar     topbar  topbar"
+                "nav        nav     nav"
+                "sidebar    main    main";
+
+            grid-template-columns: .5fr 1fr 1fr;
+            grid-template-rows: 70px 40px auto;
+
+
+        }
+
+        header { 
+            grid-area: topbar; 
+            background-color: #fff;
+            padding: 5px;
+
+            display: grid;
+            grid-template-columns: 1fr 3.5fr 2.5fr;
+            gap: 5px;
+        }
+        header div, h1 { 
+            margin: 0px;
+            padding: 0px 15px;
+
+            display: flex;
+            align-items: center;
+            
+        }
+        #topbar-menu {
+            display: grid;
+            grid-template-columns: .8fr 1fr .3fr;
+            gap: .1rem;
+        }
+        #topbar-menu > * {
+            height: 30px;
+            padding: 0px 5px;
+            margin: 0px;
+
+            display: flex;
+            align-items: center;
+        }
+
+        .nav { 
+            grid-area: nav; 
+            background-color: #c57878;
+            padding: 3px;
+        
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: 1fr;
+            gap: 3px;
+        } 
+        .nav-button {
+            height: 100%;            /* Make them stretch full height */
+            display: flex;           /* Use flexbox */
+            align-items: center;     /* Center content vertically */
+            justify-content: center; /* Center content horizontally */
+            margin: 0;               /* Remove default paragraph margin */
+        }
+
+        #sidebar {
+            height: 100%;
+            grid-area: sidebar; 
+            background-color: #9bd6d1; 
+            padding: 3px;
+
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: .6fr 7fr .4fr;
+            gap: 3px;
+
+            overflow: hidden;
+        }
+        #section-list {
+            background-color: #68b5d8;
+            height: 100%;            /* Make them stretch full height */
+            padding: 3px;
+
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 3px;
+
+            overflow-y: auto;       /* Scroll only vertically */
+
+        }
+        .sidebar-section {
+            height: auto;
+            background-color: #c57878;
+            padding: 10px;
+
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            grid-template-rows: 1fr;
+            gap: 3px;
+
+            align-items: center;
+        }
+        #add-section {
+            height: 30px;
+        }
+        .sidebar-section-text {
+            margin: 0px;
+        }
+        .sidebar-section-button {
+            height: 100%;
+            padding: 0px;
+        }
+
+        main {
+            height: 100%;
+            grid-area: main; 
+            background-color: #cea5c5;
+            overflow-y: hidden;
+            padding: 3px;
+
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr 100px;
+        }
+        .main-journal-container {
+            height: 100%;
+            background-color: #c57878;
+            padding: 10px;
+
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            grid-auto-rows: max-content;
+            gap: 10px;
+
+            overflow-y: auto;
+        }
+        .journal-object {
+            background-color: aquamarine;
+            padding: 5px;
+
+            overflow-y: hidden;
+
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            grid-auto-rows: 30px;
+            gap: 1px;
+
+        }
+        .journal-object div {
+            background-color: #cea5c5;
+            border-radius: 2px;
+            padding: 0px 5px;
+            display: flex;
+            align-items: center;
+        }
+        .journal-object p {
+            margin: 0px;
+            padding: 0px;
+
+            flex: 1;
+        }
+        #main-journal-botbar {
+            background-color: antiquewhite;
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div>
+            <h1>Digiledger</h1>
+        </div>
+        <div></div>
+        <div id="topbar-menu">
+            <h4>Welcome (name)(role)</h4>
+            <p>Change account information</p>
+            <p>logout</p>
+        </div>
+    </header>
+
+    <nav class="nav">
+        <button class="nav-button">Journals</button>
+        <button class="nav-button">Ledgers</button>
+        <button class="nav-button">Others</button>
+    </nav>
+
+    <aside id="sidebar">
+        <button class="sidebar-button" id="general-record">General Record</button>
+        <div id="section-list">
+            <section class="sidebar-section">
+                <p class="sidebar-section-text">section 1</p>
+                <button class="sidebar-section-button">Edit</button>
+            </section>
+            <button id="add-section">Add</button>
+        </div>
+        <button class="sidebar-button" id="new-entry">New Entry</button>
+    </aside>
+
+    <main>
+        <div class="main-journal-container">
+            <div class="journal-object">
+                <div><p>account</p></div>
+                <div><p>debit</p></div>
+                <div><p>credit</p></div>
+                <div><p>d</p></div>
+                <div><p>e</p></div>
+                <div><p>f</p></div>
+                <div><p>g</p></div>
+                <div><p>h</p></div>
+                <div><p>i</p></div>
+                <div><p>j</p></div>
+                <div><p>k</p></div>
+                <div><p>l</p></div>
+            </div>
+
+        </div>
+        <div id="main-journal-botbar">
+            a
+        </div>
+    </main>
+
+</body>
+</html>

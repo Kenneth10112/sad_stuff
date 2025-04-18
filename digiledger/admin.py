@@ -1,21 +1,14 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import LoginCredentials, ContactInformation, EntityType, DigiledgerUsers
-from .models import Permissions, FinancialTransactions, RecordTypes, FinancialRecords
-from .models import StatementToRecordRelationships, RecordToTransactionRelationships
+from .models import LoginCredential, ContactInformation, EntityType, DigiledgerUser, Permission
 
 models_to_register = [
-    LoginCredentials,
+    LoginCredential,
     ContactInformation,
     EntityType,
-    DigiledgerUsers,
-    Permissions,
-    FinancialTransactions,
-    RecordTypes,
-    FinancialRecords,
-    StatementToRecordRelationships,
-    RecordToTransactionRelationships,
+    DigiledgerUser,
+    Permission,
 ]
 
 for model in models_to_register:
