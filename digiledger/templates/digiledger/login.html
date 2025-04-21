@@ -84,7 +84,7 @@
             <h1 id="header">Digiledger Login</h1>
         </div>
         <form method="post" action="{% url 'digiledger:login' %}">
-            <!--{% csrf_token %} -->
+            {% csrf_token %}
             <div class="login_credentials">
                 <label for="username">Username:</label>
                 <input type="text" id="username" name="username" placeholder="Enter your username">
@@ -93,11 +93,11 @@
                 <label for="password">Password:</label>
                 <input type="password" id="password" name="password" placeholder="Enter your password">
             </div>
-            <!-- {% if is_invalidLogin %} -->
+            {% if is_invalidLogin %}
             <div class="login_credentials">
-                <p>Invalid_login_credentials_try_again</p>
+                <p>Invalid login credentials try again</p>
             </div>
-            <!-- {% endif %} -->
+            {% endif %}
             <div class="login_credentials">
                 <button type="submit">Log in</button>
             </div>

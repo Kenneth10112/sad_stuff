@@ -8,6 +8,9 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <style>
+        /* ========================== */
+        /* == Global & Base Styles == */
+        /* ========================== */
         * {
             box-sizing: border-box;
             font-family: 'Inter', sans-serif;
@@ -16,65 +19,69 @@
         html, body {
             height: 100%;
             margin: 0;
-
         }
 
+        /* ========================== */
+        /* ===== Body Layout ====== */
+        /* ========================== */
         body {
             background-color: antiquewhite;
             display: grid;
-            grid-template-areas: 
-                "topbar     topbar  topbar"
-                "nav        nav     nav"
-                "sidebar    main    main";
-
+            grid-template-areas:
+                "topbar   topbar  topbar"
+                "nav      nav     nav"
+                "sidebar  main    main";
             grid-template-columns: .5fr 1fr 1fr;
             grid-template-rows: 70px 40px auto;
-
-
         }
 
-        header { 
-            grid-area: topbar; 
+        /* ========================== */
+        /* === Header / Top Bar === */
+        /* ========================== */
+        header {
+            grid-area: topbar;
             background-color: #fff;
             padding: 5px;
-
             display: grid;
             grid-template-columns: 1fr 3.5fr 2.5fr;
             gap: 5px;
         }
-        header div, h1 { 
+
+        header div, h1 { /* Styles for direct children like title and containers */
             margin: 0px;
             padding: 0px 15px;
-
             display: flex;
             align-items: center;
-            
         }
-        #topbar-menu {
+
+        #topbar-menu { /* Container for user info/actions in the header */
             display: grid;
             grid-template-columns: .8fr 1fr .3fr;
             gap: .1rem;
         }
-        #topbar-menu > * {
+
+        #topbar-menu > * { /* Direct children (h4, p) within the topbar menu */
             height: 30px;
             padding: 0px 5px;
             margin: 0px;
-
             display: flex;
             align-items: center;
         }
 
-        .nav { 
-            grid-area: nav; 
+        /* ========================== */
+        /* ====== Navigation ====== */
+        /* ========================== */
+        .nav {
+            grid-area: nav;
             background-color: #c57878;
             padding: 3px;
-        
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: 1fr;
             gap: 3px;
-        } 
-        .nav-button {
+        }
+
+        .nav-button { /* Buttons within the main navigation bar */
             height: 100%;            /* Make them stretch full height */
             display: flex;           /* Use flexbox */
             align-items: center;     /* Center content vertically */
@@ -82,106 +89,134 @@
             margin: 0;               /* Remove default paragraph margin */
         }
 
-        #sidebar {
+        /* ========================== */
+        /* ======== Sidebar ======== */
+        /* ========================== */
+        #sidebar { /* The main sidebar container */
             height: 100%;
-            grid-area: sidebar; 
-            background-color: #9bd6d1; 
+            grid-area: sidebar;
+            background-color: #9bd6d1;
             padding: 3px;
-
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-rows: .6fr 7fr .4fr;
+            grid-template-rows: .6fr 7fr .4fr; /* Top button, list, bottom button */
             gap: 3px;
-
             overflow: hidden;
         }
-        #section-list {
-            background-color: #68b5d8;
-            height: 100%;            /* Make them stretch full height */
-            padding: 3px;
 
+        /* Note: Styles specifically for .sidebar-button, #general-record, #new-entry were not in the original CSS,
+        but conceptually belong to this section */
+
+        #section-list { /* The scrollable container for sidebar sections */
+            background-color: #68b5d8;
+            height: 100%;            /* Make it stretch full height within its grid row */
+            padding: 3px;
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));
+            grid-template-rows: repeat(auto-fill, minmax(50px, 1fr)); /* Auto rows for sections */
             gap: 3px;
-
-            overflow-y: auto;       /* Scroll only vertically */
-
+            overflow-y: auto;        /* Scroll only vertically */
         }
-        .sidebar-section {
+
+        .sidebar-section { /* Individual section item within the list */
             height: auto;
             background-color: #c57878;
             padding: 10px;
-
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 2fr 1fr; /* Text and button */
             grid-template-rows: 1fr;
             gap: 3px;
-
             align-items: center;
         }
-        #add-section {
-            height: 30px;
-        }
-        .sidebar-section-text {
+
+        .sidebar-section-text { /* Text element within a sidebar section */
             margin: 0px;
         }
-        .sidebar-section-button {
+
+        .sidebar-section-button { /* Button element within a sidebar section */
             height: 100%;
             padding: 0px;
         }
 
-        main {
-            height: 100%;
-            grid-area: main; 
-            background-color: #cea5c5;
-            overflow-y: hidden;
-            padding: 3px;
+        #add-section { /* The 'Add' button at the bottom of the section list */
+            height: 30px;
+        }
 
+        /* ========================== */
+        /* ==== Main Content Area === */
+        /* ========================== */
+        main { /* The main content area container */
+            height: 100%;
+            grid-area: main;
+            background-color: #cea5c5;
+            overflow-y: hidden; /* Prevent main from scrolling, container inside will scroll */
+            padding: 3px;
             display: grid;
             grid-template-columns: 1fr;
-            grid-template-rows: 1fr 100px;
+            grid-template-rows: 1fr 100px; /* Journal container and bottom bar */
         }
+
+        /* --- Main Journal Container (Scrollable list of entries) --- */
         .main-journal-container {
-            height: 100%;
+            height: 100%; /* Take full height of its grid row */
             background-color: #c57878;
             padding: 10px;
-
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            grid-auto-rows: max-content;
+            grid-template-columns: repeat(auto-fill, minmax(400px, 1fr)); /* Responsive columns */
+            grid-auto-rows: max-content; /* Rows fit content */
             gap: 10px;
-
-            overflow-y: auto;
+            overflow-y: auto; /* Allow vertical scrolling for journal entries */
         }
-        .journal-object {
+
+        /* --- Individual Journal Objects / Entries --- */
+        .journal-object { /* Container for a single journal entry */
             background-color: aquamarine;
             padding: 5px;
-
-            overflow-y: hidden;
-
+            overflow-y: hidden; /* Prevent individual entries from scrolling */
             display: grid;
-            grid-template-columns: 2fr 1fr 1fr;
-            grid-auto-rows: 30px;
+            grid-template-columns: .8fr 2fr 1fr 1fr; /* Date, Account, Debit, Credit columns */
+            grid-auto-rows: max-content; /* Rows fit content */
             gap: 1px;
-
         }
-        .journal-object div {
+
+        /* Common styles for header and attribute cells within a journal object */
+        .object-header, .object-attr, .object-attr-source, .object-attr-sourceAcc, .object-attr-date {
             background-color: #cea5c5;
             border-radius: 2px;
             padding: 0px 5px;
             display: flex;
             align-items: center;
         }
-        .journal-object p {
+
+        /* Specific styles for elements within a journal object */
+        .object-attr-sourceAcc { /* Source account name (indented) */
+            text-indent: 2em;
+        }
+
+        .object-attr-date { /* Date cell style */
+            font-size: x-small;
+        }
+
+        .object-desc { /* Description row spanning all columns */
+            grid-column: span 4; /* Make it span all 4 columns */
+            background-color: #d2f2fa;
+            border-radius: 2px;
+            padding: 0px 5px;
+            display: flex;
+            align-items: center;
+        }
+
+        .journal-object p { /* Paragraphs within any journal object cell */
             margin: 0px;
             padding: 0px;
-
-            flex: 1;
+            flex: 1; /* Allow text to fill the cell if needed */
         }
-        #main-journal-botbar {
+
+        /* --- Main Journal Bottom Bar --- */
+        #main-journal-botbar { /* The area below the journal entries */
             background-color: antiquewhite;
         }
+
 
     </style>
 </head>
@@ -193,7 +228,7 @@
         </div>
         <div></div>
         <div id="topbar-menu">
-            <h4>Welcome (name)(role)</h4>
+            <h4>Welcome {{CurrentUser.name}}</h4>
             <p>Change account information</p>
             <p>logout</p>
         </div>
@@ -208,10 +243,14 @@
     <aside id="sidebar">
         <button class="sidebar-button" id="general-record">General Record</button>
         <div id="section-list">
-            <section class="sidebar-section">
-                <p class="sidebar-section-text">section 1</p>
-                <button class="sidebar-section-button">Edit</button>
-            </section>
+            {% for section in Sections %}
+                <section class="sidebar-section">
+                    <p class="sidebar-section-text"> {{ section.section_name }} </p>
+                    <button class="sidebar-section-button">Edit</button>
+                </section>
+            {% empty %}
+                <p class="sidebar-section-text">There is no Section</p>
+            {% endfor %}
             <button id="add-section">Add</button>
         </div>
         <button class="sidebar-button" id="new-entry">New Entry</button>
@@ -219,26 +258,45 @@
 
     <main>
         <div class="main-journal-container">
-            <div class="journal-object">
-                <div><p>account</p></div>
-                <div><p>debit</p></div>
-                <div><p>credit</p></div>
-                <div><p>d</p></div>
-                <div><p>e</p></div>
-                <div><p>f</p></div>
-                <div><p>g</p></div>
-                <div><p>h</p></div>
-                <div><p>i</p></div>
-                <div><p>j</p></div>
-                <div><p>k</p></div>
-                <div><p>l</p></div>
-            </div>
+            {% for transaction in Transactions %}
+                <div class="journal-object">
+                    <div class="object-header"><p>Date</p></div>
+                    <div class="object-header"><p>Account</p></div>
+                    <div class="object-header"><p>Debit</p></div>
+                    <div class="object-header"><p>Credit</p></div>
+
+                    <div class="object-attr-date"><p>{{ transaction.ent_date }}</p></div>
+                    <div class="object-attr"><p>{{ transaction.destination.account_name }} ({{ transaction.ref_id }})</p></div>
+                    <div class="object-attr"><p>{{ transaction.debit_mon_val }}</p></div>
+                    <div class="object-attr"><p></p></div>
+
+                    {% for source in transaction.sources %}
+                        <div class="object-attr-source"><p></p></div>
+                        <div class="object-attr-sourceAcc"><p>{{ source.source_account.account_name }}</p></div>
+                        <div class="object-attr-source"><p></p></div>
+                        <div class="object-attr-source"><p>{{ source.credit_mon_val }}</p></div>
+                    {% endfor %}
+
+                    <div class="object-desc"><p>{{ transaction.desc }}</p></div>
+                </div>
+            {% empty %}
+                <p class="sidebar-section-text">There is no Entries</p>
+            {% endfor %}
+
 
         </div>
         <div id="main-journal-botbar">
             a
         </div>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const redirectButton = document.getElementById('new-entry');
+            redirectButton.addEventListener('click', function() {
+                window.location.href = "{% url 'digiledger:new_entry' %}";
+            });
+        });
+    </script>
 
 </body>
 </html>

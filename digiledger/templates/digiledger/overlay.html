@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Create New Transaction</title>
+    <style>
+        body { font-family: sans-serif; line-height: 1.6; padding: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input[type="text"],
+        input[type="number"],
+        input[type="datetime-local"],
+        select,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box; /* Include padding and border in element's total width and height */
+        }
+        textarea { min-height: 80px; }
+        .inline-add { display: flex; align-items: center; gap: 10px; }
+        .inline-add select { flex-grow: 1; }
+        .add-new-field { display: none; margin-top: 5px; } /* Hidden by default */
+        .add-new-btn, .remove-btn {
+            padding: 5px 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            background-color: #f0f0f0;
+            border-radius: 4px;
+            font-size: 0.9em;
+        }
+        .remove-btn { background-color: #f8d7da; border-color: #f5c6cb; }
+        .sources-container { border: 1px dashed #eee; padding: 15px; margin-top: 10px; border-radius: 4px; }
+        .source-row { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
+        .source-row:last-child { border-bottom: none; margin-bottom: 0; }
+        hr { margin: 20px 0; border: 0; border-top: 1px solid #eee; }
+        button[type="submit"] {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+        button[type="submit"]:hover { background-color: #218838; }
+    </style>
+</head>
+<body>
+
+<h1>Create New Transaction</h1>
+
+<form method="post" id="transaction-form">
+    {% csrf_token %} {# Important for Django security #}
+
+    <h2>Transaction Details</h2>
+
+    <div class="form-group">
+        <label for="ref_id">Reference ID:</label>
+        <input type="text" id="ref_id" name="ref_id" required maxlength="255">
+    </div>
+
+    <div class="form-group">
+        <label for="mon_val">Total Monetary Value:</label>
+        <input type="number" id="mon_val" name="mon_val" required step="0.01" min="0">
+        <small>This should ideally match the sum of source values.</small>
+    </div>
+
+    <div class="form-group">
+        <label for="ent_date">Entry Date & Time:</label>
+        <input type="datetime-local" id="ent_date" name="ent_date" required>
+    </div>
+
+    <div class="form-group">
+        <label for="dsc">Description:</label>
+        <textarea id="dsc" name="dsc" required maxlength="255"></textarea>
+    </div>
+
+    <div class="form-group">
+        <label for="destination_id">Destination Account:</label>
+        <div class="inline-add">
+            <select id="destination_id" name="destination_id" required>
+                <option value="">---------</option>
+                {% for account in accounts %} {# Assumes 'accounts' is passed from the view #}
+                    <option value="{{ account.id }}">{{ account.account_name }}</option>
+                {% endfor %}
+            </select>
+            <button type="button" class="add-new-btn" onclick="toggleAddNew('destination')">+</button>
+        </div>
+        <div class="add-new-field" id="add-new-destination">
+            <label for="new_destination_name">New Destination Account Name:</label>
+            <input type="text" id="new_destination_name" name="new_destination_name" placeholder="Enter name if adding new">
+            <small>Leave blank if selecting an existing account.</small>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="section_id">Section:</label>
+        <div class="inline-add">
+            <select id="section_id" name="section_id" required>
+                <option value="">---------</option>
+                {% for section in sections %} {# Assumes 'sections' is passed from the view #}
+                    <option value="{{ section.id }}">{{ section.section_name }}</option>
+                {% endfor %}
+            </select>
+             <button type="button" class="add-new-btn" onclick="toggleAddNew('section')">+</button>
+        </div>
+         <div class="add-new-field" id="add-new-section">
+            <label for="new_section_name">New Section Name:</label>
+            <input type="text" id="new_section_name" name="new_section_name" placeholder="Enter name if adding new">
+             <small>Leave blank if selecting an existing section.</small>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="ent_by_id">Entered By:</label>
+        <select id="ent_by_id" name="ent_by_id">
+            <option value="">---------</option>
+             {# Assumes 'users' is passed from the view and represents DigiledgerUser #}
+             {# You might want to pre-select the logged-in user #}
+            {% for user in users %}
+                <option value="{{ user.id }}">{{ user }}</option> {# Assuming user model has __str__ #}
+            {% endfor %}
+        </select>
+         <small>Leave blank or select the user who entered this transaction.</small>
+    </div>
+
+    <hr>
+
+    <h2>Transaction Sources</h2>
+    <div id="sources-container">
+        <div class="source-row" data-index="0">
+             <div class="form-group">
+                <label for="source_account_id_0">Source Account:</label>
+                <div class="inline-add">
+                    <select id="source_account_id_0" name="sources[0][source_account_id]" required>
+                        <option value="">---------</option>
+                        {% for account in accounts %}
+                            <option value="{{ account.id }}">{{ account.account_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" class="add-new-btn" onclick="toggleAddNew('source_0')">+</button>
+                </div>
+                 <div class="add-new-field" id="add-new-source_0">
+                    <label for="new_source_account_name_0">New Source Account Name:</label>
+                    <input type="text" id="new_source_account_name_0" name="sources[0][new_source_account_name]" placeholder="Enter name if adding new">
+                     <small>Leave blank if selecting an existing account.</small>
+                </div>
+            </div>
+             <div class="form-group">
+                <label for="source_mon_val_0">Source Monetary Value:</label>
+                <input type="number" id="source_mon_val_0" name="sources[0][mon_val]" required step="0.01" min="0">
+            </div>
+            <button type="button" class="remove-btn" onclick="removeSourceRow(this)">Remove Source</button>
+        </div>
+    </div>
+    <button type="button" id="add-source-btn" style="margin-top: 10px;">Add Another Source</button>
+
+    <hr>
+
+    <button type="submit">Create Transaction</button>
+</form>
+
+<script>
+    let sourceIndex = 1; // Start index for next source row
+
+    function toggleAddNew(type) {
+        const element = document.getElementById(`add-new-${type}`);
+        if (element) {
+            element.style.display = element.style.display === 'none' ? 'block' : 'none';
+        }
+    }
+
+    function removeSourceRow(button) {
+        // Prevent removing the last source row if desired, or handle in backend
+        const sourceRows = document.querySelectorAll('#sources-container .source-row');
+        if (sourceRows.length > 1) {
+             button.closest('.source-row').remove();
+        } else {
+            alert("At least one source is required."); // Or just clear the fields
+        }
+    }
+
+    document.getElementById('add-source-btn').addEventListener('click', function() {
+        const container = document.getElementById('sources-container');
+        const newIndex = sourceIndex++; // Use current index, then increment
+
+        const sourceRowTemplate = `
+            <div class="source-row" data-index="${newIndex}">
+                <div class="form-group">
+                    <label for="source_account_id_${newIndex}">Source Account:</label>
+                    <div class="inline-add">
+                        <select id="source_account_id_${newIndex}" name="sources[${newIndex}][source_account_id]" required>
+                            <option value="">---------</option>
+                            {% for account in accounts %}
+                                <option value="{{ account.id }}">{{ account.account_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="button" class="add-new-btn" onclick="toggleAddNew('source_${newIndex}')">+</button>
+                    </div>
+                    <div class="add-new-field" id="add-new-source_${newIndex}">
+                        <label for="new_source_account_name_${newIndex}">New Source Account Name:</label>
+                        <input type="text" id="new_source_account_name_${newIndex}" name="sources[${newIndex}][new_source_account_name]" placeholder="Enter name if adding new">
+                        <small>Leave blank if selecting an existing account.</small>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="source_mon_val_${newIndex}">Source Monetary Value:</label>
+                    <input type="number" id="source_mon_val_${newIndex}" name="sources[${newIndex}][mon_val]" required step="0.01" min="0">
+                </div>
+                <button type="button" class="remove-btn" onclick="removeSourceRow(this)">Remove Source</button>
+            </div>
+        `;
+
+        // Create a temporary div to parse the template string
+        const tempDiv = document.createElement('div');
+        tempDiv.innerHTML = sourceRowTemplate;
+        container.appendChild(tempDiv.firstElementChild); // Append the actual source-row div
+    });
+
+    // Optional: Set default date/time for ent_date
+    document.addEventListener('DOMContentLoaded', (event) => {
+        const now = new Date();
+        now.setMinutes(now.getMinutes() - now.getTimezoneOffset()); // Adjust for local timezone
+        const yyyy = now.getFullYear();
+        const mm = String(now.getMonth() + 1).padStart(2, '0'); // Months are 0-indexed
+        const dd = String(now.getDate()).padStart(2, '0');
+        const HH = String(now.getHours()).padStart(2, '0');
+        const MM = String(now.getMinutes()).padStart(2, '0');
+        document.getElementById('ent_date').value = `${yyyy}-${mm}-${dd}T${HH}:${MM}`;
+
+        // Optional: Hide the "remove" button on the initial source row if only one exists initially
+        const initialSourceRows = document.querySelectorAll('#sources-container .source-row');
+        if (initialSourceRows.length === 1) {
+            const removeBtn = initialSourceRows[0].querySelector('.remove-btn');
+            if (removeBtn) {
+                // removeBtn.style.display = 'none'; // Or just disable it
+            }
+        }
+    });
+
+</script>
+
+</body>
+</html>

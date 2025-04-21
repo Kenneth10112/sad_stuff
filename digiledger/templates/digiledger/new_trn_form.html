@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal Entry</title>
+    <style>
+        /* ======================= */
+        /* ====== Global & Body ====== */
+        /* ======================= */
+        * {
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        html, body {
+            background-color: rgb(233, 233, 233);
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            padding: 10px;
+            display: grid;
+            grid-template-rows: 1fr auto; /* Form area + submit button */
+            gap: 10px;
+            height: 100vh; /* Ensure body takes full viewport height */
+        }
+
+        /* ============================ */
+        /* ====== Main Form Layout ====== */
+        /* ============================ */
+        #trn_form {
+            display: grid;
+            grid-template-columns: .8fr 1fr; /* Replicate original body layout */
+            grid-template-rows: 1fr; /* Single row for main content */
+            gap: 10px;
+            height: 100%; /* Take full height allocated by body */
+            overflow: hidden; /* Prevent internal scrollbars if possible */
+        }
+
+        /* ============================== */
+        /* ====== Entry Details Area ====== */
+        /* ============================== */
+        #entry_details {
+             background-color: rgb(160, 160, 160);
+             border-radius: 10px;
+             padding: 20px;
+             display: grid;
+             grid-template-columns: 1fr 1fr; /* Two columns for entry fields */
+             grid-auto-rows: max-content;
+             gap: 5px 15px; /* Row gap, Column gap */
+             align-content: start; /* Align form items to the start */
+             overflow-y: auto; /* Allow scrolling if needed */
+        }
+
+        /* Description field spanning columns within Entry Details */
+        #trn_dsc {
+             grid-column: span 2;
+        }
+
+        /* =========================== */
+        /* ====== Source Tab Area ====== */
+        /* =========================== */
+        #source_tab {
+            grid-column: 2 / 3; /* Place in the second column of the form grid */
+            background-color: rgb(160, 160, 160);
+            border-radius: 10px;
+            padding: 20px;
+            display: grid;
+            /* Header, flexible content area, fixed button area */
+            grid-template-rows: min-content 1fr 50px;
+            gap: 10px;
+            overflow: hidden; /* Prevent content spillover */
+        }
+
+        #source_tab > h2 { /* Main "Sources" header */
+            padding: 10px;
+            margin: 0;
+            background-color: rgb(211, 165, 165);
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        /* Container for individual source forms */
+        #trn_src_forms {
+            height: 100%;
+            padding: 10px;
+            background-color: rgb(214, 214, 214);
+            border-radius: 5px;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-auto-rows: max-content;
+            gap: 10px;
+            overflow-y: auto; /* Enable vertical scrolling ONLY for this container */
+        }
+
+        /* Individual source form block */
+        .trn_src_form {
+            padding: 15px;
+            background-color: rgb(243, 243, 243);
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-rows: max-content;
+            gap: 10px 15px; /* Row gap, Column gap */
+        }
+
+        /* Header within an individual source form */
+        .trn_src_form > .form_group_header {
+            background-color: transparent;
+            padding: 0;
+            border-radius: 0;
+            margin-bottom: 5px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
+        }
+
+        /* H2 inside an individual source form header */
+        .trn_src_form h2 {
+            margin: 0;
+            font-size: 1.1em;
+            color: #333;
+            flex-grow: 1;
+        }
+
+        /* ================================= */
+        /* ====== General Form Elements ====== */
+        /* ================================= */
+
+        /* Container for label + input/select */
+         .form_group {
+             padding: 5px 20px;
+             border-radius: 5px;
+             background-color: rgb(235, 235, 235);
+             display: flex;
+             flex-direction: column;
+             margin-bottom: 5px; /* Add space between form groups */
+         }
+
+         /* General header style (used for main entry header and source headers before override) */
+         .form_group_header {
+             grid-column: span 2; /* Span across columns where applicable */
+             padding: 5px 20px;
+             border-radius: 5px;
+             background-color: rgb(235, 235, 235);
+             display: flex;
+             justify-content: space-between;
+             align-items: center;
+             margin-bottom: 5px; /* Add space below headers */
+         }
+         /* H2 inside a general form group header */
+         .form_group_header > h2 {
+              margin: 0; /* Remove default h2 margin */
+              font-size: 1.2em; /* Adjust size as needed */
+         }
+
+        /* Grid layout for select + plus button */
+         .object_selection {
+             display: grid;
+             grid-template-columns: auto 30px; /* Fixed size for button */
+             grid-auto-rows: max-content;
+             gap: 5px;
+             align-items: center; /* Vertically align select and button */
+         }
+
+         /* Select element within the object_selection grid */
+         .object_selection > select {
+             height: 30px; /* Match input height */
+             width: 100%; /* Take available width */
+             /* Inherits border-radius etc from the rule below */
+         }
+
+         /* Button element within the object_selection grid */
+         .object_selection > button {
+             height: 30px; /* Match input height */
+             width: 30px;  /* Make button square-ish */
+             padding: 0; /* Remove default padding */
+             line-height: 30px; /* Center text vertically */
+             text-align: center; /* Center text horizontally */
+             flex-shrink: 0; /* Prevent button from shrinking */
+             /* Add basic button styling if needed */
+             border: 1px solid #ccc;
+             background-color: #eee;
+             border-radius: 4px;
+             cursor: pointer;
+         }
+         .object_selection > button:hover {
+            background-color: #ddd;
+         }
+
+
+         /* General label styling */
+         .form_group > label {
+             min-height: 30px; /* Use min-height */
+             display: flex;
+             align-items: center;
+              margin-bottom: 5px; /* Add some space below label */
+              font-weight: bold; /* Make labels bolder */
+         }
+
+         /* General input/select styling */
+          .form_group > input[type="text"],
+          .form_group > input[type="number"],
+          .form_group select { /* Targets selects directly inside form_group too */
+              width: 100%; /* Make inputs/selects take full width */
+              padding: 5px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              min-height: 30px; /* Use min-height */
+              display: flex; /* Needed for vertical alignment if content is short */
+              align-items: center; /* Needed for vertical alignment */
+         }
+
+         /* Textarea styling */
+         #dsc_textarea {
+              width: 100%; /* Make textarea take full width */
+              padding: 5px;
+              border: 1px solid #ccc;
+              border-radius: 4px;
+              /* Adjust height if needed, e.g., min-height: 60px; */
+              /* Remove flex properties inherited from the rule above if needed */
+              display: block;
+              min-height: 60px; /* Example height */
+         }
+
+
+        /* ================== */
+        /* ====== Buttons ====== */
+        /* ================== */
+
+        /* --- Delete Source Button ('X') --- */
+        .delete-source-btn {
+            background-color: #f44336; /* Red */
+            color: white;
+            border: none;
+            border-radius: 50%; /* Make it round */
+            width: 25px;
+            height: 25px;
+            font-size: 14px;
+            font-weight: bold;
+            line-height: 25px; /* Center 'X' vertically */
+            text-align: center;
+            cursor: pointer;
+            padding: 0;
+            margin-left: 10px; /* Space between header text and button */
+            flex-shrink: 0; /* Prevent shrinking */
+            transition: background-color 0.2s ease;
+        }
+        .delete-source-btn:hover {
+            background-color: #d32f2f; /* Darker red on hover */
+        }
+
+        /* --- Add New Source Button ('New source') --- */
+        #source_tab > div:last-of-type button { /* Targets button in last div of source_tab */
+             width: 100%;
+             height: 100%;
+             border: none;
+             background-color: #5cb85c; /* Green background */
+             color: white;
+             font-size: 1.1em;
+             border-radius: 5px; /* Rounded corners */
+             cursor: pointer;
+             transition: background-color 0.3s ease;
+         }
+          #source_tab > div:last-of-type button:hover {
+             background-color: #4cae4c; /* Darker green on hover */
+         }
+
+         /* --- Main Submit Button --- */
+         #submit_button {
+             /* Positioned by the body grid */
+             background-color: #428bca; /* Blue background */
+             color: white;
+             border: none;
+             padding: 15px;
+             font-size: 1.2em;
+             border-radius: 5px;
+             cursor: pointer;
+             transition: background-color 0.3s ease;
+             width: 100%; /* Take full width of the body grid row */
+             height: 100%;
+         }
+          #submit_button:hover {
+             background-color: #3071a9; /* Darker blue on hover */
+         }
+
+    </style>
+</head>
+<body>
+    <form id="trn_form" method="post" action="{% url 'digiledger:new_entry' %}">
+        {% csrf_token %} <div id="entry_details">
+            <div class="form_group_header">
+                <h2>New Entry for Journal</h2>
+            </div>
+            <div class="form_group">
+                <label for="ref_id">Entry Reference ID: </label>
+                <input type="text" id="ref_id" name="ref_id" required>
+            </div>
+            <div class="form_group">
+                <label for="mon_val">Entry Monetary Value: </label>
+                <input type="number" id="mon_val" name="mon_val" required step="0.01">
+            </div>
+            <div class="form_group">
+                <label for="section">Entry Section: </label>
+                <div class="object_selection">
+                    <select name="section" id="section">
+                        <option value="" selected>----------</option>
+                        {% for section in Sections %}
+                            <option value="{{ section.section_name }}">{{ section.section_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button">+</button> </div>
+            </div>
+            <div class="form_group">
+                <label for="destination">Entry Account Destination: </label>
+                <div class="object_selection">
+                    <select name="destination" id="destination">
+                        <option value="" selected>----------</option>
+                        {% for account in Accounts %}
+                            <option value="{{ account.account_name }}">{{ account.account_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button">+</button> </div>
+            </div>
+            <div class="form_group" id="trn_dsc">
+                <label for="dsc_textarea">Entry Description: </label>
+                <textarea id="dsc_textarea" name="dsc_textarea" required></textarea>
+            </div>
+        </div> <div id="source_tab">
+            <h2>Sources</h2>
+            <div id="trn_src_forms">
+                <div class="trn_src_form">
+                    <div class="form_group_header">
+                        <h2>Source 1</h2>
+                        <button type="button" class="delete-source-btn" title="Delete this source">X</button>
+                    </div>
+                    <div class="form_group">
+                        <label>Source Monetary Value: </label>
+                        <input type="number" name="src_mon_val[]" required step="0.01">
+                    </div>
+                    <div class="form_group">
+                        <label for="source_account_1">Source Account: </label>
+                        <div class="object_selection">
+                            <select name="src_account[]" id="source_account_1">
+                                <option value="" selected>----------</option>
+                                {% for account in Accounts %}
+                                    <option value="{{ account.account_name }}">{{ account.account_name }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="button">+</button> </div>
+                    </div>
+                </div>
+                </div>
+            <div>
+                <button type="button" id="add_source_button">New source</button>
+            </div>
+        </div> 
+    </form> 
+    <button type="submit" form="trn_form" id="submit_button"> Submit new Entry</button>
+
+    <script>
+        // Javascript remains the same as the previous version
+        document.addEventListener('DOMContentLoaded', function() {
+
+            const addSourceButton = document.getElementById('add_source_button');
+            const sourcesContainer = document.getElementById('trn_src_forms');
+            // Select the *first* source form within the container as the template
+            const templateSourceForm = sourcesContainer.querySelector('.trn_src_form');
+
+            if (!addSourceButton || !sourcesContainer || !templateSourceForm) {
+                console.error("Initialization failed: Could not find button, container, or template form.");
+                return;
+            }
+
+            // --- Function to Renumber Source Forms ---
+            function renumberSourceForms() {
+                const remainingForms = sourcesContainer.querySelectorAll('.trn_src_form');
+                remainingForms.forEach((form, index) => {
+                    const currentNumber = index + 1;
+
+                    // Update the header text
+                    const header = form.querySelector('.form_group_header h2'); // More specific selector
+                    if (header) {
+                        header.textContent = `Source ${currentNumber}`;
+                    }
+
+                    // Update the select ID and associated label's 'for' attribute
+                    const selectElement = form.querySelector('select[name="src_account[]"]');
+                    // Find label whose 'for' starts with 'source_account_' within this specific form
+                    const labelElement = form.querySelector('label[for^="source_account_"]');
+
+                    if (selectElement) {
+                        const newSelectId = `source_account_${currentNumber}`;
+                        selectElement.id = newSelectId;
+                        if (labelElement) {
+                            labelElement.htmlFor = newSelectId; // Update label association
+                        }
+                    }
+                });
+            }
+
+            // --- Add Source Button Logic ---
+            addSourceButton.addEventListener('click', function() {
+                const existingFormsCount = sourcesContainer.querySelectorAll('.trn_src_form').length;
+                const nextSourceNumber = existingFormsCount + 1;
+
+                const newSourceForm = templateSourceForm.cloneNode(true); // Clone the template
+
+                // Clear input/select values in the *cloned* form
+                newSourceForm.querySelectorAll('input[type="number"], input[type="text"], textarea') // Added textarea
+                             .forEach(input => input.value = '');
+                newSourceForm.querySelectorAll('select')
+                             .forEach(select => select.selectedIndex = 0);
+
+                // Update header, IDs, and labels for the new form BEFORE appending
+                const header = newSourceForm.querySelector('.form_group_header h2');
+                if (header) {
+                    header.textContent = `Source ${nextSourceNumber}`;
+                }
+
+                const selectElement = newSourceForm.querySelector('select[name="src_account[]"]');
+                const labelElement = newSourceForm.querySelector('label[for^="source_account_"]');
+                if (selectElement) {
+                    const newSelectId = `source_account_${nextSourceNumber}`;
+                    selectElement.id = newSelectId;
+                    if (labelElement) {
+                        labelElement.htmlFor = newSelectId;
+                    }
+                }
+
+                sourcesContainer.appendChild(newSourceForm); // Add the new form to the container
+                // No need to call renumber here, as we assigned the correct number already
+            });
+
+            // --- Delete Source Button Logic (using Event Delegation on the container) ---
+            sourcesContainer.addEventListener('click', function(event) {
+                // Check if the clicked element *is* a delete button
+                if (event.target.classList.contains('delete-source-btn')) {
+                    const button = event.target;
+                    const formToRemove = button.closest('.trn_src_form'); // Find the parent source form
+
+                    if (formToRemove) {
+                        // Prevent deletion if it's the last form? Optional check:
+                         const remainingFormsCount = sourcesContainer.querySelectorAll('.trn_src_form').length;
+                         if (remainingFormsCount <= 1) {
+                            alert("At least one source is required."); // Example feedback
+                            return;
+                         }
+                        formToRemove.remove(); // Remove the form from the DOM
+                        renumberSourceForms(); // Renumber the remaining forms
+                    }
+                }
+            });
+
+            // --- Initial Setup ---
+            // Ensure the very first form has correct numbering/IDs if it exists
+            renumberSourceForms();
+
+            // TODO: Add event listeners for the '+' buttons if they need functionality
+            // Example: document.querySelectorAll('.object_selection button').forEach(button => { ... });
+
+        });
+    </script>
+</body>
+</html>
