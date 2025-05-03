@@ -25,7 +25,7 @@ body {
 /* ========================== */
 /* == Classes == */
 /* ========================== */
-.sb_nav_genButton, .sb_nav_statButton, .sb_nav_myAccountButton, .sb_newEntry {
+.sb_nav_genButton, .sb_nav_statButton, .sb_nav_myAccountButton, #sb_newEntry {
     height: 30px;
 }
 

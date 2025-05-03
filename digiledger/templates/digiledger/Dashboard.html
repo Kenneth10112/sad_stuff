@@ -41,7 +41,7 @@
                 <button class="sb_nav_statButton" id="sb_nav_yoloooo_button">YOLOOOO</button>
               </div>
             </fieldset>
-            <button class="sb_newEntry">New Entry</button>
+            <button id="sb_newEntry">New Entry</button>
         </div>
     </aside>
     <header id="TOPBAR">
@@ -195,6 +195,13 @@
         statementButton.addEventListener('click', () => {
           showContent('MC_subCon_Statement'); // <-- Correct case
       });
+
+      document.addEventListener('DOMContentLoaded', function() {
+      const newEntryButton = document.getElementById('sb_newEntry')
+        newEntryButton.addEventListener('click', function() {
+                window.location.href = "{% url 'digiledger:new_entry' %}";
+        });
+      });  
 
       initialize()
       function initialize() {
