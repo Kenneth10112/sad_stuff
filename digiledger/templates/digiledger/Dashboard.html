@@ -1,0 +1,239 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'digiledger/base.css' %}">
+    <link rel="stylesheet" href="{% static 'digiledger/Dashboard.css' %}">
+</head>
+<body>
+    <aside id="SIDEBAR">
+        <figure>
+            <figcaption><h1 id="sb_header">DIGILEDGER</h1></figcaption>
+        </figure>
+        <div id="sb_nav">
+            <fieldset id="sb_acc_fieldset">
+              <legend>My Account</legend>
+              <div id="sb_nav_myAccount">
+                <figure>
+                  <figcaption id="acc_username"> Welcome: {{CurrentUser.name}}</figcaption>
+                  <button class="sb_nav_myAccountButton">Change Account Details</button>
+                </figure>
+              </div>
+            </fieldset>
+            <fieldset id="sb_gen_fieldset">
+              <legend>Tracking</legend>
+              <div id="sb_nav_general">
+                <button class="sb_nav_genButton" id="sb_nav_journal_button">Journals</button>
+                <button class="sb_nav_genButton" id="sb_nav_ledger_button">Ledgers</button>
+              </div>
+            </fieldset>
+            <fieldset id="sb_stat_fieldset">
+              <legend>Analytics</legend>
+              <div id="sb_nav_statements">
+                <button class="sb_nav_statButton" id="sb_nav_trialBal_button">Trial Balance</button>
+                <button class="sb_nav_statButton" id="sb_nav_cashFlow_button">Cash flow</button>
+                <button class="sb_nav_statButton" id="sb_nav_statement_button">Statement</button>
+                <button class="sb_nav_statButton" id="sb_nav_yadayada_button">YADAYADA</button>
+                <button class="sb_nav_statButton" id="sb_nav_yoloooo_button">YOLOOOO</button>
+              </div>
+            </fieldset>
+            <button class="sb_newEntry">New Entry</button>
+        </div>
+    </aside>
+    <header id="TOPBAR">
+        <button id="showHide_button" onclick="toggleSideBar()">≡</button>
+        <div id="searchFilter_nav">
+          <input class="full" id="text" type="text" placeholder="Type to Seach/Filter..."/>
+          <div></div>
+          <select class="full" id="select">
+            <option>Weapon Set 1</option>
+            <option>Weapon Set 2</option>
+          </select>
+        </div>
+        <div id="tb_menu">
+            <button class="tb_menu_buttons">Log out</button>
+        </div>
+    </header>
+    <main id="MAINCONTENT">
+        <div class="MC_subCon" id="MC_subCon_Journals">
+          <figure class="mc_txnGrp_JournalObject">
+            <figcaption>{{"account"}}</figcaption>
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="4">Total: {{"total"}}</th>
+                </tr>
+                <tr>
+                  <th>date</th>
+                  <th>account</th>
+                  <th>debit</th>
+                  <th>credit</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>X</td>
+                  <td>X</td>
+                  <td>X</td>
+                  <td>X</td>
+                </tr>
+                <tr>
+                  <td>X</td>
+                  <td>X</td>
+                  <td>X</td>
+                  <td>X</td>
+                </tr>
+                <tr>
+                  <td colspan="4">{{"asd"}}</td>
+                </tr>
+              </tbody>
+                <tbody>
+                  <tr>
+                    <td>X</td>
+                    <td>X</td>
+                    <td>X</td>
+                    <td>X</td>
+                  </tr>
+                  <tr>
+                    <td>X</td>
+                    <td>X</td>
+                    <td>X</td>
+                    <td>X</td>
+                  </tr>
+                  <tr>
+                      <td>X</td>
+                      <td>X</td>
+                      <td>X</td>
+                      <td>X</td>
+                    </tr>
+                  <tr>
+                    <td colspan="4">{{"asd"}}</td>
+                  </tr>
+              </tbody>
+            </table>
+          </figure>
+        </div>
+        <div class="MC_subCon" id="MC_subCon_Ledgers">
+          <figure class="mc_txnGrp_LedgerObject">
+            <figcaption>{{"account"}}</figcaption>
+            <div class="mc_txnGrp_LedgerObject_tTableContainer">
+              <div>
+                <h1>Debit</h1>
+              </div>
+              <div>
+                <h1>Credit</h1>
+              </div>
+
+              <div class="tTable_monVal">X</div>
+              <div class="tTable_monVal">X</div>
+              <div class="tTable_monVal">X</div>
+              <div class="tTable_monVal">X</div>
+              <div class="tTable_monVal">X</div>
+              <div class="tTable_monVal">X</div>
+              <div class="tTable_monVal">X</div>
+              <div class="tTable_monVal">X</div>
+              <div class="tTable_monVal">X</div>
+              <div class="tTable_monVal">X</div>
+
+              <div id="tTable_total">total</div>
+            </div>
+          </figure>
+        </div>
+        <div class="MC_subCon" id="MC_subCon_TrialBal"> 
+          <figure>
+            <figcaption>
+              LOREM IPSUM HERE FUCKING LIES TRIAL BALANCE
+            </figcaption>
+            <h1>Can we just get some real content already</h1>
+          </figure>
+        </div>
+        <div class="MC_subCon" id="MC_subCon_CashFlow"> 
+          <figure>
+            <figcaption>
+              LOREM IPSUM HERE FUCKING LIES CASH FLOW
+            </figcaption>
+            <h1>Oh great, more of this bulls**t</h1>
+          </figure>
+        </div>
+        <div class="MC_subCon" id="MC_subCon_Statement"> 
+          <figure>
+            <figcaption>
+              LOREM IPSUM HERE FUCKING LIES STATEMENTS
+            </figcaption>
+            <h1>This is where the actual goddamn words will go</h1>
+          </figure>
+        </div>
+    </main>
+
+    <script>
+      // Event listeners for the buttons
+      const journalsButton = document.getElementById('sb_nav_journal_button');
+        journalsButton.addEventListener('click', () => {
+          showContent('MC_subCon_Journals'); // <-- Correct case
+      });
+
+      const ledgersButton = document.getElementById('sb_nav_ledger_button');
+        ledgersButton.addEventListener('click', () => {
+          showContent('MC_subCon_Ledgers'); // <-- Correct case
+      });
+
+      const trialBalButton = document.getElementById('sb_nav_trialBal_button');
+        trialBalButton.addEventListener('click', () => {
+          showContent('MC_subCon_TrialBal'); // <-- Correct case
+      });
+
+      const cashFlowButton = document.getElementById('sb_nav_cashFlow_button');
+        cashFlowButton.addEventListener('click', () => {
+          showContent('MC_subCon_CashFlow'); // <-- Correct case
+      });
+
+      const statementButton = document.getElementById('sb_nav_statement_button');
+        statementButton.addEventListener('click', () => {
+          showContent('MC_subCon_Statement'); // <-- Correct case
+      });
+
+      initialize()
+      function initialize() {
+        showContent("MC_subCon_Journals")
+      }
+
+      function toggleSideBar() {
+        const sideBar = document.getElementById("SIDEBAR");
+        const topBar = document.getElementById("TOPBAR");
+        const mainContent = document.getElementById("MAINCONTENT");
+        const showHide_button = document.getElementById("showHide_button");
+
+        if (sideBar.style.display === 'none') {
+          sideBar.style.display = 'grid'
+          topBar.style.gridColumn = 'span 1'
+          mainContent.style.gridColumn = 'span 1'
+
+        } else {
+          sideBar.style.display = 'none'
+          topBar.style.gridColumn = 'span 2'
+          mainContent.style.gridColumn = 'span 2'
+        }
+
+      }
+
+      function showContent(targetId) {
+        const mainContent = document.getElementById("MAINCONTENT");
+        const children = mainContent.children; // Get the direct children
+
+        for (let i = 0; i < children.length; i++) {
+          const child = children[i];
+          if (child.id === targetId) {
+            child.style.display = "grid"; // Show the target child
+          } else {
+            child.style.display = "none";  // Hide the other children
+          }
+        }
+      }
+
+    </script>
+</body>
+</html>

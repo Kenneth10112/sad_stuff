@@ -14,21 +14,8 @@ from decimal import Decimal, InvalidOperation
 from django.utils import timezone
 from django.db import transaction
 from django.http import HttpResponseBadRequest, HttpResponseServerError
+import json
 
-
-
-
-
-
-def index(request):
-    return render(request, 'digiledger/index.html')
-
-@csrf_exempt
-def accountant(request):
-    return render(request, 'digiledger/accountant.html')
-
-def supervisor(request):
-    return render(request, 'digiledger/supervisor.html')
 
 @csrf_exempt
 def login(request):
@@ -50,6 +37,9 @@ def login(request):
         else:
             return redirect('digiledger:dashboard')
     else:
+        grouped_data = group_transactions_by_destination()
+        # Print the grouped data in a readable format
+        print(json.dumps(grouped_data, indent=4, default=str))
         return render(request, 'digiledger/login.html')
 
 def dashboard(request):
@@ -58,11 +48,11 @@ def dashboard(request):
 
     context = {
         'CurrentUser': current_user,
-        'Sections': Section.objects.all(), 
+        'Sections': Section.objects.all(),
         'Transactions': get_transactions(),
     }
 
-    return render(request, 'digiledger/try.html', context=context)
+    return render(request, 'digiledger/Dashboard.html', context=context)
 
 def new_entry(request):
     if request.method == 'POST':
@@ -200,3 +190,65 @@ def get_transactions():
         transaction_list.append(attributes)
 
     return transaction_list
+
+# def group_transactions_by_destination():
+#     groups = {}
+#     accounts = RecordAccount.objects.all()
+#     for account in accounts:
+#         _ = {}
+#         _["account_name"] = account.account_name
+
+#         totalMonVal_of_account = 0
+#         for transaction in Transaction.objects.filter(destination=account):
+#             totalMonVal_of_account += int(transaction.mon_val)
+
+#             src_list = []
+#             for source in transaction.sources.all():
+#                 source_info = {
+#                     'source_account': source.source_account,
+#                     'credit_mon_val': source.mon_val,
+#                 }
+#                 src_list.append(source_info)
+            
+
+#         _["account_totalMonVal"] = totalMonVal_of_account
+
+#     return groups
+
+def group_transactions_by_destination():
+    acc_groups = []
+    accounts = RecordAccount.objects.all()
+    for account in accounts:
+        acc_group = {}
+
+        # acc_name and total mon val
+        acc_group["account_name"] = account.account_name
+        total_monVal = 0
+        for transaction in Transaction.objects.filter(destination=account):
+            total_monVal += int(transaction.mon_val)
+        acc_group["totalMonVal"] = total_monVal
+
+        # get transac here 
+        txns_w_src = []
+        for transaction in Transaction.objects.filter(destination=account):
+            attribute = {}
+            attribute["ref_id"] = transaction.ref_id
+            attribute["mon_val"] = transaction.mon_val
+            attribute["ent_date"] = transaction.ent_date
+            attribute["dsc"] = transaction.dsc
+            attribute["destination"] = transaction.destination
+            attribute["section"] = transaction.section
+            attribute["ent_by"] = transaction.ent_by
+            srcs = []
+            for source in transaction.sources.all():
+                src = {}
+                src["src_account"] = source.source_account
+                src["mon_val"] = source.mon_val
+                srcs.append(src)
+            attribute["sources"] = srcs
+            txns_w_src.append(attribute)
+        acc_group["txns_w_src"] = txns_w_src
+        # append to acc_groups
+        acc_groups.append(acc_group)
+    return acc_groups
+    
