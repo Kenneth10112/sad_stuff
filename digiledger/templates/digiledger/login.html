@@ -1,107 +1,37 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Layout</title>
-    <style>
-        body {
-            margin: 0;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #f4f4f4; /* Light background for better readability */
-            font-family: sans-serif; /* Standard sans-serif font */
-            color: #333; /* Dark text for contrast */
-        }
+    <link rel="stylesheet" href="{% static 'digiledger/login.css' %}">
+    <link rel="stylesheet" href="{% static 'digiledger/base.css' %}">
 
-        #login_container {
-            background-color: #fff; /* White container background */
-            border: 1px solid #ccc; /* Standard border */
-            border-radius: 8px; /* Slightly more rounded corners */
-            width: 400px; /* More standard width */
-            padding: 20px; /* Standard padding */
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
-            display: flex;
-            flex-direction: column;
-            gap: 15px; /* Increased gap for better spacing */
-        }
-
-        #header_div {
-            background-color: #007bff; /* Standard blue color for header */
-            color: #fff;
-            padding: 15px; /* Standard padding */
-            border-radius: 6px 6px 0 0; /* Rounded top corners */
-            text-align: center; /* Center the header text */
-        }
-
-        #header {
-            margin: 0; /* Remove default margin for better control */
-            font-size: 24px; /* Standard header font size */
-            font-weight: bold; /* Make the header text bold */
-        }
-
-        .login_credentials {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .login_credentials label {
-            margin-bottom: 5px;
-            font-weight: bold; /* Make labels bold */
-        }
-
-        .login_credentials input[type="text"],
-        .login_credentials input[type="password"] {
-            padding: 10px;
-            margin-bottom: 10px;
-            border: 1px solid #ddd; /* Light gray border for inputs */
-            border-radius: 4px;
-            box-sizing: border-box; /* Ensure padding doesn't affect width */
-            width: 100%;
-        }
-
-        button[type="submit"] {
-            background-color: #28a745; /* Standard green for submit button */
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease; /* Smooth hover transition */
-        }
-
-        button[type="submit"]:hover {
-            background-color: #218838; /* Darker green on hover */
-        }
-    </style>
 </head>
 <body>
-    <div id="login_container">
-        <div id="header_div">
-            <h1 id="header">Digiledger Login</h1>
-        </div>
-        <form method="post" action="{% url 'digiledger:login' %}">
-            {% csrf_token %}
-            <div class="login_credentials">
-                <label for="username">Username:</label>
-                <input type="text" id="username" name="username" placeholder="Enter your username">
-            </div>
-            <div class="login_credentials">
-                <label for="password">Password:</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password">
-            </div>
-            {% if is_invalidLogin %}
-            <div class="login_credentials">
-                <p>Invalid login credentials try again</p>
-            </div>
-            {% endif %}
-            <div class="login_credentials">
-                <button type="submit">Log in</button>
-            </div>
-        </form>
-    </div>  
+        <figure>
+            <figcaption>Digiledger Login</figcaption>
+            <form method="post" action="{% url 'digiledger:login' %}">
+                {% csrf_token %}
+                <div class="login_credentials">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" placeholder="Enter your username">
+                </div>
+                <div class="login_credentials">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" placeholder="Enter your password">
+                </div>
+                {% if is_invalidLogin %}
+                <div class="login_credentials">
+                    <p>Invalid login credentials try again</p>
+                </div>
+                {% endif %}
+                <div class="login_credentials">
+                    <button type="submit">Log in</button>
+                </div>
+            </form>
+        </figure>
 </body>
 </html>
