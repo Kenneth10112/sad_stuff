@@ -37,9 +37,10 @@ def login(request):
         else:
             return redirect('digiledger:dashboard')
     else:
-        grouped_data = group_transactions_by_destination()
-        # Print the grouped data in a readable format
-        print(json.dumps(grouped_data, indent=4, default=str))
+        # grouped_data = group_transactions_by_destination()
+        tTable_data = get_tTableData()
+        # print(json.dumps(grouped_data, indent=4, default=str))
+        print(json.dumps(tTable_data, indent=4, default=str))
         return render(request, 'digiledger/login.html')
 
 def dashboard(request):
@@ -50,6 +51,7 @@ def dashboard(request):
         'CurrentUser': current_user,
         'Sections': Section.objects.all(),
         'GroupedDestination_txn': group_transactions_by_destination(),
+        'tTblData': get_tTableData(),
     }
 
     return render(request, 'digiledger/Dashboard.html', context=context)
@@ -251,4 +253,53 @@ def group_transactions_by_destination():
         # append to acc_groups
         acc_groups.append(acc_group)
     return acc_groups
-    
+
+def get_tTableData():
+    acc_groups = []
+    accounts = RecordAccount.objects.all()
+
+    for account in accounts:
+        acc_group = {}
+        debitsList = []
+        creditsList = []
+        total_debit = 0
+        total_credit = 0
+
+        acc_group["account_name"] = account.account_name
+
+        for transaction in Transaction.objects.filter(destination=account):
+            debitsList.append(transaction.mon_val)
+        for debit in debitsList:
+            total_debit += int(debit)
+
+        for source in TransactionSource.objects.filter(source_account=account):
+            creditsList.append(source.mon_val)
+        for credit in creditsList:
+            total_credit += int(credit)
+
+        acc_group["records"] = equalize_numLists_to_numDict(debitsList, creditsList)
+        _ = total_debit - total_credit
+        if _ < 0:
+            _ = _ * -1
+            acc_group["total"] =  _
+            acc_group["side"] = "credit"
+        else:
+            acc_group["total"] = _
+            acc_group["side"] = "debit"
+
+        acc_groups.append(acc_group)
+    return acc_groups
+
+def equalize_numLists_to_numDict(list1, list2):
+  len1 = len(list1)
+  len2 = len(list2)
+  max_len = max(len1, len2)
+  result = []
+
+  for i in range(max_len):
+    debit = list1[i] if i < len1 else 0
+    credit = list2[i] if i < len2 else 0
+    result.append({'debit': debit, 'credit': credit})
+
+  return result
+
