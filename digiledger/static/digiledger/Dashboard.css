@@ -29,6 +29,13 @@ body {
     height: 30px;
 }
 
+.mc_txnGrp_JournalObject > table {
+    margin: 0px;
+    padding: 0px;
+} .JournalObject_refID {
+    background-color: #45413852;
+}
+
 .mc_txnGrp_LedgerObject_tTableContainer {
     background-color: #454138;
 
@@ -129,6 +136,8 @@ body {
 
 } #MC_subCon_Journals > * {
     margin: 0;
+} #journalObj_totalMonVal {
+    font-size: x-large;
 } #MC_subCon_Ledgers {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));

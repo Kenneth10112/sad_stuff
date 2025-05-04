@@ -49,7 +49,7 @@ def dashboard(request):
     context = {
         'CurrentUser': current_user,
         'Sections': Section.objects.all(),
-        'Transactions': get_transactions(),
+        'GroupedDestination_txn': group_transactions_by_destination(),
     }
 
     return render(request, 'digiledger/Dashboard.html', context=context)

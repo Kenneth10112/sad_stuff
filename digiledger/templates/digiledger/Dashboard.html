@@ -1,4 +1,5 @@
 {% load static %}
+{% load humanize %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -60,12 +61,13 @@
     </header>
     <main id="MAINCONTENT">
         <div class="MC_subCon" id="MC_subCon_Journals">
+          {% for group in GroupedDestination_txn %}
           <figure class="mc_txnGrp_JournalObject">
-            <figcaption>{{"account"}}</figcaption>
+            <figcaption>{{group.account_name}}</figcaption>
             <table>
               <thead>
                 <tr>
-                  <th colspan="4">Total: {{"total"}}</th>
+                  <th colspan="4" id="journalObj_totalMonVal">Total Monetary Value: {{ group.totalMonVal|intcomma }}</th>
                 </tr>
                 <tr>
                   <th>date</th>
@@ -74,48 +76,40 @@
                   <th>credit</th>
                 </tr>
               </thead>
+              {% for txn in group.txns_w_src %}
               <tbody>
-                <tr>
-                  <td>X</td>
-                  <td>X</td>
-                  <td>X</td>
-                  <td>X</td>
+                <tr class="JournalObject_refID">
+                  <td colspan="4">{{ txn.ref_id }}</td>
                 </tr>
                 <tr>
-                  <td>X</td>
-                  <td>X</td>
-                  <td>X</td>
-                  <td>X</td>
+                  <td>{{ txn.ent_date }}</td>
+                  <td>{{ txn.destination }}</td>
+                  <td>{{ txn.mon_val }}</td>
+                  <td></td>
                 </tr>
+                {% for src in txn.sources %}
                 <tr>
-                  <td colspan="4">{{"asd"}}</td>
+                  <td></td>
+                  <td style="padding-left: 35px;">{{ src.src_account }}</td>
+                  <td></td>
+                  <td>{{ src.mon_val }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                  <td colspan="4"><blockquote>{{ txn.dsc }}</blockquote></td>
                 </tr>
               </tbody>
-                <tbody>
-                  <tr>
-                    <td>X</td>
-                    <td>X</td>
-                    <td>X</td>
-                    <td>X</td>
-                  </tr>
-                  <tr>
-                    <td>X</td>
-                    <td>X</td>
-                    <td>X</td>
-                    <td>X</td>
-                  </tr>
-                  <tr>
-                      <td>X</td>
-                      <td>X</td>
-                      <td>X</td>
-                      <td>X</td>
-                    </tr>
-                  <tr>
-                    <td colspan="4">{{"asd"}}</td>
-                  </tr>
-              </tbody>
+              {% empty %}
+              {% endfor %}
+                
             </table>
           </figure>
+          {% empty %}
+          <figure class="noData">
+            <figcaption>NO DATA FOUND</figcaption>
+            <h2>The system Currently doesn't have any transaction</h2>
+          </figure>
+          {% endfor %}
         </div>
         <div class="MC_subCon" id="MC_subCon_Ledgers">
           <figure class="mc_txnGrp_LedgerObject">
