@@ -1,0 +1,46 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error</title>
+    <link rel="stylesheet" href="{% static 'digiledger/base.css' %}">
+
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: sans-serif; /* Standard sans-serif font */
+            color: #333; /* Dark text for contrast */
+        }
+
+        figure{
+            width: 400px;
+            height: 200px;
+            border-radius: 5px;
+            border: 3px solid #454138b4;
+        }
+
+        figcaption{
+            font-weight: bold;
+            border-radius: 4px 4px 0px 0px;
+        }
+
+        p{
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+<body>
+    <figure>
+        <figcaption>Error</figcaption>
+            <p>{{Error Message}}</p>
+    </figure>
+</body>
+</html>
