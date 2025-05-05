@@ -43,7 +43,7 @@ def login(request):
         print(json.dumps(tTable_data, indent=4, default=str))
         return render(request, 'digiledger/login.html')
 
-def dashboard(request):
+def dashboard(request):  
     current_user_id = request.session.get('current_user_id')
     current_user = DigiledgerUser.objects.get(id=current_user_id)
 
