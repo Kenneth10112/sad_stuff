@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full Screen Div</title>
+    <link rel="stylesheet" href="{% static 'digiledger/base.css' %}">
+    <style>
+        /* Basic reset for margin and padding */
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Prevent overall scrolling */
+        }
+
+        /* The main div taking the whole screen */
+        #newSec {
+            position: absolute; /* Position relative to the nearest positioned ancestor (or initial containing block) */
+            width: 100%;       /* 100% of the viewport width */
+            height: 100%;      /* 100% of the viewport height */
+            display: flex;      /* Using flexbox to easily center the child */
+            justify-content: center; /* Center child horizontally */
+            align-items: center;    /* Center child vertically */
+        }
+
+        /* Styling for the child figure container */
+        #newSec figure {
+            width: 600px;
+            height: min-content;
+            border-radius: 8px; /* Rounded corners */
+            margin: 0; /* Remove default figure margin */
+        }
+
+        figure {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            grid-auto-rows: min-content;
+
+            align-items: center;
+        }
+
+        figure > figcaption{
+            grid-column: span 2;
+        }
+
+        button {
+            grid-column: span 2;
+        }
+
+
+        textarea,
+            input[type=text],
+            input[type=password],
+            input[type=url],
+            input[type=email],
+            input[type=tel],
+            input[type=search],
+            input[type=number],
+            input[type=color],
+            input[type=date],
+            input[type=month],
+            input[type=week],
+            input[type=datetime],
+            input[type=datetime-local] {
+                border: 1px solid #45413867;
+        }
+    </style>
+</head>
+<body>
+    <div id="newSec">
+        <figure>
+            <figcaption>New Section</figcaption>
+            <label for="sec_name">Section name: </label>
+            <input type="text" id="sec_name" name="sec_name" required="">
+            <button>Save</button>
+        </figure>
+    </div>
+</body>
+</html>

@@ -1,0 +1,229 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Journal Entry</title>
+    <link rel="stylesheet" href="{% static 'digiledger/base.css' %}">
+    <link rel="stylesheet" href="{% static 'digiledger/newEntry.css' %}">
+</head>
+<body>
+    <form id="main-form" method="post" action="{% url 'digiledger:new_entry' %}">
+        {% csrf_token %} 
+        <figure id="entry-details-figure">
+            <figcaption class="entry-header">New Entry for Journal</figcaption>
+            <div class="entry-ref-id-group form-group">
+                <label for="ref_id">Entry Reference ID: </label>
+                <input type="text" id="ref_id" name="ref_id" required>
+            </div>
+            <div class="entry-mon-val-group form-group">
+                <label for="mon_val">Entry Monetary Value: </label>
+                <input type="number" id="mon_val" name="mon_val" required step="0.01">
+            </div>
+            <div class="entry-section-group form-group">
+                <label for="section">Entry Section: </label>
+                <div class="entry-section-selection object-selection">
+                    <select name="section" id="section">
+                        <option value="" selected>----------</option>
+                        {% for section in Sections %}
+                            <option value="{{ section.section_name }}">{{ section.section_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" class="add-object-button">+</button>
+                </div>
+            </div>
+            <div class="entry-destination-group form-group">
+                <label for="destination">Entry Account Destination: </label>
+                <div class="entry-destination-selection object-selection">
+                    <select name="destination" id="destination" class="account_selection">
+                        <option value="" selected>----------</option>
+                        {% for account in Accounts %}
+                            <option value="{{ account.account_name }}">{{ account.account_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <button type="button" class="add-object-button" id="addAcc">+</button>
+                </div>
+            </div>
+            <div class="entry-description-group form-group" id="entry-description">
+                <label for="dsc_textarea">Entry Description: </label>
+                <textarea id="dsc_textarea" name="dsc_textarea" required></textarea>
+            </div>
+        </figure>
+        <figure id="source-tab-figure">
+            <figcaption class="source-tab-header">Sources</figcaption>
+            <div id="source-forms-container">
+                <div class="source-form">
+                    <div class="source-form-header form-group-header">
+                        <h1 class="source-form-title">Source 1</h1>
+                        <button type="button" class="delete-source-btn" title="Delete this source">X</button>
+                    </div>
+                    <div class="source-mon-val-group form-group">
+                        <label>Source Monetary Value: </label>
+                        <input type="number" name="src_mon_val[]" required step="0.01">
+                    </div>
+                    <div class="source-account-group form-group">
+                        <label for="source_account_1">Source Account: </label>
+                        <div class="source-account-selection object-selection">
+                            <select name="src_account[]" id="source_account_1" class="account_selection">
+                                <option value="" selected>----------</option>
+                                {% for account in Accounts %}
+                                    <option value="{{ account.account_name }}"> {{ account.account_name }} </option>
+                                {% endfor %}
+                            </select>
+                            <button type="button" class="add-object-button">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="add-source-button-container">
+                <button type="button" id="add-source-button">New source</button>
+            </div>
+        </figure>
+        <button type="submit" form="main-form" id="submit-button"> Submit new Entry</button>
+    </form>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dataReceiver = document.getElementsByClassName('account_selection');
+
+            const newAccBtn= document.getElementById('addAcc')
+            newAccBtn.addEventListener('click', function() {
+                window.open("{% url 'digiledger:entNewAcc' %}", '_blank');
+            });
+
+            function receiveData(data) {
+                console.log("Data: " + "data" + " received")
+
+                const newOption = document.createElement('option');
+                newOption.value = data; // Assuming 'data' is the account name
+                newOption.textContent = data; // Customize the displayed text
+
+                // Assuming dataReceiver is a HTMLCollection of <select> elements
+                for (let i = 0; i < dataReceiver.length; i++) {
+                    if (dataReceiver[i].tagName.toLowerCase() === 'select') {
+                        dataReceiver[i].appendChild(newOption.cloneNode(true));
+                    } else {
+                        console.warn("Element with class name used by dataReceiver is not a <select> element. Cannot append <option>.");
+                    }
+                }
+            }
+
+            window.receiveData = receiveData;
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+
+            // Changed 'add_source_button' to 'add-source-button' to match HTML ID
+            const addSourceButton = document.getElementById('add-source-button');
+            const sourcesContainer = document.getElementById('source-forms-container');
+            // Select the *first* source form within the container as the template
+            // Changed selector from '.trn_src_form' to '.source-form' to match HTML class
+            const templateSourceForm = sourcesContainer.querySelector('.source-form');
+
+            // --- Function to Renumber Source Forms ---
+            function renumberSourceForms() {
+                // Changed selector from '.trn_src_form' to '.source-form' to match HTML class
+                const remainingForms = sourcesContainer.querySelectorAll('.source-form');
+                remainingForms.forEach((form, index) => {
+                    const currentNumber = index + 1;
+
+                    // Update the header text
+                    // Changed selector from '.form_group_header h2' to '.source-form-header h1' to match HTML structure
+                    const header = form.querySelector('.source-form-header h1'); // More specific selector
+                    if (header) {
+                        header.textContent = `Source ${currentNumber}`;
+                    }
+
+                    // Update the select ID and associated label's 'for' attribute
+                    const selectElement = form.querySelector('select[name="src_account[]"]');
+                    // Find label whose 'for' starts with 'source_account_' within this specific form
+                    const labelElement = form.querySelector('label[for^="source_account_"]');
+
+                    if (selectElement) {
+                        const newSelectId = `source_account_${currentNumber}`;
+                        selectElement.id = newSelectId;
+                        if (labelElement) {
+                            labelElement.htmlFor = newSelectId; // Update label association
+                        }
+                    }
+                });
+            }
+
+            // --- Add Source Button Logic ---
+            addSourceButton.addEventListener('click', function() {
+                // Changed selector from '.trn_src_form' to '.source-form' to match HTML class
+                const existingFormsCount = sourcesContainer.querySelectorAll('.source-form').length;
+                const nextSourceNumber = existingFormsCount + 1;
+
+                if (!templateSourceForm) {
+                    console.error("Template source form not found. Cannot add new source.");
+                    return; // Exit if template doesn't exist
+                }
+                const newSourceForm = templateSourceForm.cloneNode(true); // Clone the template
+
+                // Clear input/select values in the *cloned* form
+                newSourceForm.querySelectorAll('input[type="number"], input[type="text"], textarea') // Added textarea
+                                .forEach(input => input.value = '');
+                newSourceForm.querySelectorAll('select')
+                                .forEach(select => select.selectedIndex = 0);
+
+                // Update header, IDs, and labels for the new form BEFORE appending
+                // Changed selector from '.form_group_header h2' to '.source-form-header h1' to match HTML structure
+                const header = newSourceForm.querySelector('.source-form-header h1');
+                if (header) {
+                    header.textContent = `Source ${nextSourceNumber}`;
+                }
+
+                const selectElement = newSourceForm.querySelector('select[name="src_account[]"]');
+                const labelElement = newSourceForm.querySelector('label[for^="source_account_"]');
+                if (selectElement) {
+                    const newSelectId = `source_account_${nextSourceNumber}`;
+                    selectElement.id = newSelectId;
+                    if (labelElement) {
+                        labelElement.htmlFor = newSelectId;
+                    }
+                }
+
+                sourcesContainer.appendChild(newSourceForm); // Add the new form to the container
+                // No need to call renumber here, as we assigned the correct number already
+            });
+
+            // --- Delete Source Button Logic (using Event Delegation on the container) ---
+            sourcesContainer.addEventListener('click', function(event) {
+                // Check if the clicked element *is* a delete button
+                if (event.target.classList.contains('delete-source-btn')) {
+                    const button = event.target;
+                    // Changed selector from '.trn_src_form' to '.source-form' to match HTML class
+                    const formToRemove = button.closest('.source-form'); // Find the parent source form
+
+                    if (formToRemove) {
+                        // Prevent deletion if it's the last form? Optional check:
+                        // Changed selector from '.trn_src_form' to '.source-form' to match HTML class
+                        const remainingFormsCount = sourcesContainer.querySelectorAll('.source-form').length;
+                        if (remainingFormsCount <= 1) {
+                            alert("At least one source is required."); // Example feedback
+                            return;
+                        }
+                        formToRemove.remove(); // Remove the form from the DOM
+                        renumberSourceForms(); // Renumber the remaining forms
+                    }
+                }
+            });
+
+            // --- Initial Setup ---
+            // Ensure the very first form has correct numbering/IDs if it exists
+            if (templateSourceForm) { // Only run if the initial form exists
+            renumberSourceForms();
+            } else {
+                console.warn("No initial source form found in the container.")
+            }
+
+
+            // TODO: Add event listeners for the '+' buttons if they need functionality
+            // Example: document.querySelectorAll('.object_selection button').forEach(button => { ... });
+
+        });
+    </script>
+</body>
+</html>

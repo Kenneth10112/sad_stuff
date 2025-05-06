@@ -152,8 +152,6 @@ def new_entry(request):
 
             return redirect('digiledger:dashboard') # Replace with your actual success URL
 
-
-    
     else:
         current_user_id = request.session.get('current_user_id')
         current_user = DigiledgerUser.objects.get(id=current_user_id)
@@ -165,7 +163,24 @@ def new_entry(request):
             'Transactions': get_transactions(),
         }
 
-        return render(request, 'digiledger/new_trn_form.html', context=context)
+        return render(request, 'digiledger/entNew.html', context=context)
+
+def entNewAcc(request):
+    if request.method == "POST":
+        acc_name = request.POST['acc_name']
+        entNewAccount = RecordAccount.objects.create(account_name=acc_name)
+        return render(request, 'digiledger/entNewAcc.html', {"post_success": True})
+
+    else:
+        return render(request, 'digiledger/entNewAcc.html')
+
+def entNewSec(request):
+    if request.method == "POST":
+        sec_name = request.POST['sec_name']
+        entNewAccount = RecordAccount.objects.create(account_name=sec_name)
+        return redirect('digiledger:new_entry') # Replace with your actual success URL
+    else:
+        return render(request, 'digiledger/entNewSec.html')
 # =======================
 # ======functions========
 # =======================

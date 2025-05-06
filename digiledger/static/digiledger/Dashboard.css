@@ -171,8 +171,7 @@ body {
 
 #MC_subCon_Journals,
 #MC_subCon_Ledgers,
-#MC_subCon_TrialBal,
-#MC_subCon_CashFlow,
+#MC_subCon_CashFlow, 
 #MC_subCon_Statement {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
@@ -183,7 +182,6 @@ body {
 
 #MC_subCon_Journals > *,
 #MC_subCon_Ledgers > *,
-#MC_subCon_TrialBal > *,
 #MC_subCon_CashFlow > *,
 #MC_subCon_Statement > * {
     margin: 0px;
@@ -196,4 +194,34 @@ body {
 #tTable_total {
     grid-column: span 2;
     /* margin-top: -2px; */
+}
+
+#MC_subCon_TrialBal {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: 1fr;
+
+    overflow-y: auto;
+}
+
+#MC_subCon_TrialBal table {
+    border: 5px double #45413852;
+    background-color: #45413817;
+}
+
+#MC_subCon_TrialBal figure {
+    margin: 5px;
+}
+
+#MC_subCon_TrialBal td {
+    border: 1px solid #45413852;
+}
+
+#MC_subCon_TrialBal h1 {
+    margin: 0px;
+    padding: 5px;
+}
+
+#trialBal_totalText {
+    text-align: right;
 }

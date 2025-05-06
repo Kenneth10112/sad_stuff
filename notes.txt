@@ -1,1 +1,40 @@
-THIS IS PAKING NOTE JHUDE
+GROUPED TXN_W_SRC DATA (group_transactions_by_destination())
+[
+    {
+        "account_name": x,
+        "totalMonVal": x,
+        "txns_w_src": [
+            {
+                "ref_id": x,
+                "mon_val": x,
+                "ent_date": x,
+                "dsc": x,
+                "destination": x,
+                "section": x,
+                "ent_by": x,
+                "sources": [
+                    {
+                        x,
+                        x
+                    },
+                ]
+            },
+        ]
+    },
+]
+
+GROUPED DEBIT_CREDIT DATA (get_tTableData())
+[
+	{	
+		acc_name: x
+		records: [
+			{
+				debit: x,
+				credit: x
+			},
+		]
+		total: x,
+		Side: x
+	},
+]
+

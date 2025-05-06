@@ -60,11 +60,12 @@
         </div>
     </header>
     <main id="MAINCONTENT">
-        <div class="MC_subCon" id="MC_subCon_Journals">
+        <div id="MC_subCon_Journals">
           {% for group in GroupedDestination_txn %}
             <figure class="mc_txnGrp_JournalObject">
               <figcaption>{{group.account_name}}</figcaption>
               <table>
+                {% if group.txns_w_src %}
                 <thead>
                   <tr>
                     <th colspan="4" id="journalObj_totalMonVal">Total Monetary Value: {{ group.totalMonVal|intcomma }}</th>
@@ -76,6 +77,7 @@
                     <th>credit</th>
                   </tr>
                 </thead>
+                {% endif %}
                 {% for txn in group.txns_w_src %}
                 <tbody>
                   <tr class="JournalObject_refID">
@@ -100,63 +102,102 @@
                   </tr>
                 </tbody>
                 {% empty %}
+                <h1 style="grid-column: span 4; font-size: large; "> NO DATA FOUND</h1>
                 {% endfor %}
                   
               </table>
             </figure>
-          {% empty %}
-            <figure class="noData">
-              <figcaption>NO DATA FOUND</figcaption>
-              <h2>The system Currently doesn't have any transaction</h2>
-            </figure>
           {% endfor %}
         </div>
-        <div class="MC_subCon" id="MC_subCon_Ledgers">
+        <div id="MC_subCon_Ledgers">
           {% for tTbl in tTblData %}
             <figure class="mc_txnGrp_LedgerObject">
               <figcaption>{{tTbl.account_name}}</figcaption>
               <div class="mc_txnGrp_LedgerObject_tTableContainer">
+                {% if tTbl.records %}
                 <div>
                   <h1>Debit</h1>
                 </div>
                 <div>
                   <h1>Credit</h1>
                 </div>
+                {% endif %}
                 {% for record in tTbl.records %}
                 <div class="tTable_monVal">{{ record.debit }}</div>
                 <div class="tTable_monVal">{{ record.credit }}</div>
                 {% empty %}
                 <div class="tTable_monVal" style="grid-column: span 2;">NO DATA FOUND</div>
                 {% endfor %}
+                {% if tTbl.records %}
                 <div id="tTable_total">Balance: {{ tTbl.total }} ({{ tTbl.side }})</div>
+                {% endif %}
               </div>
             </figure>
           {% empty %}
           {% endfor %}
           
         </div>
-        <div class="MC_subCon" id="MC_subCon_TrialBal"> 
+        <div id="MC_subCon_TrialBal"> 
           <figure>
             <figcaption>
-              LOREM IPSUM HERE FUCKING LIES TRIAL BALANCE
+              TRIAL BALANCE
             </figcaption>
-            <h1>Can we just get some real content already</h1>
+            <table>
+              <caption><h1>Trial Balance</h1></caption>
+              {% if tTblData %}
+                <thead>
+                  <tr>
+                    <th class="trialBal_account-nameHeader">Account Name</th>
+                    <th class="trialBal_debitHeader">Debit</th>
+                    <th class="trialBal_creditHeader">Credit</th>
+                  </tr>
+                </thead>
+                <tbody>
+              {% endif %}
+              {% for tTbl in tTblData %}
+                <tr>
+                  <td class="trialBal_account-name">{{ tTbl.account_name }}</td>
+                  {% if tTbl.side == "debit" %}
+                    <td class="trialBal_debit">{{ tTbl.total }}</td>
+                    <td class="trialBal_credit"></td>
+                  {% elif tTbl.side == "credit" %}
+                    <td class="trialBal_debit"></td>
+                    <td class="trialBal_credit">{{ tTbl.total }}</td>
+                  {% else %}
+                    <td class="trialBal_debit">error in data</td>
+                    <td class="trialBal_credit">error in data</td>
+                  {% endif %}
+                </tr>
+              {% empty %}
+                <h1>NO DATA FOUND</h1>
+              {% endfor %}
+              {% if tTblData %}
+                </tbody>
+                <tfoot>
+                  <tr>
+                    <td id="trialBal_totalText">Total:</td>
+                    <td id="trialBal_debitTotal"> total debit </td>
+                    <td id="trialBal_creditTotal"> total credit </td>
+                  </tr>
+                </tfoot>
+              {% endif %}
+            </table>
           </figure>
         </div>
-        <div class="MC_subCon" id="MC_subCon_CashFlow"> 
+        <div id="MC_subCon_CashFlow"> 
           <figure>
             <figcaption>
-              LOREM IPSUM HERE FUCKING LIES CASH FLOW
+              LOREM IPSUM HERE CASH FLOW
             </figcaption>
-            <h1>Oh great, more of this bulls**t</h1>
+            <h1>arvey design this too asap</h1>
           </figure>
         </div>
-        <div class="MC_subCon" id="MC_subCon_Statement"> 
+        <div id="MC_subCon_Statement"> 
           <figure>
             <figcaption>
-              LOREM IPSUM HERE FUCKING LIES STATEMENTS
+              LOREM IPSUM HERE STATEMENTS
             </figcaption>
-            <h1>This is where the actual goddamn words will go</h1>
+            <h1>ARVEY THIS TOO</h1>
           </figure>
         </div>
     </main>
@@ -193,7 +234,7 @@
         newEntryButton.addEventListener('click', function() {
                 window.location.href = "{% url 'digiledger:new_entry' %}";
         });
-      });  
+      });
 
       initialize()
       function initialize() {
@@ -232,6 +273,42 @@
           }
         }
       }
+      
+
+      
+
+
+
+      function calculateColumnSum(className) {
+        const elements = document.getElementsByClassName(className);
+        let sum = 0;
+
+        // Iterate over the HTMLCollection using a for loop
+        for (let i = 0; i < elements.length; i++) {
+          const element = elements[i];
+          const value = parseFloat(element.textContent);
+          if (!isNaN(value)) {
+            sum += value;
+          }
+        }
+
+        return sum;
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        const trialBal_totalDebit = calculateColumnSum("trialBal_debit");
+        const trialBal_totalCredit = calculateColumnSum("trialBal_credit");
+
+        const dtotal = document.getElementById("trialBal_debitTotal");
+        console.log(dtotal); // Should now log the correct element
+
+        if (dtotal) {
+          dtotal.textContent = trialBal_totalDebit.toFixed(2);
+        }
+
+        const ctotal = document.getElementById("trialBal_creditTotal");
+        ctotal.textContent = trialBal_totalCredit.toFixed(2);
+      });
 
     </script>
 </body>
