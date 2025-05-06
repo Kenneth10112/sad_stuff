@@ -15,6 +15,9 @@ class ContactInformation(models.Model):
     def __str__(self):
         return self.email # Or phone_number
 
+
+
+
 class EntityType(models.Model):
     entity_name = models.CharField(max_length=255, unique=True)
 

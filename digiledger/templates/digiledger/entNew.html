@@ -31,7 +31,7 @@
                             <option value="{{ section.section_name }}">{{ section.section_name }}</option>
                         {% endfor %}
                     </select>
-                    <button type="button" class="add-object-button">+</button>
+                    <button type="button" class="add-object-button" id="addSec">+</button>
                 </div>
             </div>
             <div class="entry-destination-group form-group">
@@ -88,8 +88,14 @@
             const dataReceiver = document.getElementsByClassName('account_selection');
 
             const newAccBtn= document.getElementById('addAcc')
+            const newSecButton = document.getElementById('addSec');
+
             newAccBtn.addEventListener('click', function() {
                 window.open("{% url 'digiledger:entNewAcc' %}", '_blank');
+            });
+
+            newSecButton.addEventListener('click', function() {
+                window.open("{% url 'digiledger:entNewSec' %}", '_blank');
             });
 
             function receiveData(data) {
@@ -110,10 +116,6 @@
             }
 
             window.receiveData = receiveData;
-        });
-
-        document.addEventListener('DOMContentLoaded', function() {
-            linkSrcsButton_addAcc();
 
             // Changed 'add_source_button' to 'add-source-button' to match HTML ID
             const addSourceButton = document.getElementById('add-source-button');

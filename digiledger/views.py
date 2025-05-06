@@ -3,6 +3,8 @@ from django.contrib import messages
 from .models import (
     LoginCredential,
     DigiledgerUser,
+    ContactInformation,
+    EntityType,
     Section,
     RecordAccount,
     Transaction,
@@ -162,6 +164,7 @@ def new_entry(request):
             'Transactions': get_transactions(),
         }
 
+
         return render(request, 'digiledger/entNew.html', context=context)
 
 def entNewAcc(request):
@@ -180,6 +183,35 @@ def entNewSec(request):
         return render(request, 'digiledger/entNewSec.html', {"post_success": True}) # Replace with your actual success URL
     else:
         return render(request, 'digiledger/entNewSec.html')
+
+def signUp(request):
+    if request.method == "POST":
+        newuser_name = request.POST.get('newuser_name', '').strip()
+        newuser_email = request.POST.get('newuser_email', '').strip()
+        newuser_number = request.POST.get('newuser_number', '')
+        newuser_entity_type = request.POST.get('newuser_entity_type', '')
+        newuser_username = request.POST.get('newuser_username', '').strip()
+        newuser_password = request.POST.get('newuser_password', '').strip()
+
+        if not all([newuser_name, newuser_email, newuser_number, newuser_entity_type, newuser_username, newuser_password]):
+            # Handle missing required fields (return an error response or message)
+            return HttpResponseBadRequest("Missing required form fields.")
+
+        # try:
+        #     with transaction.atomic(): # Ensures all operations succeed or fail together
+                
+
+        return render(request, 'digiledger/newUserAcc.html', {"post_success": True}) # Replace with your actual success URL
+    else:
+        context = {
+            'LoginCredential': LoginCredential.objects.all(),
+            'DigiledgerUser': Section.objects.all(), 
+            'ContactInformation': RecordAccount.objects.all(),
+            'EntityType': EntityType.objects.all(),
+        }
+
+        return render(request, 'digiledger/newUserAcc.html', context=context)
+
 # =======================
 # ======functions========
 # =======================
