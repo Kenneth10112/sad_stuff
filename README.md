@@ -1,4 +1,4 @@
-# Django Polls Application
+# Digiledger Application
 
 This is a simple Django application that allows users to create and vote on polls. It's built following the official Django tutorial.
 
@@ -38,9 +38,8 @@ This is a simple Django application that allows users to create and vote on poll
     ```
 
 ## Usage
-* Users can create new polls with questions and choices.
-* Users can vote on choices in existing polls.
-* The application displays poll results.
+* Users can make a transaction entry.
+* Users can view the entry as a journal or ledger or any other financial record form.
 
 ## Author
 Vanessa10112
