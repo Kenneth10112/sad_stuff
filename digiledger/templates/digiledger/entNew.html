@@ -113,6 +113,7 @@
         });
 
         document.addEventListener('DOMContentLoaded', function() {
+            linkSrcsButton_addAcc();
 
             // Changed 'add_source_button' to 'add-source-button' to match HTML ID
             const addSourceButton = document.getElementById('add-source-button');
@@ -188,13 +189,17 @@
                 
                 sourcesContainer.appendChild(newSourceForm); // Add the new form to the container
                 // No need to call renumber here, as we assigned the correct number already
+                linkSrcsButton_addAcc();
+            });
+
+            function linkSrcsButton_addAcc() {
                 let newSrcAccBtns = document.getElementsByClassName('addSrcAcc');
                 for (let i = 0; i < newSrcAccBtns.length; i++) {
                     newSrcAccBtns[i].addEventListener('click', function() {
                         window.open("{% url 'digiledger:entNewAcc' %}", '_blank');
                     });
                 }
-            });
+            }
             
             // --- Delete Source Button Logic (using Event Delegation on the container) ---
             sourcesContainer.addEventListener('click', function(event) {

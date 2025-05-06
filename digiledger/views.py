@@ -178,7 +178,7 @@ def entNewSec(request):
     if request.method == "POST":
         sec_name = request.POST['sec_name']
         entNewAccount = RecordAccount.objects.create(account_name=sec_name)
-        return redirect('digiledger:new_entry') # Replace with your actual success URL
+        return render(request, 'digiledger/entNewSec.html', {"post_success": True}) # Replace with your actual success URL
     else:
         return render(request, 'digiledger/entNewSec.html')
 # =======================
