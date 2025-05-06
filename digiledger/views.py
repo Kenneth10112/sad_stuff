@@ -186,31 +186,40 @@ def entNewSec(request):
 
 def signUp(request):
     if request.method == "POST":
-        newuser_name = request.POST.get('newuser_name', '').strip()
-        newuser_email = request.POST.get('newuser_email', '').strip()
-        newuser_number = request.POST.get('newuser_number', '')
-        newuser_entity_type = request.POST.get('newuser_entity_type', '')
-        newuser_username = request.POST.get('newuser_username', '').strip()
-        newuser_password = request.POST.get('newuser_password', '').strip()
+        user_Name = request.POST.get("user_Name")
+        ent_Type = request.POST.get("ent_Type")
+        username = request.POST.get("username").strip()
+        password = request.POST.get("password").strip()
+        email = request.POST.get("email").strip()
+        phoneNumber = request.POST.get("phoneNumber").strip()
 
-        if not all([newuser_name, newuser_email, newuser_number, newuser_entity_type, newuser_username, newuser_password]):
+        if not all([user_Name, ent_Type, username, password, email, phoneNumber]):
             # Handle missing required fields (return an error response or message)
             return HttpResponseBadRequest("Missing required form fields.")
 
-        # try:
-        #     with transaction.atomic(): # Ensures all operations succeed or fail together
-                
+        try:
+            with transaction.atomic(): # Ensures all operations succeed or fail together
+                entity_obj = EntityType.objects.get(entity_name=ent_Type)
 
-        return render(request, 'digiledger/newUserAcc.html', {"post_success": True}) # Replace with your actual success URL
+                newUser = DigiledgerUser.objects.create(
+                    name=user_Name,
+                    entity_type=entity_obj,
+                    login_credentials=LoginCredential.objects.create(
+                        username=username,
+                        password=password
+                    ),
+                    contact_information=ContactInformation.objects.create(
+                        email=email,
+                        phone_number=phoneNumber
+                    )
+                    
+                )
+        except Section.DoesNotExist:
+            return HttpResponseBadRequest(f"Error: Section '{section_name}' not found.")
+        else:
+            return render(request, 'digiledger/newUser.html', {'EntityType': EntityType.objects.all()})
     else:
-        context = {
-            'LoginCredential': LoginCredential.objects.all(),
-            'DigiledgerUser': Section.objects.all(), 
-            'ContactInformation': RecordAccount.objects.all(),
-            'EntityType': EntityType.objects.all(),
-        }
-
-        return render(request, 'digiledger/newUserAcc.html', context=context)
+        return render(request, 'digiledger/newUser.html', {'EntityType': EntityType.objects.all()})
 
 # =======================
 # ======functions========

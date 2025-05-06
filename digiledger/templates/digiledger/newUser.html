@@ -1,0 +1,149 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Account Creation</title>
+    <link rel="stylesheet" href="{% static 'digiledger/base.css' %}">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Prevent overall scrolling */
+        }
+
+        #box-container {
+            height: 100%;
+            width: 100%;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        #newuser-form {
+            width: 1000px;
+
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+
+        }
+
+        #form_figure{
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-auto-rows: min-content;
+
+            padding:20px;
+            padding-bottom: 10px;
+        }
+
+        #form_figure fieldset {
+            margin: 0px;
+        }
+
+        #form_figure > fieldset {
+            border-color: #454138;
+        }
+
+        #form_figure :not(fieldset) {
+            padding: 5px;
+        }
+
+        .subCon {
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            grid-auto-rows: min-content;
+            gap: 5px;
+        }
+
+        textarea,
+        input[type=text],
+        input[type=password],
+        input[type=url],
+        input[type=email],
+        input[type=tel],
+        input[type=search],
+        input[type=number],
+        input[type=color],
+        input[type=date],
+        input[type=month],
+        input[type=week],
+        input[type=datetime],
+        input[type=datetime-local],
+        #form_figure select {
+            border: 1px solid #45413867;
+        }
+
+        #form_figure > #submit-button {
+            margin: 10px 0px;
+            padding: 10px;
+        }
+
+        /* #form_figure{
+            display: grid;
+            grid-template-columns: 1fr 3fr;
+            grid-auto-rows: min-content;
+
+            padding: 50px;
+        } */
+
+
+    </style>
+</head>
+<body>
+    <div id="box-container">
+        <form id="newuser-form" method="post" action="{% url 'digiledger:signUp' %}">
+            {% csrf_token %}
+            <figure id="form_figure">
+                <figcaption>Create New User</figcaption>
+                <fieldset>
+                    <legend>Account Information</legend>
+                    <div class="subCon">
+                        <label for="user_Name">Name: </label>
+                        <input type="text" id="user_Name" name="user_Name" placeholder="Input the account name" required>
+                    </div>
+                    <div class="subCon">
+                        <label for="ent_Type">EntityType: </label>
+                        <select name="ent_Type" id="ent_Type" class="form-select">
+                            <option value="" selected>----------</option>
+                            {% for entity in EntityType %}
+                                <option value="{{ entity.entity_name }}">{{ entity.entity_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <fieldset>
+                        <legend>Login Credentials</legend>
+                        <div class="subCon">
+                            <label for="username">Username: </label>
+                            <input type="text" id="username" name="username" placeholder="username for the account login" required>
+                            <label for="password">Password: </label>
+                            <input type="text" id="password" name="password" placeholder="password for the account login" required>
+                        </div>
+                    </fieldset>
+                    <fieldset>
+                        <legend>Contact Information</legend>
+                        <div class="subCon">
+                            <label for="email">Email: </label>
+                            <input type="text" id="email" name="email" placeholder="Contact Email" required>
+                            <label for="phoneNumber">Phone Number: </label>
+                            <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Contact Number" required>
+                        </div>
+                    </fieldset>
+                </fieldset>
+                <button id="submit-button">Save</button>
+            </figure>
+        </form>
+    </div>
+</body>
+</html>

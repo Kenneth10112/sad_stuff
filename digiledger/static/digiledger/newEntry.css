@@ -207,18 +207,18 @@ body {
 }
 
 textarea,
-  input[type=text],
-  input[type=password],
-  input[type=url],
-  input[type=email],
-  input[type=tel],
-  input[type=search],
-  input[type=number],
-  input[type=color],
-  input[type=date],
-  input[type=month],
-  input[type=week],
-  input[type=datetime],
-  input[type=datetime-local] {
+input[type=text],
+input[type=password],
+input[type=url],
+input[type=email],
+input[type=tel],
+input[type=search],
+input[type=number],
+input[type=color],
+input[type=date],
+input[type=month],
+input[type=week],
+input[type=datetime],
+input[type=datetime-local] {
     border: 1px solid #45413867;
   }
