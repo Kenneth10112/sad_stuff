@@ -72,7 +72,7 @@
                                     <option value="{{ account.account_name }}"> {{ account.account_name }} </option>
                                 {% endfor %}
                             </select>
-                            <button type="button" class="add-object-button">+</button>
+                            <button type="button" class="add-object-button addSrcAcc">+</button>
                         </div>
                     </div>
                 </div>
@@ -152,29 +152,30 @@
 
             // --- Add Source Button Logic ---
             addSourceButton.addEventListener('click', function() {
+                
                 // Changed selector from '.trn_src_form' to '.source-form' to match HTML class
                 const existingFormsCount = sourcesContainer.querySelectorAll('.source-form').length;
                 const nextSourceNumber = existingFormsCount + 1;
-
+                
                 if (!templateSourceForm) {
                     console.error("Template source form not found. Cannot add new source.");
                     return; // Exit if template doesn't exist
                 }
                 const newSourceForm = templateSourceForm.cloneNode(true); // Clone the template
-
+                
                 // Clear input/select values in the *cloned* form
                 newSourceForm.querySelectorAll('input[type="number"], input[type="text"], textarea') // Added textarea
-                                .forEach(input => input.value = '');
+                .forEach(input => input.value = '');
                 newSourceForm.querySelectorAll('select')
-                                .forEach(select => select.selectedIndex = 0);
-
+                .forEach(select => select.selectedIndex = 0);
+                
                 // Update header, IDs, and labels for the new form BEFORE appending
                 // Changed selector from '.form_group_header h2' to '.source-form-header h1' to match HTML structure
                 const header = newSourceForm.querySelector('.source-form-header h1');
                 if (header) {
                     header.textContent = `Source ${nextSourceNumber}`;
                 }
-
+                
                 const selectElement = newSourceForm.querySelector('select[name="src_account[]"]');
                 const labelElement = newSourceForm.querySelector('label[for^="source_account_"]');
                 if (selectElement) {
@@ -184,11 +185,17 @@
                         labelElement.htmlFor = newSelectId;
                     }
                 }
-
+                
                 sourcesContainer.appendChild(newSourceForm); // Add the new form to the container
                 // No need to call renumber here, as we assigned the correct number already
+                let newSrcAccBtns = document.getElementsByClassName('addSrcAcc');
+                for (let i = 0; i < newSrcAccBtns.length; i++) {
+                    newSrcAccBtns[i].addEventListener('click', function() {
+                        window.open("{% url 'digiledger:entNewAcc' %}", '_blank');
+                    });
+                }
             });
-
+            
             // --- Delete Source Button Logic (using Event Delegation on the container) ---
             sourcesContainer.addEventListener('click', function(event) {
                 // Check if the clicked element *is* a delete button

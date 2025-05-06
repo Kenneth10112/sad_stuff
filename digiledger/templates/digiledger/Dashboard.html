@@ -107,6 +107,8 @@
                   
               </table>
             </figure>
+          {% empty %}
+          <h1>NO DATA FOUND</h1>
           {% endfor %}
         </div>
         <div id="MC_subCon_Ledgers">
@@ -133,7 +135,8 @@
                 {% endif %}
               </div>
             </figure>
-          {% empty %}
+            {% empty %}
+            <h1>NO DATA FOUND</h1>
           {% endfor %}
           
         </div>
@@ -143,8 +146,8 @@
               TRIAL BALANCE
             </figcaption>
             <table>
-              <caption><h1>Trial Balance</h1></caption>
               {% if tTblData %}
+              <caption><h1>Trial Balance</h1></caption>
                 <thead>
                   <tr>
                     <th class="trialBal_account-nameHeader">Account Name</th>
