@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="base.css">
+  <style>
+    #MC_subCon_BalanceSheet {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-auto-rows: 1fr;
+
+        overflow-y: auto;
+    }
+
+    #MC_subCon_BalanceSheet table {
+        border: 5px double #45413852;
+        background-color: #45413817;
+    }
+
+    #MC_subCon_BalanceSheet figure {
+        margin: 5px;
+    }
+
+    #MC_subCon_BalanceSheet td {
+        border: 1px solid #45413852;
+    }
+
+    #MC_subCon_BalanceSheet h1 {
+        margin: 0px;
+        padding: 5px;
+    }
+
+    #MC_Cseperator {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: min-content;
+      gap: 5px;
+
+      background-color: rgba(0, 0, 0, 0.034);
+    }
+
+    #assets {
+      grid-row: span 2;
+
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: min-content;
+    }
+
+    #liabilities_and_Equity {
+      grid-row: span 2;
+
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-auto-rows: min-content;
+    }
+  </style>
+</head>
+<body>
+  <main id="MAINCONTENT">
+    <div id="MC_subCon_BalanceSheet">
+      <figure>
+        <figcaption>
+          Balance Sheet
+        </figcaption>
+        <div id="MC_Cseperator">
+          <div id="assets">
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="2"><b>Assets</b></th>
+                </tr>
+                <tr>
+                  <th>Account Name</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Cash and cash equivalents</td>
+                  <td>100,000</td>
+                </tr>
+                <tr>
+                  <td>Accounts receivable</td>
+                  <td>20,000</td>
+                </tr>
+                <tr>
+                  <td>Inventory</td>
+                  <td>15,000</td>
+                </tr>
+                <tr>
+                  <td>Prepaid expense</td>
+                  <td>4,000</td>
+                </tr>
+                <tr>
+                  <td>Investments</td>
+                  <td>10,000</td>
+                </tr>
+                <tr>
+                  <td>Land</td>
+                  <td>24,300</td>
+                </tr>
+                <tr>
+                  <td>Buildings and improvements</td>
+                  <td>250,000</td>
+                </tr>
+                <tr>
+                  <td>Equipment</td>
+                  <td>50,000</td>
+                </tr>
+                <tr>
+                  <td>Less accumulated depreciation</td>
+                  <td>(5,000)</td>
+                </tr>
+                <tr>
+                  <td>Intangible assets</td>
+                  <td>4,000</td>
+                </tr>
+                <tr>
+                  <td>Less accumulated amortization</td>
+                  <td>(200)</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td><b>Total Assets</b></td>
+                  <td><b>472,100</b></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <div id="liabilities_and_Equity">
+            <table>
+              <thead>
+                <tr>
+                  <th colspan="2"><b>Liabilities and Shareholders' Equity</b></th>
+                </tr>
+                <tr>
+                  <th>Account Name</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Accounts payable</td>
+                  <td>30,000</td>
+                </tr>
+                <tr>
+                  <td>Notes payable</td>
+                  <td>10,000</td>
+                </tr>
+                <tr>
+                  <td>Accrued expenses</td>
+                  <td>5,000</td>
+                </tr>
+                <tr>
+                  <td>Deferred revenue</td>
+                  <td>2,000</td>
+                </tr>
+                <tr>
+                  <td>Long-term debt</td>
+                  <td>200,000</td>
+                </tr>
+                <tr>
+                  <td>Common stock</td>
+                  <td>10,000</td>
+                </tr>
+                <tr>
+                  <td>Additional paid-in capital</td>
+                  <td>20,000</td>
+                </tr>
+                <tr>
+                  <td>Retained earnings</td>
+                  <td>197,100</td>
+                </tr>
+                <tr>
+                  <td>Treasury stock</td>
+                  <td>(2,000)</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td><b>Total Liabilities and Shareholders' Equity</b></td>
+                  <td><b>472,100</b></td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </main>
+</body>
+</html>

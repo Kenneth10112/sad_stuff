@@ -25,7 +25,7 @@ GROUPED TXN_W_SRC DATA (group_transactions_by_destination())
 
 GROUPED DEBIT_CREDIT DATA (get_tTableData())
 [
-	{	
+	{
 		acc_name: x
 		records: [
 			{

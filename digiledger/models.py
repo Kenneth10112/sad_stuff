@@ -15,9 +15,6 @@ class ContactInformation(models.Model):
     def __str__(self):
         return self.email # Or phone_number
 
-
-
-
 class EntityType(models.Model):
     entity_name = models.CharField(max_length=255, unique=True)
 
@@ -46,8 +43,16 @@ class Section(models.Model):
     def __str__(self):
         return self.section_name
 
+class RecordAccountGroup(models.Model):
+    accGroup_name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.accGroup_name
+
 class RecordAccount(models.Model):
     account_name = models.CharField(max_length=255, unique=True)
+    account_group = models.ForeignKey(RecordAccountGroup, on_delete=models.CASCADE)
+
 
     def __str__(self):
         return self.account_name
