@@ -20,73 +20,15 @@ body {
     gap: 1px;
 }
 
-/* ========================== */
-/* == Classes == */
-/* ========================== */
-.sb_nav_genButton,
-.sb_nav_statButton,
-.sb_nav_myAccountButton,
-#sb_newEntry {
-    height: 30px;
-}
+/* ===================================== */
+/* == ASIDE (#SIDEBAR) Styles         == */
+/* ===================================== */
 
-.mc_txnGrp_JournalObject > table {
-    margin: 0px;
-    padding: 0px;
-}
-
-.JournalObject_refID {
-    background-color: #45413852;
-}
-
-.mc_txnGrp_JournalObject td {
-    border: 1px dotted #4541389f;
-}
-
-.mc_txnGrp_JournalObject blockquote {
-    margin: 0px 30px;
-}
-
-.mc_txnGrp_LedgerObject_tTableContainer {
-    background-color: #454138;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-rows: min-content;
-    gap: 2px;
-}
-
-.mc_txnGrp_LedgerObject_tTableContainer > div {
-    background-color: #dcd8c0;
-
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-auto-rows: min-content;
-
-    align-content: center;
-    justify-items: center;
-}
-
-.mc_txnGrp_LedgerObject_tTableContainer * {
-    margin: 0px;
-    padding: 5px;
-    font-size: large;
-}
-
-.tTable_monVal {
-    margin-bottom: -2px;
-}
-
-/* ========================== */
-/* == Ids == */
-/* ========================== */
 #SIDEBAR {
     grid-row: 1 / 3;
-
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: min-content 1fr;
-
     border-right: 5px solid #454138;
 }
 
@@ -95,41 +37,52 @@ body {
     margin: 0px;
 }
 
-#sb_header {
+#sb_header { /* Child of figure within #SIDEBAR */
     font-size: large;
     padding: 10px;
 }
 
-#sb_nav {
+#sb_nav { /* Child of #SIDEBAR */
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: min-content min-content 1fr min-content;
-
     padding: 5px;
     gap: 10px;
 }
 
 #sb_acc_fieldset,
 #sb_gen_fieldset,
-#sb_stat_fieldset {
+#sb_stat_fieldset { /* Children of #sb_nav */
     padding: 10px;
     border-width: 2px;
 }
 
 #sb_nav_myAccount,
 #sb_nav_general,
-#sb_nav_statements {
+#sb_nav_statements { /* Children of fieldsets within #sb_nav */
     display: grid;
     grid-template-columns: 1fr;
     grid-auto-rows: min-content;
-
     gap: 5px;
 }
 
-#acc_username {
+#acc_username { /* Child of figure within #sb_nav_myAccount */
     padding: 5px;
     margin-bottom: 5px;
 }
+
+/* Buttons within #SIDEBAR */
+.sb_nav_genButton,   /* In #sb_nav_general */
+.sb_nav_statButton,  /* In #sb_nav_statements */
+.sb_nav_myAccountButton, /* In #sb_nav_myAccount */
+#sb_newEntry {        /* Direct child of #sb_nav */
+    height: 30px;
+}
+
+
+/* ===================================== */
+/* == HEADER (#TOPBAR) Styles         == */
+/* ===================================== */
 
 #TOPBAR {
     display: grid;
@@ -137,7 +90,6 @@ body {
     grid-template-rows: 40px;
     padding: 10px;
     gap: 10px;
-
     background-color: #454138b4;
 }
 
@@ -146,82 +98,221 @@ body {
     margin: 0px;
 }
 
-#tb_menu {
+#searchFilter_nav { /* Child of #TOPBAR */
+    display: grid;
+    grid-template-columns: .8fr 1.7fr .5fr;
+    grid-auto-rows: 1fr;
+    gap: 10px;
+}
+
+#tb_menu { /* Child of #TOPBAR */
     display: grid;
     grid-template-columns: 1fr;
     grid-auto-rows: 1fr;
     gap: 5px;
 }
 
-#searchFilter_nav {
-    display: grid;
-    grid-template-columns: .8fr 1.7fr .5fr;
-    grid-auto-rows: 1fr;
+/* Note: Style for .tb_menu_buttons (seen in HTML) is missing in the provided CSS */
 
-    gap: 10px;
-}
+
+/* ===================================== */
+/* == MAINCONTENT (#MAINCONTENT) Styles == */
+/* ===================================== */
 
 #MAINCONTENT {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-
     overflow-y: auto;
 }
 
+/* --- General Styles for specific MAINCONTENT Sub-Containers --- */
+/* Note: HTML has #MC_subCon_IncStatement, CSS uses #MC_subCon_Statement */
 #MC_subCon_Journals,
 #MC_subCon_Ledgers,
-#MC_subCon_CashFlow, 
-#MC_subCon_Statement {
+#MC_subCon_CashFlow,
+#MC_subCon_Statement, /* Assuming this corresponds to #MC_subCon_IncStatement or is a general class */
+#MC_subCon_TrialBal,  /* Added TrialBal here if layout is similar, otherwise kept separate below */
+#MC_subCon_BalanceSheet { /* Added BalanceSheet here if layout is similar, otherwise kept separate below */
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-    grid-auto-rows: min-content;
+    /* grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));  <-- Original, seems Journal/Ledger specific */
+    /* grid-auto-rows: min-content; <-- Original, seems Journal/Ledger specific */
     gap: 10px;
     padding: 10px;
 }
 
+/* Specific overrides for layout per sub-container type might be needed */
+/* Overriding the general grid above for specific containers: */
+
+#MC_subCon_Journals, /* Layout specific to Journals */
+#MC_subCon_Ledgers,  /* Layout specific to Ledgers */
+#MC_subCon_CashFlow, /* Layout specific to CashFlow (assuming same as J/L) */
+#MC_subCon_Statement { /* Layout specific to Statement (assuming same as J/L) */
+    grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+    grid-auto-rows: min-content;
+}
+
+#MC_subCon_TrialBal, /* Layout specific to Trial Balance */
+#MC_subCon_BalanceSheet { /* Layout specific to Balance Sheet */
+    grid-template-columns: 1fr; /* Overrides the repeat(auto-fill...) */
+    grid-auto-rows: 1fr;       /* Overrides the min-content */
+    overflow-y: auto;          /* Added from original specific styles */
+}
+
+/* General style for direct children of these sub-containers */
 #MC_subCon_Journals > *,
 #MC_subCon_Ledgers > *,
 #MC_subCon_CashFlow > *,
 #MC_subCon_Statement > * {
-    margin: 0px;
+    margin: 0px; /* Applies to figures primarily */
 }
 
-#journalObj_totalMonVal {
+
+/* --- #MC_subCon_Journals Specific Styles --- */
+
+.mc_txnGrp_JournalObject > table { /* Child of figure within #MC_subCon_Journals */
+    margin: 0px;
+    padding: 0px;
+}
+
+.JournalObject_refID { /* tr within table within figure within #MC_subCon_Journals */
+    background-color: #45413852;
+}
+
+.mc_txnGrp_JournalObject td { /* td within table within figure within #MC_subCon_Journals */
+    border: 1px dotted #4541389f;
+}
+
+.mc_txnGrp_JournalObject blockquote { /* blockquote within td within table... within #MC_subCon_Journals */
+    margin: 0px 30px;
+}
+
+#journalObj_totalMonVal { /* th within thead within table... within #MC_subCon_Journals */
     font-size: x-large;
 }
 
-#tTable_total {
-    grid-column: span 2;
-    /* margin-top: -2px; */
+
+/* --- #MC_subCon_Ledgers Specific Styles --- */
+
+.mc_txnGrp_LedgerObject_tTableContainer { /* div within figure within #MC_subCon_Ledgers */
+    background-color: #454138;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: min-content;
+    gap: 2px;
 }
 
-#MC_subCon_TrialBal {
+.mc_txnGrp_LedgerObject_tTableContainer > div { /* Direct div children (headers, value containers) */
+    background-color: #dcd8c0;
     display: grid;
     grid-template-columns: 1fr;
-    grid-auto-rows: 1fr;
-
-    overflow-y: auto;
+    grid-auto-rows: min-content;
+    align-content: center;
+    justify-items: center;
 }
 
-#MC_subCon_TrialBal table {
+.mc_txnGrp_LedgerObject_tTableContainer * { /* All elements within the tTableContainer */
+    margin: 0px;
+    padding: 5px;
+    font-size: large;
+}
+
+.tTable_monVal { /* Value divs within tTableContainer */
+    margin-bottom: -2px; /* Note: original comment indicates potential override */
+}
+
+#tTable_total { /* Balance div within tTableContainer */
+    grid-column: span 2;
+    /* margin-top: -2px; */ /* Original commented-out style */
+}
+
+
+/* --- #MC_subCon_TrialBal Specific Styles --- */
+
+#MC_subCon_TrialBal figure { /* figure within #MC_subCon_TrialBal */
+    margin: 5px;
+}
+
+#MC_subCon_TrialBal table { /* table within figure within #MC_subCon_TrialBal */
     border: 5px double #45413852;
     background-color: #45413817;
 }
 
-#MC_subCon_TrialBal figure {
-    margin: 5px;
-}
-
-#MC_subCon_TrialBal td {
+#MC_subCon_TrialBal td { /* td within table within figure within #MC_subCon_TrialBal */
     border: 1px solid #45413852;
 }
 
-#MC_subCon_TrialBal h1 {
+#MC_subCon_TrialBal h1 { /* h1 within caption within table... within #MC_subCon_TrialBal */
     margin: 0px;
     padding: 5px;
 }
 
-#trialBal_totalText {
+#trialBal_totalText { /* td within tfoot within table... within #MC_subCon_TrialBal */
     text-align: right;
 }
+
+/* Note: Styles for .trialBal_account-nameHeader, .trialBal_debitHeader, .trialBal_creditHeader, */
+/* .trialBal_account-name, .trialBal_debit, .trialBal_credit, #trialBal_debitTotal, #trialBal_creditTotal */
+/* (seen in HTML) are missing in the provided CSS */
+
+
+/* --- #MC_subCon_BalanceSheet Specific Styles --- */
+
+#MC_subCon_BalanceSheet figure { /* figure within #MC_subCon_BalanceSheet */
+    margin: 5px;
+}
+
+#MC_subCon_BalanceSheet table { /* table within #assets or #liabilities_and_Equity divs */
+    border: 5px double #45413852;
+}
+
+#MC_subCon_BalanceSheet td { /* td within tables within #MC_subCon_BalanceSheet */
+    border: 1px solid #45413852;
+}
+
+#MC_Cseperator { /* div within figure within #MC_subCon_BalanceSheet */
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: min-content;
+    gap: 5px;
+}
+
+#assets { /* div child of #MC_Cseperator */
+    grid-row: span 2; /* Span across rows if needed within #MC_Cseperator's grid */
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: min-content;
+}
+
+#liabilities_and_Equity { /* div child of #MC_Cseperator */
+    grid-row: span 2; /* Span across rows if needed within #MC_Cseperator's grid */
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: min-content;
+}
+
+/* Table cell styling specific to Balance Sheet tables */
+.tbl_headNames { /* tr within thead */
+    background-color: #45413852;
+}
+
+.tbl_accNames { /* td within tbody */
+    padding-left: 25px;
+}
+
+.tbl_totalTxts { /* td within tfoot */
+    text-align: right;
+    font-weight: bold;
+}
+
+.tbl_totalVals { /* td within tfoot */
+    font-weight: bold;
+}
+
+
+/* --- #MC_subCon_CashFlow Specific Styles --- */
+/* (No specific styles other than the general layout rule were provided) */
+
+
+/* --- #MC_subCon_IncStatement Specific Styles --- */
+/* (No specific styles other than the general layout rule mentioning #MC_subCon_Statement were provided) */

@@ -38,3 +38,89 @@ GROUPED DEBIT_CREDIT DATA (get_tTableData())
 	},
 ]
 
+=======================PRODUCTION NOTES===========================================================
+==========settings.py==========
+ALLOWED_HOST = ['128.199.238.6']
+
+STATIC_URL = 'static/'
+STATIC_ROOT = BASE_DIR / 'static/'
+
+==========gunicorn==========
+/etc/systemd/system/gunicorn.socket
+"
+[Unit]
+Description=gunicorn socket
+
+[Socket]
+ListenStream=/run/gunicorn.sock
+
+[Install]
+WantedBy=sockets.target
+"
+------------------------------
+etc/systemd/system/gunicorn.service
+"
+[Unit]
+Description=gunicorn daemon
+Requires=gunicorn.socket
+After=network.target
+
+[Service]
+User=vanessa
+Group=www-data
+WorkingDirectory=/home/vanessa/GITHUB_PROJECTS/sad_stuff/
+ExecStart=/home/vanessa/GITHUB_PROJECTS/sad_stuff/venv/bin/gunicorn \
+		--access-logfile - \
+		--workers 3 \
+		--bind unix:/run/gunicorn.sock \
+		mysite.wsgi:application
+		
+[Install]
+WantedBy=multi-user.target
+"
+==========nginx==========
+/etc/nginx/sites-available/mysite.conf
+"
+server {
+	listen 80;
+	server_name 128.199.238.6;
+	
+	location = /favicon.ico { access_log off; log_not_found off; }
+	location /static/ {
+		root /home/vanessa/GITHUB_PROJECTS/sad_stuff/;
+    }
+	
+	location / {
+		include proxy_params;
+		proxy_pass http://unix:/run/gunicorn.sock
+	}
+}
+"
+
+----------commands
+[gunicorn]
+systemctl start gunicorn.socket
+systemctl daemon-reload
+systemctl enable gunicorn.socket
+systemctl status gunicorn.socket
+
+[nginx]
+ln -s /etc/nginx/sites-available/mysite.conf /etc/nginx/sites-enabled/
+nginx -t
+systemctl restart nginx
+systemctl status nginx
+
+[python]
+python manage.py collectstatic
+
+[firewall]
+ufw allow "Nginx Full"
+
+[resets]
+sudo systemctl daemon-reload
+sudo systemctl restart gunicorn.socket # if you modified it
+sudo systemctl restart gunicorn.service
+sudo systemctl restart nginx # if you changed groups or Nginx config
+
+[status]
+sudo systemctl status nginx gunicorn.socket gunicorn.service
