@@ -41,7 +41,8 @@ def login(request):
         # grouped_data = group_transactions_by_destination()
         tTable_data = get_tTableData()
         # print(json.dumps(grouped_data, indent=4, default=str))
-        print(json.dumps(tTable_data, indent=4, default=str))
+        print(json.dumps(get_tTableData_new(), indent=4, default=str ))
+
         return render(request, 'digiledger/login.html')
 
 def dashboard(request):  
@@ -52,7 +53,7 @@ def dashboard(request):
         'CurrentUser': current_user,
         'Sections': Section.objects.all(),
         'GroupedDestination_txn': group_transactions_by_destination(),
-        'tTblData': get_tTableData(),
+        'tTblData': get_tTableData_new(),
     }
 
     return render(request, 'digiledger/Dashboard.html', context=context)
@@ -345,6 +346,29 @@ def get_tTableData():
         acc_groups.append(acc_group)
     return acc_groups
 
+def get_tTableData_new():
+    acc_groups = []
+    accounts = RecordAccount.objects.all()
+
+    for account in accounts:
+        acc_group_attr = {}
+        acc_group_attr["account_name"] = account.account_name
+
+        
+        acc_group_attr["records"], acc_group_attr["end_balance"] = get_endBal_and_add_currentBal_to_txnTxnSrcDictKey(
+            accountGetAll_txnTxnSrc_sortByDate(
+                RecordAccount.objects.get(account_name=account)
+            )
+        )
+
+        if acc_group_attr["end_balance"] >= 0:
+            acc_group_attr["side"] = "debit"
+        else:
+            acc_group_attr["side"] = "credit"
+
+        acc_groups.append(acc_group_attr)
+    return acc_groups
+
 def equalize_numLists_to_numDict(list1, list2):
   len1 = len(list1)
   len2 = len(list2)
@@ -358,3 +382,41 @@ def equalize_numLists_to_numDict(list1, list2):
 
   return result
 
+def accountGetAll_txnTxnSrc_sortByDate(account):
+    records = []
+
+
+    for transaction in Transaction.objects.filter(destination=account):
+        record = {}
+        record["date"] = transaction.ent_date
+        record["mon_val"] = transaction.mon_val
+        record["side"] ="debit"
+        record["rel_acc"] = "Big changes in DB, placeholder for now"
+        records.append(record)
+
+    for source in TransactionSource.objects.filter(source_account=account):
+        record = {}
+        record["date"] = source.transaction.ent_date
+        record["mon_val"] = source.mon_val
+        record["side"] = "credit"
+        record["rel_acc"] = "Big changes in DB, placeholder for now"
+        records.append(record)
+
+    sorted_records = sorted(records, key=lambda item: item['date'])
+    return sorted_records
+
+def get_endBal_and_add_currentBal_to_txnTxnSrcDictKey(sorted_records):
+    current_bal = 0
+    for record in sorted_records:
+        if record["side"] == "debit":
+            current_bal += record["mon_val"]
+            record["current_bal"] = current_bal
+        else:
+            current_bal -= record["mon_val"]
+            record["current_bal"] = current_bal
+    
+    _ = (
+        sorted_records,
+        current_bal
+    )
+    return _

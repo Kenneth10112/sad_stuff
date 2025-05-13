@@ -116,29 +116,40 @@
             <figure class="mc_txnGrp_LedgerObject">
               <figcaption>{{tTbl.account_name}}</figcaption>
               <div class="mc_txnGrp_LedgerObject_tTableContainer">
-                {% if tTbl.records %}
-                <div>
-                  <h1>Debit</h1>
-                </div>
-                <div>
-                  <h1>Credit</h1>
-                </div>
-                {% endif %}
-                {% for record in tTbl.records %}
-                <div class="tTable_monVal">{{ record.debit }}</div>
-                <div class="tTable_monVal">{{ record.credit }}</div>
-                {% empty %}
-                <div class="tTable_monVal" style="grid-column: span 2;">NO DATA FOUND</div>
-                {% endfor %}
-                {% if tTbl.records %}
-                <div id="tTable_total">Balance: {{ tTbl.total }} ({{ tTbl.side }})</div>
-                {% endif %}
+                <table>
+                  <thead>
+                    <tr id="rowHeader">
+                      <th>Date</th>
+                      <th>Account</th>
+                      <th>Debit</th>
+                      <th>Credit</th>
+                      <th>Account Balance</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for record in tTbl.records %}
+                      <tr>
+                        <td>{{ record.date }}</td>
+                        <td>{{ record.rel_acc }}</td>
+                        {% if record.side == "debit" %}
+                          <td>{{ record.mon_val }}</td>
+                          <td></td>
+                        {% else %}
+                          <td></td>
+                          <td>{{ record.mon_val }}</td>
+                        {% endif %}
+                        <td>{{ record.current_bal }}</td>
+                      </tr>
+                    {% empty %}
+                      <h1>NO DATA FOUND</h1>
+                    {% endfor %}
+                  </tbody>
+                </table>
               </div>
             </figure>
-            {% empty %}
+          {% empty %}
             <h1>NO DATA FOUND</h1>
           {% endfor %}
-          
         </div>
         <div id="MC_subCon_TrialBal"> 
           <figure>
@@ -147,7 +158,6 @@
             </figcaption>
             <table>
               {% if tTblData %}
-              <caption><h1>Trial Balance</h1></caption>
                 <thead>
                   <tr>
                     <th class="trialBal_account-nameHeader">Account Name</th>
@@ -161,11 +171,11 @@
                 <tr>
                   <td class="trialBal_account-name">{{ tTbl.account_name }}</td>
                   {% if tTbl.side == "debit" %}
-                    <td class="trialBal_debit">{{ tTbl.total }}</td>
+                    <td class="trialBal_debit">{{ tTbl.end_balance }}</td>
                     <td class="trialBal_credit"></td>
                   {% elif tTbl.side == "credit" %}
                     <td class="trialBal_debit"></td>
-                    <td class="trialBal_credit">{{ tTbl.total }}</td>
+                    <td class="trialBal_credit">{{ tTbl.end_balance }}</td>
                   {% else %}
                     <td class="trialBal_debit">error in data</td>
                     <td class="trialBal_credit">error in data</td>

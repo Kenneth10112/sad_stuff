@@ -194,36 +194,41 @@ body {
 
 /* --- #MC_subCon_Ledgers Specific Styles --- */
 
-.mc_txnGrp_LedgerObject_tTableContainer { /* div within figure within #MC_subCon_Ledgers */
-    background-color: #454138;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-rows: min-content;
-    gap: 2px;
+#MC_subCon_Ledgers { /* Added BalanceSheet here if layout is similar, otherwise kept separate below */
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+        grid-auto-rows: min-content;
+        gap: 10px;
+        padding: 10px;
+    } 
+
+
+#MC_subCon_Ledgers > * {
+        margin: 0px; /* Applies to figures primarily */
+    }
+
+.mc_txnGrp_LedgerObject_tTableContainer {
+      display: grid;
+      margin: 0px;
 }
 
-.mc_txnGrp_LedgerObject_tTableContainer > div { /* Direct div children (headers, value containers) */
-    background-color: #dcd8c0;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-auto-rows: min-content;
-    align-content: center;
-    justify-items: center;
-}
-
-.mc_txnGrp_LedgerObject_tTableContainer * { /* All elements within the tTableContainer */
+.mc_txnGrp_LedgerObject_tTableContainer > table { /* Child of figure within #MC_subCon_Journals */
     margin: 0px;
-    padding: 5px;
-    font-size: large;
+    padding: 0px;
+
+    border: 1px solid #4541389f;
 }
 
-.tTable_monVal { /* Value divs within tTableContainer */
-    margin-bottom: -2px; /* Note: original comment indicates potential override */
+.mc_txnGrp_LedgerObject_tTableContainer td { /* td within table within figure within #MC_subCon_Journals */
+    border: 1px dotted #4541389f;
 }
 
-#tTable_total { /* Balance div within tTableContainer */
-    grid-column: span 2;
-    /* margin-top: -2px; */ /* Original commented-out style */
+.mc_txnGrp_LedgerObject_tTableContainer th { /* td within table within figure within #MC_subCon_Journals */
+    border: 1px solid #4541389f;
+}
+
+#rowHeader { /* tr within table within figure within #MC_subCon_Journals */
+    background-color: #45413852;
 }
 
 

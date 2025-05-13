@@ -6,71 +6,235 @@
   <title>Document</title>
   <link rel="stylesheet" href="base.css">
   <style>
-    .tbl_headNames {
-      background-color: #45413852;
+    * {
+        box-sizing: border-box;
     }
 
-    .tbl_accNames {
-      padding-left: 25px;
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden; /* Prevent overall scrolling */
     }
 
-    .tbl_totalTxts {
-        text-align: right;
-        font-weight: bold;
-    }
-
-    .tbl_totalVals {
-        font-weight: bold;
-    }
-
-    #MC_subCon_BalanceSheet {
+    body {
         display: grid;
         grid-template-columns: 1fr;
         grid-auto-rows: 1fr;
+        padding-bottom: 1px;
+        gap: 1px;
+    }
 
+    #MAINCONTENT {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 1fr;
         overflow-y: auto;
     }
 
-    #MC_subCon_BalanceSheet table {
-        border: 5px double #45413852;
+   
+    #MC_subCon_Ledgers { /* Added BalanceSheet here if layout is similar, otherwise kept separate below */
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
+        grid-auto-rows: min-content;
+        gap: 10px;
+        padding: 10px;
+    } 
+
+
+    #MC_subCon_Ledgers > * {
+        margin: 0px; /* Applies to figures primarily */
     }
 
-    #MC_subCon_BalanceSheet figure {
-        margin: 5px;
-    }
-
-    #MC_subCon_BalanceSheet td {
-        border: 1px solid #45413852;
-    }
-
-    #MC_Cseperator {
+    .mc_txnGrp_LedgerObject_tTableContainer {
       display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-auto-rows: min-content;
-      gap: 5px;
-
+      margin: 0px;
     }
 
-    #assets {
-      grid-row: span 2;
-
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: min-content;
-    }
-
-    #liabilities_and_Equity {
-      grid-row: span 2;
-
-      display: grid;
-      grid-template-columns: 1fr;
-      grid-auto-rows: min-content;
-    }
+    
+    
   </style>
 </head>
 <body>
-  <main id="MAINCONTENT">
-    
-  </main>
+  <div id="MAINCONTENT">
+    <div id="MC_subCon_Ledgers">
+        <figure class="mc_txnGrp_LedgerObject">
+          <figcaption>{{tTbl.account_name}}</figcaption>
+          <div class="mc_txnGrp_LedgerObject_tTableContainer">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Account</th>
+                  <th>Debit</th>
+                  <th>Credit</th>
+                  <th>Account Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr>
+                  <tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr><tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr><tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
+        <figure class="mc_txnGrp_LedgerObject">
+          <figcaption>{{tTbl.account_name}}</figcaption>
+          <div class="mc_txnGrp_LedgerObject_tTableContainer">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Account</th>
+                  <th>Debit</th>
+                  <th>Credit</th>
+                  <th>Account Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr>
+                  <tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr><tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr><tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
+        <figure class="mc_txnGrp_LedgerObject">
+          <figcaption>{{tTbl.account_name}}</figcaption>
+          <div class="mc_txnGrp_LedgerObject_tTableContainer">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Account</th>
+                  <th>Debit</th>
+                  <th>Credit</th>
+                  <th>Account Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr>
+                  <tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr><tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr><tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
+        <figure class="mc_txnGrp_LedgerObject">
+          <figcaption>{{tTbl.account_name}}</figcaption>
+          <div class="mc_txnGrp_LedgerObject_tTableContainer">
+            <table>
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>Account</th>
+                  <th>Debit</th>
+                  <th>Credit</th>
+                  <th>Account Balance</th>
+                </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr>
+                  <tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr><tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr><tr>
+                    <td>date x</td>
+                    <td>acc x</td>
+                    <td>val x</td>
+                    <td>val x</td>
+                    <td>bal x</td>
+                  </tr>
+              </tbody>
+            </table>
+          </div>
+        </figure>
+    </div>
+  </div>
 </body>
 </html>

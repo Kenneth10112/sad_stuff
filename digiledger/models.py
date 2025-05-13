@@ -43,16 +43,23 @@ class Section(models.Model):
     def __str__(self):
         return self.section_name
 
-class RecordAccountGroup(models.Model):
-    accGroup_name = models.CharField(max_length=255, unique=True)
+class RecordType(models.Model):
+    name = models.CharField(max_length=255, unique=True)
 
     def __str__(self):
-        return self.accGroup_name
+        return self.name
+
+class RecordStatementGroup(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.name
+
 
 class RecordAccount(models.Model):
     account_name = models.CharField(max_length=255, unique=True)
-    account_group = models.ForeignKey(RecordAccountGroup, on_delete=models.CASCADE)
-
+    record_type = models.ForeignKey(RecordType, on_delete=models.CASCADE)
+    statement_group = models.ForeignKey(RecordStatementGroup, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.account_name
