@@ -16,22 +16,17 @@
             <figcaption><h1 id="sb_header">DIGILEDGER</h1></figcaption>
         </figure>
         <div id="sb_nav">
-            <fieldset id="sb_acc_fieldset">
-              <legend>My Account</legend>
-              <div id="sb_nav_myAccount">
-                <figure>
-                  <figcaption id="acc_username"> Welcome: {{CurrentUser.name}}</figcaption>
-                  <button class="sb_nav_myAccountButton">Change Account Details</button>
-                </figure>
-              </div>
-            </fieldset>
+            <div id="sb_nav_myAccount">
+              <figure>
+                <figcaption id="acc_username"> Welcome: {{CurrentUser.name}}</figcaption>
+              </figure>
+            </div>
             <fieldset id="sb_gen_fieldset">
               <legend>Tracking</legend>
               <div id="sb_nav_general">
                 <button class="sb_nav_genButton" id="sb_nav_journal_button">Journals</button>
                 <button class="sb_nav_genButton" id="sb_nav_ledger_button">Ledgers</button>
                 <button class="sb_nav_genButton" id="sb_nav_trialBal_button">Trial Balance</button>
-
               </div>
             </fieldset>
             <fieldset id="sb_stat_fieldset">
@@ -40,6 +35,13 @@
                 <button class="sb_nav_statButton" id="sb_nav_balSheet_button">Balance Sheet</button>
                 <button class="sb_nav_statButton" id="sb_nav_cashFlow_button">Cash Flow</button>
                 <button class="sb_nav_statButton" id="sb_nav_incStatement_button">Income Statement</button>
+              </div>
+            </fieldset>
+            <fieldset id="sb_db_fieldset">
+              <legend>Database</legend>
+              <div id="sb_nav_dbOptions">
+                <button class="sb_nav_dbButton" id="sb_nav_restore_button">Restore</button>
+                <button class="sb_nav_dbButton" id="sb_nav_backup_button">Backup</button>
               </div>
             </fieldset>
             <button id="sb_newEntry">New Entry</button>
@@ -121,6 +123,7 @@
                     <tr id="rowHeader">
                       <th>Date</th>
                       <th>Account</th>
+                      <th>Reference</th>
                       <th>Debit</th>
                       <th>Credit</th>
                       <th>Account Balance</th>
@@ -131,6 +134,7 @@
                       <tr>
                         <td>{{ record.date }}</td>
                         <td>{{ record.rel_acc }}</td>
+                        <td>{{ record.reference }}</td>
                         {% if record.side == "debit" %}
                           <td>{{ record.mon_val }}</td>
                           <td></td>

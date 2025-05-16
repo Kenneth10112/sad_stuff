@@ -391,7 +391,8 @@ def accountGetAll_txnTxnSrc_sortByDate(account):
         record["date"] = transaction.ent_date
         record["mon_val"] = transaction.mon_val
         record["side"] ="debit"
-        record["rel_acc"] = "Big changes in DB, placeholder for now"
+        record["rel_acc"] = transaction.sources.first().source_account
+        record["reference"] = transaction.ref_id
         records.append(record)
 
     for source in TransactionSource.objects.filter(source_account=account):
@@ -399,7 +400,8 @@ def accountGetAll_txnTxnSrc_sortByDate(account):
         record["date"] = source.transaction.ent_date
         record["mon_val"] = source.mon_val
         record["side"] = "credit"
-        record["rel_acc"] = "Big changes in DB, placeholder for now"
+        record["rel_acc"] = source.transaction.destination
+        record["reference"] = source.transaction.ref_id
         records.append(record)
 
     sorted_records = sorted(records, key=lambda item: item['date'])
