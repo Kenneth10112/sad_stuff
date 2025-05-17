@@ -158,15 +158,15 @@
         <div id="MC_subCon_TrialBal"> 
           <figure>
             <figcaption>
-              TRIAL BALANCE
+              Trial Balance
             </figcaption>
             <table>
               {% if tTblData %}
                 <thead>
                   <tr>
-                    <th class="trialBal_account-nameHeader">Account Name</th>
-                    <th class="trialBal_debitHeader">Debit</th>
-                    <th class="trialBal_creditHeader">Credit</th>
+                    <th class="tbl_headNames">Account Name</th>
+                    <th class="tbl_headNames">Debit</th>
+                    <th class="tbl_headNames">Credit</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -192,9 +192,9 @@
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td id="trialBal_totalText">Total:</td>
-                    <td id="trialBal_debitTotal"> total debit </td>
-                    <td id="trialBal_creditTotal"> total credit </td>
+                    <td id="trialBal_totalText" class="tbl_totalTxts">Total:</td>
+                    <td id="trialBal_debitTotal" class="tbl_totalTxts"> total debit </td>
+                    <td id="trialBal_creditTotal" class="tbl_totalTxts"> total credit </td>
                   </tr>
                 </tfoot>
               {% endif %}

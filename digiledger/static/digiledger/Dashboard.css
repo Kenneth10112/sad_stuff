@@ -246,7 +246,6 @@ body {
 
 #MC_subCon_TrialBal table { /* table within figure within #MC_subCon_TrialBal */
     border: 5px double #45413852;
-    background-color: #45413817;
 }
 
 #MC_subCon_TrialBal td { /* td within table within figure within #MC_subCon_TrialBal */
