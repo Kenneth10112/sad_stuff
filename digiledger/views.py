@@ -7,6 +7,8 @@ from .models import (
     EntityType,
     Section,
     RecordAccount,
+    RecordStatementGroup,
+    RecordType,
     Transaction,
     TransactionSource,
 )
@@ -39,9 +41,8 @@ def login(request):
             return redirect('digiledger:dashboard')
     else:
         # grouped_data = group_transactions_by_destination()
-        tTable_data = get_tTableData()
         # print(json.dumps(grouped_data, indent=4, default=str))
-        print(json.dumps(get_tTableData_new(), indent=4, default=str ))
+        print(json.dumps(get_incomeStatementData(), indent=4, default=str ))
 
         return render(request, 'digiledger/login.html')
 
@@ -54,6 +55,8 @@ def dashboard(request):
         'Sections': Section.objects.all(),
         'GroupedDestination_txn': group_transactions_by_destination(),
         'tTblData': get_tTableData_new(),
+        'BalSheetData': get_balanceSheetData(),
+        'IncomeStatement': get_incomeStatementData(),
     }
 
     return render(request, 'digiledger/Dashboard.html', context=context)
@@ -225,7 +228,7 @@ def signUp(request):
 # =======================
 # ======functions========
 # =======================
-
+# Main Data getters functions
 def get_transactions():
     transaction_list = [
 
@@ -248,30 +251,6 @@ def get_transactions():
         transaction_list.append(attributes)
 
     return transaction_list
-
-# def group_transactions_by_destination():
-#     groups = {}
-#     accounts = RecordAccount.objects.all()
-#     for account in accounts:
-#         _ = {}
-#         _["account_name"] = account.account_name
-
-#         totalMonVal_of_account = 0
-#         for transaction in Transaction.objects.filter(destination=account):
-#             totalMonVal_of_account += int(transaction.mon_val)
-
-#             src_list = []
-#             for source in transaction.sources.all():
-#                 source_info = {
-#                     'source_account': source.source_account,
-#                     'credit_mon_val': source.mon_val,
-#                 }
-#                 src_list.append(source_info)
-            
-
-#         _["account_totalMonVal"] = totalMonVal_of_account
-
-#     return groups
 
 def group_transactions_by_destination():
     acc_groups = []
@@ -310,42 +289,6 @@ def group_transactions_by_destination():
         acc_groups.append(acc_group)
     return acc_groups
 
-def get_tTableData():
-    acc_groups = []
-    accounts = RecordAccount.objects.all()
-
-    for account in accounts:
-        acc_group = {}
-        debitsList = []
-        creditsList = []
-        total_debit = 0
-        total_credit = 0
-
-        acc_group["account_name"] = account.account_name
-
-        for transaction in Transaction.objects.filter(destination=account):
-            debitsList.append(transaction.mon_val)
-        for debit in debitsList:
-            total_debit += int(debit)
-
-        for source in TransactionSource.objects.filter(source_account=account):
-            creditsList.append(source.mon_val)
-        for credit in creditsList:
-            total_credit += int(credit)
-
-        acc_group["records"] = equalize_numLists_to_numDict(debitsList, creditsList)
-        _ = total_debit - total_credit
-        if _ < 0:
-            _ = _ * -1
-            acc_group["total"] =  _
-            acc_group["side"] = "credit"
-        else:
-            acc_group["total"] = _
-            acc_group["side"] = "debit"
-
-        acc_groups.append(acc_group)
-    return acc_groups
-
 def get_tTableData_new():
     acc_groups = []
     accounts = RecordAccount.objects.all()
@@ -354,7 +297,6 @@ def get_tTableData_new():
         acc_group_attr = {}
         acc_group_attr["account_name"] = account.account_name
 
-        
         acc_group_attr["records"], acc_group_attr["end_balance"] = get_endBal_and_add_currentBal_to_txnTxnSrcDictKey(
             accountGetAll_txnTxnSrc_sortByDate(
                 RecordAccount.objects.get(account_name=account)
@@ -369,19 +311,45 @@ def get_tTableData_new():
         acc_groups.append(acc_group_attr)
     return acc_groups
 
-def equalize_numLists_to_numDict(list1, list2):
-  len1 = len(list1)
-  len2 = len(list2)
-  max_len = max(len1, len2)
-  result = []
+def get_balanceSheetData():
+    statementGroups = {}
 
-  for i in range(max_len):
-    debit = list1[i] if i < len1 else 0
-    credit = list2[i] if i < len2 else 0
-    result.append({'debit': debit, 'credit': credit})
+    statementGroups["assets"] = get_acc_group_by_RecType(
+        RecordType.objects.get(
+            name="Assets"
+        )
+    )
+    statementGroups["liabilities"] = get_acc_group_by_RecType(
+        RecordType.objects.get(
+            name="Liabilities"
+        )
+    )
+    statementGroups["equity"] = get_acc_group_by_RecType(
+        RecordType.objects.get(
+            name="Equity"
+        )
+    )
 
-  return result
+    return statementGroups
 
+def get_incomeStatementData():
+    statementGroups = {}
+
+    statementGroups["revenue"] = get_acc_group_by_RecType(
+        RecordType.objects.get(
+            name="Revenue"
+        )
+    )
+    statementGroups["expenses"] = get_acc_group_by_RecType(
+        RecordType.objects.get(
+            name="Expenses"
+        )
+    )
+
+    return statementGroups
+
+
+# Misc functions
 def accountGetAll_txnTxnSrc_sortByDate(account):
     records = []
 
@@ -422,3 +390,46 @@ def get_endBal_and_add_currentBal_to_txnTxnSrcDictKey(sorted_records):
         current_bal
     )
     return _
+
+def getAccountEndBalAndSide(acc_name):
+    allTxnTxnSrc_sortedByDate = accountGetAll_txnTxnSrc_sortByDate(acc_name)
+
+    balance = 0
+    balanceSide = "debit"
+
+    for txnTxnSrc in allTxnTxnSrc_sortedByDate:
+        if txnTxnSrc["side"] == "debit":
+            balance += txnTxnSrc["mon_val"]
+        else:
+            balance -= txnTxnSrc["mon_val"]
+    
+    if balance >= 0:
+            balanceSide = "debit"
+    else:
+            balanceSide = "credit"
+
+    return (balance, balanceSide)
+
+def get_acc_group_by_RecType(recType: RecordType):
+    xAccount = RecordAccount.objects.filter(
+        record_type=recType
+    )
+    xGroup = {}
+    accList = []
+    accountBal = 0
+    for accountElement in xAccount:
+        account = {}
+        account["account_name"] = accountElement.account_name
+        account["end_balance"], account["side"] = getAccountEndBalAndSide(
+            accountElement
+        )
+        if account["side"] == "debit":
+            accountBal += int(account["end_balance"])
+        else:
+            accountBal += int(account["end_balance"])
+        accList.append(account)
+    print(f"BAL: {accountBal}")
+    xGroup["accounts"] = accList
+    xGroup[f"{recType.name}TotalMonVal"] = accountBal
+
+    return xGroup

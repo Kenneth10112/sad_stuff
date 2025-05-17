@@ -6,6 +6,9 @@
   <title>Document</title>
   <link rel="stylesheet" href="base.css">
   <style>
+    /* ========================== */
+    /* == Global & Base Styles == */
+    /* ========================== */
     * {
         box-sizing: border-box;
     }
@@ -20,221 +23,57 @@
     body {
         display: grid;
         grid-template-columns: 1fr;
-        grid-auto-rows: 1fr;
+        grid-template-rows: 1fr; /* Adjust row template to accommodate content */
         padding-bottom: 1px;
         gap: 1px;
     }
 
     #MAINCONTENT {
-        display: grid;
-        grid-template-columns: 1fr;
-        grid-template-rows: 1fr;
-        overflow-y: auto;
-    }
-
-   
-    #MC_subCon_Ledgers { /* Added BalanceSheet here if layout is similar, otherwise kept separate below */
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(500px, 1fr));
-        grid-auto-rows: min-content;
-        gap: 10px;
-        padding: 10px;
-    } 
-
-
-    #MC_subCon_Ledgers > * {
-        margin: 0px; /* Applies to figures primarily */
-    }
-
-    .mc_txnGrp_LedgerObject_tTableContainer {
       display: grid;
-      margin: 0px;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+      overflow-y: auto;
     }
 
-    
-    
+    /* aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa */
+    #MC_subCon_IncStatement {
+      display: grid;
+      grid-template-columns: 1fr;
+      grid-template-rows: 1fr;
+    }
   </style>
+
 </head>
 <body>
-  <div id="MAINCONTENT">
-    <div id="MC_subCon_Ledgers">
-        <figure class="mc_txnGrp_LedgerObject">
-          <figcaption>{{tTbl.account_name}}</figcaption>
-          <div class="mc_txnGrp_LedgerObject_tTableContainer">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Account</th>
-                  <th>Debit</th>
-                  <th>Credit</th>
-                  <th>Account Balance</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr>
-                  <tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr><tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr><tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </figure>
-        <figure class="mc_txnGrp_LedgerObject">
-          <figcaption>{{tTbl.account_name}}</figcaption>
-          <div class="mc_txnGrp_LedgerObject_tTableContainer">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Account</th>
-                  <th>Debit</th>
-                  <th>Credit</th>
-                  <th>Account Balance</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr>
-                  <tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr><tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr><tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </figure>
-        <figure class="mc_txnGrp_LedgerObject">
-          <figcaption>{{tTbl.account_name}}</figcaption>
-          <div class="mc_txnGrp_LedgerObject_tTableContainer">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Account</th>
-                  <th>Debit</th>
-                  <th>Credit</th>
-                  <th>Account Balance</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr>
-                  <tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr><tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr><tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </figure>
-        <figure class="mc_txnGrp_LedgerObject">
-          <figcaption>{{tTbl.account_name}}</figcaption>
-          <div class="mc_txnGrp_LedgerObject_tTableContainer">
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Account</th>
-                  <th>Debit</th>
-                  <th>Credit</th>
-                  <th>Account Balance</th>
-                </tr>
-              </thead>
-              <tbody>
-                  <tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr>
-                  <tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr><tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr><tr>
-                    <td>date x</td>
-                    <td>acc x</td>
-                    <td>val x</td>
-                    <td>val x</td>
-                    <td>bal x</td>
-                  </tr>
-              </tbody>
-            </table>
-          </div>
-        </figure>
+  <main id="MAINCONTENT">
+    <div id="MC_subCon_IncStatement">
+      <figure>
+        <figcaption>Income Statement</figcaption>
+        <table>
+          <thead>
+            <tr class="tbl_headNames">
+              <th colspan="2"><b>Assets</b></th>
+            </tr>
+            <tr>
+              <th>Account Name</th>
+              <th>Amount</th>
+            </tr>
+          </thead>
+          <tbody>
+              <tr>
+                <td class="tbl_accNames">{{ account.account_name }}</td>
+                <td>{{ account.end_balance }}</td>
+              </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td class="tbl_totalTxts">Total Assets: </td>
+              <td class="tbl_totalVals">{{ BalSheetData.assets.AssetsTotalMonVal }}</td>
+            </tr>
+          </tfoot>
+        </table>
+      </figure>
     </div>
-  </div>
+  </main>
 </body>
 </html>

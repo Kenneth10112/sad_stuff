@@ -33,8 +33,8 @@
               <legend>Analytics</legend>
               <div id="sb_nav_statements">
                 <button class="sb_nav_statButton" id="sb_nav_balSheet_button">Balance Sheet</button>
-                <button class="sb_nav_statButton" id="sb_nav_cashFlow_button">Cash Flow</button>
                 <button class="sb_nav_statButton" id="sb_nav_incStatement_button">Income Statement</button>
+                <button class="sb_nav_statButton" id="sb_nav_cashFlow_button">Cash Flow</button>
               </div>
             </fieldset>
             <fieldset id="sb_db_fieldset">
@@ -219,55 +219,20 @@
                               </tr>
                           </thead>
                           <tbody>
+                            {% for account in BalSheetData.assets.accounts %}
                               <tr>
-                                  <td class="tbl_accNames">Cash and cash equivalents</td>
-                                  <td>100,000</td>
+                                  <td class="tbl_accNames">{{ account.account_name }}</td>
+                                  <td>{{ account.end_balance }}</td>
                               </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Accounts receivable</td>
-                                  <td>20,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Inventory</td>
-                                  <td>15,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Prepaid expense</td>
-                                  <td>4,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Investments</td>
-                                  <td>10,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Land</td>
-                                  <td>24,300</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Buildings and improvements</td>
-                                  <td>250,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Equipment</td>
-                                  <td>50,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Less accumulated depreciation</td>
-                                  <td>(5,000)</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Intangible assets</td>
-                                  <td>4,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Less accumulated amortization</td>
-                                  <td>(200)</td>
-                              </tr>
+                            {% empty %}
+                            <h1>ALL ACCOUNTS EMPTY</h1>
+                            {% endfor %}
+                              
                           </tbody>
                           <tfoot>
                               <tr>
                                   <td class="tbl_totalTxts">Total Assets: </td>
-                                  <td class="tbl_totalVals">472,100</td>
+                                  <td class="tbl_totalVals">{{ BalSheetData.assets.AssetsTotalMonVal }}</td>
                               </tr>
                           </tfoot>
                       </table>
@@ -284,28 +249,15 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr>
-                                  <td class="tbl_accNames">Accounts payable</td>
-                                  <td>30,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Notes payable</td>
-                                  <td>10,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Accrued expenses</td>
-                                  <td>5,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Deferred revenue</td>
-                                  <td>2,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Long-term debt</td>
-                                  <td>200,000</td>
-                              </tr>
+                            {% for account in BalSheetData.liabilities.accounts %}
+                            <tr>
+                                <td class="tbl_accNames">{{ account.account_name }}</td>
+                                <td>{{ account.end_balance }}</td>
+                            </tr>
+                            {% empty %}
+                            <h1>ALL ACCOUNTS EMPTY</h1>
+                            {% endfor %}
                           </tbody>
-
                           <thead>
                               <tr class="tbl_headNames">
                                   <th colspan="2"><b>Equity</b></th>
@@ -316,32 +268,83 @@
                               </tr>
                           </thead>
                           <tbody>
-                              <tr>
-                                  <td class="tbl_accNames">Common stock</td>
-                                  <td>10,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Additional paid-in capital</td>
-                                  <td>20,000</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Retained earnings</td>
-                                  <td>197,100</td>
-                              </tr>
-                              <tr>
-                                  <td class="tbl_accNames">Treasury stock</td>
-                                  <td>(2,000)</td>
-                              </tr>
+                            {% for account in BalSheetData.equity.accounts %}
+                            <tr>
+                                <td class="tbl_accNames">{{ account.account_name }}</td>
+                                <td>{{ account.end_balance }}</td>
+                            </tr>
+                            {% empty %}
+                            <h1>ALL ACCOUNTS EMPTY</h1>
+                            {% endfor %}
                           </tbody>
                           <tfoot>
                               <tr>
                                   <td class="tbl_totalTxts">Total Liabilities and Equity: </td>
-                                  <td class="tbl_totalVals">472,100</td>
+                                  <td class="tbl_totalVals">{{ BalSheetData.liabilities.LiabilitiesTotalMonVal|add:BalSheetData.equity.EquityTotalMonVal }}</td>
                               </tr>
                           </tfoot>
                       </table>
                   </div>
               </div>
+          </figure>
+        </div>
+        <div id="MC_subCon_IncStatement">
+          <figure>
+            <figcaption>Income Statement</figcaption>
+            <table>
+                <thead>
+                    <tr class="tbl_headNames">
+                        <th colspan="2"><b>Revenues</b></th>
+                    </tr>
+                    <tr>
+                        <th>Account Name</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for account in IncomeStatement.revenue.accounts %}
+                    <tr>
+                        <td class="tbl_accNames">{{ account.account_name }}</td>
+                        <td>{{ account.end_balance }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2"><h1>NO REVENUE FOUND</h1></td></tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="tbl_totalTxts">Total Revenue:</td>
+                        <td class="tbl_totalVals">{{ IncomeStatement.revenue.RevenueTotalMonVal }}</td>
+                    </tr>
+                </tfoot>
+            </table>
+            <table>
+                <thead>
+                    <tr class="tbl_headNames">
+                        <th colspan="2"><b>Expenses</b></th>
+                    </tr>
+                    <tr>
+                        <th>Account Name</th>
+                        <th>Amount</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for account in IncomeStatement.expenses.accounts %}
+                    <tr>
+                        <td class="tbl_accNames">{{ account.account_name }}</td>
+                        <td>{{ account.end_balance }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="2"><h1>NO EXPENSES FOUND</h1></td></tr>
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="tbl_totalTxts">Total Expenses:</td>
+                        <td class="tbl_totalVals">{{ IncomeStatement.expenses.ExpensesTotalMonVal }}</td>
+                    </tr>
+                </tfoot>
+            </table>
           </figure>
         </div>
         <div id="MC_subCon_CashFlow"> 
@@ -352,14 +355,7 @@
             <h1>arvey design this too asap</h1>
           </figure>
         </div>
-        <div id="MC_subCon_IncStatement"> 
-          <figure>
-            <figcaption>
-              LOREM IPSUM HERE STATEMENTS
-            </figcaption>
-            <h1>ARVEY THIS TOO</h1>
-          </figure>
-        </div>
+        
     </main>
 
     <script>
