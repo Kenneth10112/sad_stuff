@@ -67,7 +67,7 @@
 </head>
 <body>
     <div id="mainContainer">
-        <h1>Welcome {{ User }} Where do you want to go?</h1>
+        <h1>Welcome {{ {{ CurrentUser.name }} }} Where do you want to go?</h1>
         <div id="choices">
             {% for perm in Perms %}
             <button onclick="window.location.href='{% url perm.url_link %}'">{{ perm.sysName }}</button>
