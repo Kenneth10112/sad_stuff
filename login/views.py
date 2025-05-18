@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib.auth import logout
 from django.contrib import messages
 from digiledger.models import (
     LoginCredential,
@@ -47,6 +48,10 @@ def login(request):
     else:
 
         return render(request, 'login/login.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('login:login')
 
 def reroute(request):  
     current_user_id = request.session.get('current_user_id')

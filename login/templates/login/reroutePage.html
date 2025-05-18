@@ -63,6 +63,15 @@
             width: 100%;
             text-align: center;
         }
+
+        #logout_button{
+            position: absolute;
+            width: 120px;
+            height: 60px;
+            top:10px;
+            right:10px;
+        }
+
     </style>
 </head>
 <body>
@@ -81,5 +90,10 @@
         </div>
         <p><small>Added Integrated Systems will automatically show up here</small></p>
     </div>
+    <button id="logout_button" onclick=" window.location.href='{% url 'login:logout' %}' ">Log Out</button>
+    <script>
+
+    </script>
+
 </body>
 </html>
