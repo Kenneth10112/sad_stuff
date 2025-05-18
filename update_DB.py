@@ -11,7 +11,7 @@ def run_command(command):
 print("Updating Database...")
 
 # Example commands (replace with your actual setup commands)
-run_command("python manage.py makemigrations digiledger")
-run_command("python manage.py migrate digiledger")
+run_command("python manage.py makemigrations")
+run_command("python manage.py migrate")
 
 print("Updating complete!")

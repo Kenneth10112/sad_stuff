@@ -20,32 +20,6 @@ from django.http import HttpResponseBadRequest, HttpResponseServerError
 import json
 
 
-@csrf_exempt
-def login(request):
-    if request.method == "POST":
-        uname = request.POST['username']
-        upass = request.POST['password']
-
-        try:
-            user = DigiledgerUser.objects.get(
-                login_credentials=LoginCredential.objects.get(username=uname, password=upass)
-            )
-            request.session['current_user_id'] = user.id
-            
-        except LoginCredential.DoesNotExist:
-            print(f"Test Login Failed for username: {uname}")
-            error_message = "Invalid test username or password."
-            return render(request, 'digiledger/login.html', {'is_invalidLogin': True})
-
-        else:
-            return redirect('digiledger:dashboard')
-    else:
-        # grouped_data = group_transactions_by_destination()
-        # print(json.dumps(grouped_data, indent=4, default=str))
-        print(json.dumps(get_incomeStatementData(), indent=4, default=str ))
-
-        return render(request, 'digiledger/login.html')
-
 def dashboard(request):  
     current_user_id = request.session.get('current_user_id')
     current_user = DigiledgerUser.objects.get(id=current_user_id)
@@ -329,12 +303,6 @@ def get_balanceSheetData():
             name="Equity"
         )
     )
-
-    return statementGroups
-
-def get_incomeStatementData():
-    statementGroups = {}
-
     statementGroups["revenue"] = get_acc_group_by_RecType(
         RecordType.objects.get(
             name="Revenue"
@@ -348,6 +316,29 @@ def get_incomeStatementData():
 
     return statementGroups
 
+def get_incomeStatementData():
+    statementGroups = {}
+
+    statementGroups["revenue"] = get_acc_group_by_RecType(
+        RecordType.objects.get(
+            name="Revenue"
+        )
+    )
+    for account in statementGroups["revenue"]["accounts"]:
+        account["end_balance"] *= -1
+    statementGroups["revenue"]["RevenueTotalMonVal"] *= -1
+
+
+    statementGroups["expenses"] = get_acc_group_by_RecType(
+        RecordType.objects.get(
+            name="Expenses"
+        )
+    )
+    for account in statementGroups["expenses"]["accounts"]:
+        account["end_balance"] *= -1
+    statementGroups["expenses"]["ExpensesTotalMonVal"] *= -1
+
+    return statementGroups
 
 # Misc functions
 def accountGetAll_txnTxnSrc_sortByDate(account):

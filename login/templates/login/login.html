@@ -6,14 +6,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Website Layout</title>
-    <link rel="stylesheet" href="{% static 'digiledger/base.css' %}">
-    <link rel="stylesheet" href="{% static 'digiledger/login.css' %}">
+    <link rel="stylesheet" href="{% static 'login/base.css' %}">
+    <link rel="stylesheet" href="{% static 'login/login.css' %}">
 
 </head>
 <body>
         <figure>
             <figcaption>Digiledger Login</figcaption>
-            <form method="post" action="{% url 'digiledger:login' %}">
+            <form method="post" action="{% url 'login:login' %}">
                 {% csrf_token %}
                 <div class="login_credentials">
                     <label for="username">Username:</label>

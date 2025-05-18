@@ -30,12 +30,19 @@ class DigiledgerUser(models.Model):
     def __str__(self):
         return self.name #  Or a combination of fields
 
-class Permission(models.Model):
-    perm_name = models.CharField(max_length=255)
-    entity_type = models.ForeignKey(EntityType, on_delete=models.CASCADE)
+class IntegratedSystem(models.Model):
+    sysName = models.CharField(max_length=255)
+    url_link = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.perm_name
+        return self.sysName #  Or a combination of fields
+
+class Permission(models.Model):
+    entity_type = models.ForeignKey(EntityType, on_delete=models.CASCADE)
+    system = models.ForeignKey(IntegratedSystem, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"Ent: {self.entity_type.entity_name} Sys: {self.system.sysName}"
 
 class Section(models.Model):
     section_name = models.CharField(max_length=255, unique=True)

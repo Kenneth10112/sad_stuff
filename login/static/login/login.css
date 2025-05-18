@@ -1,0 +1,59 @@
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: sans-serif; /* Standard sans-serif font */
+    color: #333; /* Dark text for contrast */
+}
+
+figure{
+    width: 400px;
+    border-radius: 5px;
+    border: 3px solid #454138b4;
+}
+
+figcaption{
+    font-weight: bold;
+    border-radius: 4px 4px 0px 0px;
+}
+
+.login_credentials {
+    display: flex;
+    flex-direction: column;
+}
+
+.login_credentials label {
+    margin-bottom: 5px;
+    font-weight: bold; /* Make labels bold */
+}
+
+.login_credentials input[type="text"],
+.login_credentials input[type="password"] {
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 2px solid #bab5a1; /* Light gray border for inputs */
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+    width: 100%;
+}
+
+.login_credentials input[type="text"]:focus{
+    border-color: #454138b4;
+}
+
+.login_credentials input[type="password"]:focus{
+    border-color: #454138b4;
+}
+
+button[type="submit"] {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+

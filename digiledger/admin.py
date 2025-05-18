@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 # Register your models here.
-from .models import LoginCredential, ContactInformation, EntityType, DigiledgerUser, Permission
+from .models import LoginCredential, ContactInformation, EntityType, DigiledgerUser, Permission, IntegratedSystem
 from .models import Section, RecordAccount, Transaction, TransactionSource, RecordType, RecordStatementGroup
 
 models_to_register = [
@@ -10,6 +10,7 @@ models_to_register = [
     EntityType,
     DigiledgerUser,
     Permission,
+    IntegratedSystem,
     Section,
     RecordAccount,
     Transaction,

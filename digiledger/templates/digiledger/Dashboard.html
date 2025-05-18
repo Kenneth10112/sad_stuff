@@ -276,11 +276,30 @@
                             {% empty %}
                             <h1>ALL ACCOUNTS EMPTY</h1>
                             {% endfor %}
+
+                            {% for account in BalSheetData.revenue.accounts %}
+                            <tr>
+                                <td class="tbl_accNames">{{ account.account_name }}</td>
+                                <td>{{ account.end_balance }}</td>
+                            </tr>
+                            {% empty %}
+                            <h1>ALL ACCOUNTS EMPTY</h1>
+                            {% endfor %}
+
+                            {% for account in BalSheetData.expenses.accounts %}
+                            <tr>
+                                <td class="tbl_accNames">{{ account.account_name }}</td>
+                                <td>{{ account.end_balance }}</td>
+                            </tr>
+                            {% empty %}
+                            <h1>ALL ACCOUNTS EMPTY</h1>
+                            {% endfor %}
                           </tbody>
                           <tfoot>
                               <tr>
                                   <td class="tbl_totalTxts">Total Liabilities and Equity: </td>
-                                  <td class="tbl_totalVals">{{ BalSheetData.liabilities.LiabilitiesTotalMonVal|add:BalSheetData.equity.EquityTotalMonVal }}</td>
+                                  <td class="tbl_totalVals">
+                                    {{ BalSheetData.liabilities.LiabilitiesTotalMonVal|add:BalSheetData.equity.EquityTotalMonVal|add:BalSheetData.revenue.RevenueTotalMonVal|add:BalSheetData.expenses.ExpensesTotalMonVal }}</td>
                               </tr>
                           </tfoot>
                       </table>
@@ -428,11 +447,6 @@
           }
         }
       }
-      
-
-      
-
-
 
       function calculateColumnSum(className) {
         const elements = document.getElementsByClassName(className);
