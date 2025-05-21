@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="base.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            border: 0px solid black;
+        }
+
+        html,
+        body {
+            height: 100%;
+            margin: 0;
+            overflow: hidden; /* Prevent overall scrolling */
+        }
+
+        #MC {
+            height: 99.9%;
+
+            display: grid;
+            grid-template-columns: .65fr .35fr;
+            grid-template-rows: 80px 1fr;
+
+        }
+
+        #TOPBAR {
+            grid-column: span 2;
+
+            display: grid;
+            grid-template-columns: 5fr 1fr 1fr 1fr;
+
+            padding: 5px;
+            gap: 5px;
+
+            background-color: #454138cb;
+        }
+
+        #TOPBAR * {
+            margin: 0px;
+        }
+
+        #TOPBAR > button{
+            margin: 10px;
+        }
+
+        #MAINCONTENT {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: min-content min-content 1fr;
+
+            padding: 5px;
+
+            overflow-y: hidden;
+        }
+
+        #MAINCONTENT *{
+            margin: 0px;
+        }
+
+        #SIDEBAR {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: min-content 1fr min-content 70px;
+
+
+            background-color: #dcd8c0;
+        }
+
+        #SIDEBAR *{
+            margin: 0px;
+        }
+
+        #SIDEBAR > :not(button){
+            margin: 0px;
+            border: 1px solid #454138;
+            padding: 20px;
+        }
+
+        #itemCatergories {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+
+            padding: 5px;
+            gap: 5px;
+        }
+
+        #itemSearch {
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 1fr;
+
+            padding: 5px 10px;
+        }
+
+        #itemList {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            grid-auto-rows: min-content;
+
+            padding: 5px 20px 20px 20px;
+            gap: 20px;
+
+            overflow-y: auto;
+
+        }
+
+        .item {
+            padding: 20px 0px;
+            background-color: #dcd8c0;
+            border: 1px solid #454138;
+        }
+
+        .item:hover{
+            background-color: #45413869;
+            border: 1px solid #454138;
+        }
+
+        .item *{
+            text-align: center;
+        }
+
+        #CurrentOrder {
+            display: grid;
+            grid-template-columns: 1fr min-content;
+            
+            padding: 5px;
+    
+        }
+        #CurrentOrder > button {
+            width: 125px;
+            grid-row: span 2;
+            margin: 5px;
+        }
+        #CurrentOrder *{
+            border: 0px;
+            padding: 0px;
+
+        }
+
+        #Cart {
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        #TotalBreakDown {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-auto-rows: min-content;
+            
+            gap: 5px;
+        }
+
+        #TotalBreakDown * {
+            padding: 3px;
+        } 
+
+        #TotalBreakDown > .R {
+            text-align: end;
+        } 
+
+        #checkOut {
+            margin: 10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div id="MC">
+        <header id="TOPBAR">
+            <h1>Digiledger</h1>
+            <p>Cahsier</p>
+            <p>Time</p>
+            <button>Return</button>
+        </header>
+        <main id="MAINCONTENT">
+            <div>
+                <fieldset id="itemCatergories">
+                    <legend>Groups</legend>
+                    <button>All Items</button>
+                    <button>Abaca Placemats</button>
+                    <button>Abaca Coaster</button>
+                    <button>Food Cover</button>
+                </fieldset>
+            </div>
+            <div id="itemSearch">
+                <input class="full" id="text" type="text" placeholder="Type to Seach/Filter..."/>
+            </div>
+            <div id="itemList">
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>350 php</p>
+                </div>
+                <div class="item">
+                    <h1>SINAMAY</h1>
+                    <p>250 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>150 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>350 php</p>
+                </div>
+                <div class="item">
+                    <h1>SINAMAY</h1>
+                    <p>250 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>150 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>350 php</p>
+                </div>
+                <div class="item">
+                    <h1>SINAMAY</h1>
+                    <p>250 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>150 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>350 php</p>
+                </div>
+                <div class="item">
+                    <h1>SINAMAY</h1>
+                    <p>250 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>150 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>350 php</p>
+                </div>
+                <div class="item">
+                    <h1>SINAMAY</h1>
+                    <p>250 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>150 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>400 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>350 php</p>
+                </div>
+                <div class="item">
+                    <h1>SINAMAY</h1>
+                    <p>250 php</p>
+                </div>
+                <div class="item">
+                    <h1>ALON</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>PATAG</h1>
+                    <p>200 php</p>
+                </div>
+                <div class="item">
+                    <h1>RAFFIA</h1>
+                    <p>150 php</p>
+                </div>
+            </div>
+        </main>
+        <aside id="SIDEBAR">
+            <div id="CurrentOrder">
+                <h2>Current Order</h2>
+                <button>Clear All</button>
+                <p>Order #:</p>
+            </div>
+            <div id="Cart">No Items in Cart</div>
+            <div id="TotalBreakDown">
+                <p class="L">Subtotal</p>
+                <p class="R">0</p>
+                <p class="L">Tax</p>
+                <p class="R">0</p>
+                <p class="L">Discount</p>
+                <p class="R">0</p>
+                <h3 class="L">Total</h3>
+                <h3 class="R">0</h3>
+            </div>
+            <button id="checkOut">Check Out</button>
+        </aside>
+    </div>
+</body>
+</html>
