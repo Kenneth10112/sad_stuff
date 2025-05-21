@@ -31,7 +31,7 @@
             grid-column: span 2;
 
             display: grid;
-            grid-template-columns: 5fr 1fr 1fr 1fr;
+            grid-template-columns: 5fr 0.4fr 0.7fr 0.8fr;
 
             padding: 5px;
             gap: 5px;
@@ -41,6 +41,22 @@
 
         #TOPBAR * {
             margin: 0px;
+        }
+
+        #TOPBAR p{
+            color: #bab5a1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        #TOPBAR h1 {
+            text-align: center;
+            text-shadow: 0.2rem 0.2rem 0 #454138;
+            color: #bab5a1;
+            display: flex;
+            align-items: center;
+            padding-left: 75px;
         }
 
         #TOPBAR > button{
@@ -171,8 +187,8 @@
 <body>
     <div id="MC">
         <header id="TOPBAR">
-            <h1>Digiledger</h1>
-            <p>Cahsier</p>
+            <h1>Digiledger POS</h1>
+            <p>Cashier</p>
             <p>Time</p>
             <button>Return</button>
         </header>
