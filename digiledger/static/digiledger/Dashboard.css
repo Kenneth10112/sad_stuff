@@ -40,6 +40,8 @@ body {
 }
 
 #sb_header { /* Child of figure within #SIDEBAR */
+    text-shadow: 0.2rem 0.2rem 0 #706A5C;
+    color: #bab5a1;    
     font-size: large;
     padding: 10px;
 }
