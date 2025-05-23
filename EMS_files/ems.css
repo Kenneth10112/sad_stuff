@@ -1,0 +1,129 @@
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; 
+}
+
+body {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    grid-template-rows: min-content 1fr;
+    padding-bottom: 1px;
+    gap: 1px;
+}
+
+#SIDEBAR {
+    grid-row: 1/3;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content 1fr;
+    border-right: 3px solid #454138;
+
+    overflow-y: auto;
+}
+
+#SIDEBAR * {
+    padding: 0px;
+    margin: 0px;
+}
+
+#sb_header {
+    text-shadow: 0.2rem 0.2rem 0 #706A5C;
+    color: #bab5a1;    
+    font-size: 18px;
+    padding: 10px;
+    text-align: center;
+}
+
+#sb_nav{
+    margin: 10px 10px 0px 10px; /*top,right,bottom,left*/
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-auto-rows: min-content;
+    gap: 10px;
+}
+
+
+.sb_buttons {
+    height: 30px;
+    
+}
+
+
+
+#TOPBAR {
+    display: grid;
+    grid-template-columns: 40px 1fr 270px;
+    grid-template-rows: 40px;
+    padding: 10px;
+    gap: 10px;
+    background-color: #454138cb;
+}
+
+#TOPBAR * {
+    padding: 0px;
+    margin: 0px;
+}
+
+#tb_menu { 
+    display: grid;
+    grid-template-columns: 1fr 2fr 2fr;
+    grid-auto-rows: 1fr;
+    gap: 10px;
+}
+
+#tb_menu p{
+    width: 100px;
+    height: auto;
+    color: #bab5a1;
+    font-weight: bold;    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 40px;
+}
+
+#tb_menu button{
+    width: 120px;
+}
+
+#MAINCONTENT {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    overflow-y: auto;
+    height: 100%;
+}
+
+#mc_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+    gap: 20px;
+    padding: 5px 20px 20px 20px;
+    overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.mc_div {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px 0px;
+    background-color: #dcd8c0;
+    border: 1px solid #454138;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.mc_div *{
+    text-align: center;
+}

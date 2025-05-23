@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="base.css">
+    <link rel="stylesheet" href="ems.css">
+</head>
+<body>
+    <aside id="SIDEBAR">
+        <figure>
+            <figcaption><h1 id="sb_header">DIGILEDGER EMS</h1></figcaption>
+        </figure>
+        <div id="sb_nav">
+            <button class="sb_buttons">Set Budget</button>
+            <button class="sb_buttons">Expenses</button>
+            <button class="sb_buttons">Add Expenses</button>
+            <button class="sb_buttons">Manage Expenses</button>
+            <button class="sb_buttons">Expense Report</button>
+            <button class="sb_buttons">Datewise Report</button>
+            <button class="sb_buttons">Monthly Report</button>
+            <button class="sb_buttons">Yearly Report</button>
+        </div>
+    </aside>
+    <header id="TOPBAR">
+        <button>≡</button>
+            <div id="searchFilter_nav">
+            </div>
+            <div id="tb_menu">
+                <p>User: user</p>
+                <button>Return</button>
+            </div>
+    </header>
+    <main id="MAINCONTENT">
+        <div id="mc_container">
+            <div class="mc_div">
+                <h1>Today's Expenses</h1>
+                <p>₱2000.00</p>
+            </div>
+            <div class="mc_div">
+                <h1>Yesterday's Expenses</h1>
+                <p>699.00</p>
+            </div>
+            <div class="mc_div">
+                <h1>Last 7 days Expenses</h1>
+                <p>₱2699.00</p>
+            </div>
+            <div class="mc_div">
+                <h1>Last 30 days Expenses</h1>
+                <p>₱2699.00</p>
+            </div>
+            <div class="mc_div">
+                <h1>Monthly Budget Left</h1>
+                <p>₱5196.00</p>
+            </div>
+            <div class="mc_div">
+                <h1>Total Expenses</h1>
+                <p>₱2895.00</p>
+            </div>    
+        </div>
+        <div id="mc_graph">
+            <canvas id="mc_graph_canvas"></canvas>
+        </div>
+    </main>
+
+    <script>
+    window.onload = function() {
+        const canvas = document.getElementById('mc_graph_canvas');
+        const ctx = canvas.getContext('2d');
+        canvas.width = 1200;
+        canvas.height = 280;
+
+        // Extract data from MAINCONTENT
+        const cards = document.querySelectorAll('#mc_container .mc_div');
+        const data = [];
+        const labels = [];
+        cards.forEach(card => {
+            const label = card.querySelector('h1')?.textContent || '';
+            let valueText = card.querySelector('p')?.textContent || '0';
+            // Remove currency symbols and commas, then parse as float
+            valueText = valueText.replace(/[₱,]/g, '');
+            const value = parseFloat(valueText);
+            labels.push(label);
+            data.push(isNaN(value) ? 0 : value);
+        });
+
+        // Graph settings
+        const padding = 50;
+        const graphWidth = canvas.width - 2 * padding;
+        const graphHeight = canvas.height - 2 * padding;
+        const maxData = Math.max(...data);
+
+        // Draw axes
+        ctx.beginPath();
+        ctx.moveTo(padding, padding);
+        ctx.lineTo(padding, canvas.height - padding);
+        ctx.lineTo(canvas.width - padding, canvas.height - padding);
+        ctx.stroke();
+
+        // Draw line
+        ctx.beginPath();
+        data.forEach((val, i) => {
+            const x = padding + (i * (graphWidth / (data.length - 1)));
+            const y = canvas.height - padding - (val / maxData) * graphHeight;
+            if (i === 0) ctx.moveTo(x, y);
+            else ctx.lineTo(x, y);
+        });
+        ctx.strokeStyle = "#454138";
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Draw points and labels
+        ctx.fillStyle = "#bab5a1";
+        ctx.font = "14px Arial";
+        data.forEach((val, i) => {
+            const x = padding + (i * (graphWidth / (data.length - 1)));
+            const y = canvas.height - padding - (val / maxData) * graphHeight;
+            ctx.beginPath();
+            ctx.arc(x, y, 4, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.fillText(labels[i], x - 40, canvas.height - padding + 20);
+        });
+    };
+    </script>
+</body>
+</html>
