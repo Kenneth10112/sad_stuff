@@ -1,0 +1,42 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="{% static 'accCtrl/base.css' %}">
+    <link rel="stylesheet" href="{% static 'accCtrl/ac.css' %}">
+
+</head>
+<body>
+    <header id="TOPBAR">
+        <h1>Digiledger Access Control</h1>
+        <button>Return</button>
+    </header>
+    <aside id="SIDEBAR">
+        <div id="roleList">
+            {% for role in Roles %}
+            <div id="role">
+                <p>{{role.entity_name}}</p>
+                <button>edit</button>
+                <button>delete</button>
+            </div>
+            {% endfor %}
+        </div>
+        <button>Add</button>
+    </aside>
+    <main id="mainContent">
+        {% for entity, permissions in entityDatas.items %}
+            <h1>{{ entity }}</h1>
+            {% for permission, has_access in permissions.items %}
+                <div id="entPerms">
+                    <input type="checkbox" name="{{ permission }}" {% if has_access %}checked{% endif %}>
+                    <label for="{{ permission }}">{{ permission }}</label>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    </main>
+</body>
+</html>

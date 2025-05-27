@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     "digiledger.apps.DigiledgerConfig",
     "pos.apps.PosConfig",
     "login.apps.LoginConfig",
+    "acs_ctrl.apps.AcsCtrlConfig",
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

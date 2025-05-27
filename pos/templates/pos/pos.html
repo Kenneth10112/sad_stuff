@@ -5,69 +5,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digiledger POS</title>
     <link rel="stylesheet" href="{% static 'pos/base.css' %}">
     <link rel="stylesheet" href="{% static 'pos/pos.css' %}">
-    <title>POS</title>
 </head>
 <body>
-    <aside id="SIDEBAR">
-        <figure>
-            <figcaption><h1 id="sb_header">DIGILEDGER</h1></figcaption>
-        </figure>
-        <div id="sb_nav">
-            <fieldset id="sb_fieldset">
-              <div id="sb_nav">
-                <button class="sb_nav_groupButton">Item Group 1</button>
-                <button class="sb_nav_groupButton">Item Group 2</button>
-                <button class="sb_nav_groupButton">Item Group 3</button>
-                <button class="sb_nav_groupButton">Item Group 4</button>
-                <button class="sb_nav_groupButton">Item Group 5</button>
-                <button class="sb_nav_groupButton">Item Group 6</button>
-                <button class="sb_nav_groupButton">Item Group 7</button>
-                <button class="sb_nav_groupButton">Item Group 8</button>
-              </div>
-            </fieldset>
-        </div>
-    </aside>
-    <header id="TOPBAR">
-        <div id="tb_item_group">
-            <figcaption><h1 id="sb_header">ITEM GROUP</h1></figcaption>
-        </div>
-    </header>
-    <main id="MAINCONTENT">
-        <div id="MC_subCon_Journals">
-            <div class="div_main_itemButtons">
-                <button class="main_itemButton">Item 1</button>
-                <button class="main_itemButton">Item 2</button>
-                <button class="main_itemButton">Item 3</button>
-                <button class="main_itemButton">Item 4</button>
-                <button class="main_itemButton">Item 5</button>
+    <div id="MC">
+        <header id="TOPBAR">
+            <h1>Digiledger POS</h1>
+            <p>Cashier</p>
+            <p>Time</p>
+            <button>Return</button>
+        </header>
+        <main id="MAINCONTENT">
+            <div>
+                <fieldset id="itemCatergories">
+                    <legend>Groups</legend>
+                    <button>All Items</button>
+                    {% for itemGroup in ItemGroups %}
+                        <button>{{itemGroup.name}}</button>
+                    {% empty %}
+                        <p>no groups available</p>
+                    {% endfor %}
+                </fieldset>
             </div>
-        </div>    
-
-        <footer id="FOOTER">
-            <div id="footer_nav">
-                <div class="footer_header">
-                    <p id="footer_title_order">Your order:</p>
-                    <button id="view_cart_button">≡ View Cart</button>
-                </div>
-                <div class="cart_items">
-                    <p class="item_name">1 pc item 1</p>
-                    <p class="item_price">P 50.00</p>
-                </div>
-                <div class="cart_items">
-                    <p class="item_name">3 pc item 2</p>
-                    <p class="item_price">P 90.00</p>
-                </div>
-
-                <div class="footer_actions">
-                    <button id="footer_nav_cancelButton">Cancel</button>
-                    <button id="footer_nav_RevConfirmButton">Review + Confirm Order</button>
-                    <p id="order_total">Order Total: P 140.00</p>
-                </div>
+            <div id="itemSearch">
+                <input class="full" id="text" type="text" placeholder="Type to Seach/Filter..."/>
             </div>
-        </footer>
-    </main>
+            <div id="itemList">
+                {% for item in Items %}
+                    <div class="item" role="button" tabindex="0">
+                        <h1>{{item.name}} php</item></h1>
+                        <p>{{item.salePrice}} php</p>
+                        <p class="hidden">{{item.invPrice}}</p>
+                        <p class="hidden">{{item.itemGroup}}</p>
+                    </div>
+                {% empty %}
+                    <p>no items available</p>
+                {% endfor %}
+            </div>
+        </main>
+        <aside id="SIDEBAR">
+            <div id="CurrentOrder">
+                <h2>Current Order</h2>
+                <button id="clearCartButton">Clear All</button>
+                <p>Order #:</p>
+                <p id="orderNumber">12345</p> </div>
+            <div id="Cart">No Items in Cart</div>
+            <div id="TotalBreakDown">
+                <p class="L">Subtotal</p>
+                <p class="R" id="subtotalDisplay">0</p>
+                <p class="L">Tax</p>
+                <p class="R" id="taxDisplay">0</p>
+                <p class="L">Discount</p>
+                <p class="R" id="discountDisplay">0</p>
+                <h3 class="L">Total</h3>
+                <h3 class="R" id="totalDisplay">0</h3>
+            </div>
+            <button id="checkOut">Check Out</button>
+        </aside>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<script>
+    const containerOfAllItems = document.getElementById('itemList');
+    const printBody = document.getElementById('printBody'); // Keep this as is, used in item adding
+    const printTotalDisplay = document.getElementById('printTotal');
 
+    const cartDisplay = document.getElementById('Cart');
+    const subtotalDisplay = document.getElementById('subtotalDisplay');
+    const taxDisplay = document.getElementById('taxDisplay');
+    const discountDisplay = document.getElementById('discountDisplay');
+    const totalDisplay = document.getElementById('totalDisplay');
+    const clearCartButton = document.getElementById('clearCartButton');
+    const checkOutButton = document.getElementById('checkOut');
+
+    let currentOrderTotal = 0;
+
+    // --- Helper function to update totals (Unchanged) ---
+    function updateTotals() {
+        const taxRate = 0.05;
+        const discountAmount = 0; // Assuming a fixed discount for now
+
+        const subtotal = currentOrderTotal;
+        const tax = subtotal * taxRate;
+        const total = subtotal + tax - discountAmount;
+
+        subtotalDisplay.textContent = `${subtotal.toFixed(2)} php`;
+        taxDisplay.textContent = `${tax.toFixed(2)} php`;
+        discountDisplay.textContent = `${discountAmount.toFixed(2)} php`;
+        totalDisplay.textContent = `${total.toFixed(2)} php`;
+
+        // Ensure printTotalDisplay is updated as it's part of the #PRINT div
+        if (printTotalDisplay) {
+            printTotalDisplay.textContent = `${total.toFixed(2)} php`;
+        }
+    }
+
+    // --- Event Listener for adding items to cart (Unchanged) ---
+    containerOfAllItems.addEventListener('click', function(event) {
+        const clickedDiv = event.target.closest('.item');
+
+        if (clickedDiv) {
+            const itemName = clickedDiv.querySelector('h1').textContent;
+            const itemPriceText = clickedDiv.querySelector('p').textContent;
+            const itemPrice = parseFloat(itemPriceText.replace(' php', ''));
+
+            // Update the visible cart display
+            const newCartItemDisplay = document.createElement('div');
+            newCartItemDisplay.classList.add('cart-item-display');
+            newCartItemDisplay.innerHTML = `<span>${itemName}</span><span>${itemPriceText}</span>`;
+
+            if (cartDisplay.textContent.trim() === "No Items in Cart") {
+                cartDisplay.innerHTML = '';
+            }
+            cartDisplay.appendChild(newCartItemDisplay);
+
+            currentOrderTotal += itemPrice;
+            updateTotals();
+
+            console.log(`[VANESSA_DEBUG] Added to cart: ${itemName}, ${itemPriceText}`);
+        }
+    });
+
+    // --- Clear Cart Button Functionality (Unchanged) ---
+    clearCartButton.addEventListener('click', function() {
+        if (printBody) { // Check if printBody exists
+            printBody.innerHTML = ''; // Clear only the tbody content
+        }
+        cartDisplay.innerHTML = 'No Items in Cart';
+        currentOrderTotal = 0;
+        updateTotals(); // This will also update printTotalDisplay to "0 php" or total
+        console.log('[VANESSA_DEBUG] Cart cleared.');
+    });
+   
+    // --- Reworked Check Out Functionality ---
+    checkOutButton.addEventListener('click', function() {
+        console.log("CHECKED OUT")
+    });
+
+    // Initialize totals when the page loads
+    updateTotals();
+
+</script>
 </body>
 </html>

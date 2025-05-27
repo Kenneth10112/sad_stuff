@@ -1,5 +1,6 @@
 * {
     box-sizing: border-box;
+    border: 0px solid black;
 }
 
 html,
@@ -7,179 +8,202 @@ body {
     height: 100%;
     margin: 0;
     overflow: hidden; /* Prevent overall scrolling */
+    font-family: sans-serif; /* Added a default font */
 }
 
-body {
+#MC {
+    height: 99.9%;
     display: grid;
-    grid-template-columns: 250px 1fr;
-    grid-template-rows: min-content 1fr; /* Adjust row template to accommodate content */
-    padding-bottom: 1px;
-    gap: 1px;
-}
-
-#SIDEBAR {
-    grid-row: 1 / 3;
-
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: min-content 1fr;
-    
-    border-right: 10px solid #454138;
-}
-
-#SIDEBAR * {
-    padding: 0px;
-    margin: 0px;
-}
-
-#sb_header {
-    font-size: large;
-    padding: 10px;
-    padding-bottom: 28px;
-}
-
-#sb_nav {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: min-content min-content 1fr min-content;
-
-    padding: 5px;
-    gap: 10px;
-}
-
-#sb_fieldset {
-    padding: 10px;
-    border-width: 2px;
-    border-radius: 0px 10px 10px 0px;
-    margin-left: -7px;
-}
-
-#sb_nav {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-auto-rows: min-content;
-    gap: 5px;
-}
-
-.sb_nav_groupButton {
-    width: 100%;
-    height: 75px;
-    border-radius: 10px;
+    grid-template-columns: .65fr .35fr;
+    grid-template-rows: 80px 1fr;
 }
 
 #TOPBAR {
+    grid-column: span 2;
     display: grid;
-    grid-template-columns: 40px 1fr 100px;
-    grid-template-rows: 40px;
-    padding: 10px;
-    gap: 10px;
-    margin-bottom: 5px;
-    background-color: #454138b4;
+    grid-template-columns: 5fr 0.4fr 0.7fr 0.8fr;
+    padding: 5px;
+    gap: 5px;
+    background-color: #454138cb;
 }
 
 #TOPBAR * {
-    padding: 0px;
     margin: 0px;
 }
 
-#tb_item_group {
-    width: 300px;
+#TOPBAR p{
+    color: #bab5a1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-#tb_menu {
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-auto-rows: 1fr;
-    gap: 5px;
+#TOPBAR h1 {
+    text-align: center;
+    text-shadow: 0.2rem 0.2rem 0 #454138;
+    color: #bab5a1;
+    display: flex;
+    align-items: center;
+    padding-left: 75px;
+}
+
+#TOPBAR > button{
+    margin: 10px;
 }
 
 #MAINCONTENT {
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    margin-left: 3px;
-    overflow-y: auto;
+    grid-template-rows: min-content min-content 1fr;
+    padding: 5px;
+    overflow-y: hidden;
 }
 
-.main_itemButton{
-    width: 200px;
-    height: 150px;
-    border-radius: 10px;
-    gap: 10px;
+#MAINCONTENT *{
+    margin: 0px;
 }
 
-#FOOTER{
+#SIDEBAR {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: min-content 1fr min-content 70px;
+    background-color: #dcd8c0;
+
+    overflow-y: hidden;
+}
+
+#SIDEBAR *{
+    margin: 0px;
+}
+
+#SIDEBAR > :not(button){
+    margin: 0px;
+    border: 1px solid #454138;
+    padding: 20px;
+}
+
+#itemCatergories {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    padding: 5px;
+    gap: 5px;
+}
+
+#itemSearch {
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr;
-    width: 100%;
-    height: 220px;
-    background-color: #454138;
-    margin-bottom: 3px;
+    padding: 5px 10px;
 }
 
-#footer_title_order, #order_total{
-    color: white;
-}
-
-.item_name, .item_price{
-    color: black;
-}
-
-.item_price {
-    text-align: right;
-}
-
-.cart_items{
+#itemList {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 5px;
-    margin-left: 10px;
-    margin-bottom: 5px;
-    background-color: aliceblue;
-    border-radius: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-auto-rows: min-content;
+    padding: 5px 20px 20px 20px;
+    gap: 20px;
+    overflow-y: auto;
+}
+
+/* Existing .item styles */
+.item {
+    padding: 20px 0px;
+    background-color: #dcd8c0; /* Original background color */
+    border: 1px solid #454138; /* Original border color */
+    cursor: pointer; /* Indicate clickability */
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, transform 0.1s ease;
+    outline: none; /* Remove default focus outline */
+    user-select: none; /* Prevent text selection */
+    border-radius: 5px; /* Added for a slightly softer look, consistent with button feel */
+}
+
+/* Existing .item:hover styles */
+.item:hover{
+    background-color: #45413869; /* Original hover background with transparency */
+    border: 1px solid #454138; /* Original hover border */
+    color: #dcd8c0; /* Make text white on hover for better contrast */
+}
+.item:hover h1, .item:hover p {
+    color: #dcd8c0; /* Ensure text inside also changes color on hover */
+}
+
+/* New .item:active styles (even darker version of current) */
+.item:active {
+    background-color: #3a3831; /* A solid, darker version of the theme color */
+    border: 1px solid #2d2b26; /* Even darker border */
+    transform: translateY(2px); /* Slight press effect */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Reduced shadow when pressed */
+    color: #dcd8c0; /* Make text white on active for better contrast */
+}
+.item:active h1, .item:active p {
+    color: #dcd8c0; /* Ensure text inside also changes color on active */
+}
+
+.item *{
+    text-align: center;
+    color: #454138; /* Default text color for items */
+}
+/* Override default text color for h1 and p within item for normal state */
+.item h1 {
+    color: #454138;
+}
+.item p {
+    color: #6d6a61; /* Slightly lighter for paragraph */
+}
+
+#CurrentOrder {
+    display: grid;
+    grid-template-columns: 1fr min-content;
     padding: 5px;
 }
-
-#footer_nav {
-    display: flex;
-    flex-direction: column;
-    padding: 10px;
+#CurrentOrder > button {
+    width: 125px;
+    grid-row: span 2;
+    margin: 5px;
+}
+#CurrentOrder *{
+    border: 0px;
+    padding: 0px;
 }
 
-.footer_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+#Cart {
+    /* This div will show a summary of items added */
+    text-align: center;
+    padding: 10px; /* Adjusted padding */
+    overflow-y: auto; /* Allow scrolling for many items */
+    font-size: 0.9em;
+    color: #454138;
 }
-
-#view_cart_button {
-    margin-bottom: 0;
-}
-
-.footer_nav_button{
-    width: 300px;
-    height: 30px;
-    border-radius: 10px;
-}
-
-.footer_actions {
+.cart-item-display {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    margin-top: 10px;
-    padding: 0 20px;
+    padding: 3px 0;
+    border-bottom: 1px dashed #ccc;
+}
+.cart-item-display:last-child {
+    border-bottom: none;
 }
 
-#footer_nav_cancelButton {
-    margin-right: auto;
+
+#TotalBreakDown {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-auto-rows: min-content;
+    gap: 5px;
 }
 
-#footer_nav_RevConfirmButton {
-    margin: 0 auto;
+#TotalBreakDown * {
+    padding: 3px;
 }
 
-#order_total {
-    margin-left: auto;
+#TotalBreakDown > .R {
+    text-align: end;
+}
+
+#checkOut {
+    margin: 10px;
+}
+
+.hidden {
+    display: none;
 }
