@@ -58,7 +58,7 @@
           </select>
         </div>
         <div id="tb_menu">
-            <button class="tb_menu_buttons" id="logOut_button">Log out</button>
+            <button class="tb_menu_buttons" id="return_button">Return</button>
         </div>
     </header>
     <main id="MAINCONTENT">
@@ -403,8 +403,8 @@
           showContent('MC_subCon_IncStatement'); // <-- Correct case
       });
 
-      const logoutButton = document.getElementById('logOut_button');
-      logoutButton.addEventListener('click', () => {
+      const returnButton = document.getElementById('return_button');
+      returnButton.addEventListener('click', () => {
             window.location.href = "{% url 'login:reroute' %}";
       });
 

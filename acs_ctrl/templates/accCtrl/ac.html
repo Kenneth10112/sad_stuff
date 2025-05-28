@@ -13,7 +13,7 @@
 <body>
     <header id="TOPBAR">
         <h1>Digiledger Access Control</h1>
-        <button>Return</button>
+        <button id="return_button">Return</button>
     </header>
     <aside id="SIDEBAR">
         <div id="roleList">
@@ -38,5 +38,13 @@
             {% endfor %}
         {% endfor %}
     </main>
+    <script>
+
+      const returnButton = document.getElementById('return_button');
+      returnButton.addEventListener('click', () => {
+            window.location.href = "{% url 'login:reroute' %}";
+      });
+
+    </script>
 </body>
 </html>

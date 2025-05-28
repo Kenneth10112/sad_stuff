@@ -15,7 +15,7 @@
             <h1>Digiledger POS</h1>
             <p>Cashier</p>
             <p>Time</p>
-            <button>Return</button>
+            <button id="return_button">Return</button>
         </header>
         <main id="MAINCONTENT">
             <div>
@@ -145,6 +145,13 @@
 
     // Initialize totals when the page loads
     updateTotals();
+
+    // Return Button 
+    const returnButton = document.getElementById('return_button');
+    returnButton.addEventListener('click', () => {
+        window.location.href = "{% url 'login:reroute' %}";
+    });
+
 
 </script>
 </body>
