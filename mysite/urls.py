@@ -23,5 +23,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path("digiledger/", include("digiledger.urls")),
     path("pos/", include("pos.urls")),
+    path("ems/", include("ems.urls")),
     path("accCtrl/", include("acs_ctrl.urls")),
 ]
