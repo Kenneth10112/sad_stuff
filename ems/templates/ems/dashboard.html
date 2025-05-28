@@ -27,12 +27,12 @@
         </div>
     </aside>
     <header id="TOPBAR">
-        <button id="showHide_button" onclick="toggleSideBar()">≡</button>
+        <button>≡</button>
             <div id="searchFilter_nav">
             </div>
             <div id="tb_menu">
                 <p>User: user</p>
-                <button id="return_button">Return</button>
+                <button>Return</button>
             </div>
     </header>
     <main id="MAINCONTENT">
@@ -125,34 +125,6 @@
             ctx.fillText(labels[i], x - 40, canvas.height - padding + 20);
         });
     };
-
-    // Toggle Side Bar
-    function toggleSideBar() {
-    const sideBar = document.getElementById("SIDEBAR");
-    const topBar = document.getElementById("TOPBAR");
-    const mainContent = document.getElementById("MAINCONTENT");
-    const showHide_button = document.getElementById("showHide_button");
-
-    if (sideBar.style.display === 'none') {
-        sideBar.style.display = 'grid'
-        topBar.style.gridColumn = 'span 1'
-        mainContent.style.gridColumn = 'span 1'
-
-    } else {
-        sideBar.style.display = 'none'
-        topBar.style.gridColumn = 'span 2'
-        mainContent.style.gridColumn = 'span 2'
-    }
-
-    }
-
-    // Return Button 
-    const returnButton = document.getElementById('return_button');
-    returnButton.addEventListener('click', () => {
-        window.location.href = "{% url 'login:reroute' %}";
-    });
-
-
     </script>
 </body>
 </html>
