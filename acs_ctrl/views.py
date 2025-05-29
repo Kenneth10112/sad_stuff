@@ -23,18 +23,48 @@ import json
 # Create your views here.
 
 def access_control(request):
-    current_user_id = request.session.get('current_user_id')
-    current_user = DigiledgerUser.objects.get(id=current_user_id)
+    if request.method == "POST":
+        entList = [item.entity_name for item in EntityType.objects.all()]
+        sysList = [item.sysName for item in IntegratedSystem.objects.all()]
 
-    context = {
-        'CurrentUser': current_user,
-        'Roles': EntityType.objects.all(),
-        'Systems': IntegratedSystem.objects.all(),
-        'entityDatas': getPermsSeperatedbyRole(),
-    }
-    getPermsSeperatedbyRole()
+        # onState = []
+        # offState = []
+        for ent in entList:
+            if ent == "Admin":
+                continue
+            for sys in sysList:
+                if f"{ent}_{sys}" in request.POST:
+                    giveAccess(f"{ent}_{sys}")
+                    # onState.append(f"{ent}_{sys}")
+                else:
+                    revokeAccess(f"{ent}_{sys}")
+                    # offState.append(f"{ent}_{sys}")
+        
+        #-------------------------------------------------
+        #--------------------------------------------------
+        current_user_id = request.session.get('current_user_id')
+        current_user = DigiledgerUser.objects.get(id=current_user_id)
 
-    return render(request, 'accCtrl/ac.html', context=context)
+        context = {
+            'CurrentUser': current_user,
+            'Roles': EntityType.objects.all(),
+            'Systems': IntegratedSystem.objects.all(),
+            'entityDatas': getPermsSeperatedbyRole(),
+        }
+        return render(request, 'accCtrl/ac.html', context=context)
+    else:
+        current_user_id = request.session.get('current_user_id')
+        current_user = DigiledgerUser.objects.get(id=current_user_id)
+
+        context = {
+            'CurrentUser': current_user,
+            'Roles': EntityType.objects.exclude(entity_name="Admin"),
+            'Systems': IntegratedSystem.objects.all(),
+            'entityDatas': getPermsSeperatedbyRole(),
+        }
+        getPermsSeperatedbyRole()
+
+        return render(request, 'accCtrl/ac.html', context=context)
 
 def getPermsSeperatedbyRole():
     permsByRole = {}
@@ -60,3 +90,32 @@ def isEntityHasSystem(entity, system):
         return False
     else:
         return True
+
+def giveAccess(entToPermString: str):
+    ent, sys = entToPermString.split("_")
+
+    try:
+        Permission.objects.get(
+            entity_type=EntityType.objects.get(entity_name=ent),
+            system=IntegratedSystem.objects.get(sysName=sys)
+        )
+
+    except Permission.DoesNotExist:
+        newPermission = Permission.objects.create(
+            entity_type=EntityType.objects.get(entity_name=ent),
+            system=IntegratedSystem.objects.get(sysName=sys)
+        )
+
+    return
+
+def revokeAccess(entToPermString: str):
+    ent, sys = entToPermString.split("_")
+
+    try:
+        Permission.objects.get(
+            entity_type=EntityType.objects.get(entity_name=ent),
+            system=IntegratedSystem.objects.get(sysName=sys)
+        ).delete()
+    except Permission.DoesNotExist:
+        pass
+    return

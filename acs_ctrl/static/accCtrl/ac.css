@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    border: 1px solid #bab5a1;
+    /* border: 1px solid #bab5a1; */
 }
 
 html,
@@ -58,15 +58,20 @@ body > * {
 }
 
 #SIDEBAR {
+    margin: 10px;
+    border-radius: 15px;
+
     display: grid;
     grid-template-columns: 1fr;
     grid-template-rows: 1fr min-content;
-
+    
+    background-color: #dcd8c0;
 }
 
 #SIDEBAR > button {
-    margin: 5px;
+    margin: 15px;
     height: 50px;
+
 }
 
 #roleList {
@@ -77,9 +82,13 @@ body > * {
 
     gap: 5px;
     overflow-y: auto;
+    border: 1px solid #bab5a1;
+    border-radius: 15px;
 }
 
 #role {
+    border-radius: 5px;
+
     display: grid;
     grid-template-columns: 1fr .5fr .5fr;
     grid-auto-rows: min-content;
@@ -88,6 +97,7 @@ body > * {
     gap: 5px;
     align-items: center;
     justify-content: center;
+    background-color: #d6d2b8;
 }
 
 #role * {
@@ -102,15 +112,33 @@ body > * {
 }
 
 #mainContent {
+    margin: 10px;
     display: grid;
     grid-template-columns: 1fr;
     grid-auto-rows: min-content;
 
     gap: 10px;
-    padding: 10px;
+
+    overflow-y: auto;
 }
 
 #mainContent * {
     margin: 0px;
     padding: 0px;
+}
+
+#saveChanges {
+    position: absolute;
+    bottom: 10px;
+    right: 20px;
+
+    width: 200px;
+    height: 50px;
+}
+
+#entPerms {
+    border-radius: 5px;
+    padding: 10px;
+    background-color: #bab5a1;
+    margin: 5px;
 }

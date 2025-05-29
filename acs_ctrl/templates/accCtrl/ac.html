@@ -28,15 +28,21 @@
         <button>Add</button>
     </aside>
     <main id="mainContent">
-        {% for entity, permissions in entityDatas.items %}
-            <h1>{{ entity }}</h1>
-            {% for permission, has_access in permissions.items %}
+        <form method="post" action="{% url 'acs_ctrl:access_control' %}">
+            {% csrf_token %}
+            {% for entity, permissions in entityDatas.items %}
                 <div id="entPerms">
-                    <input type="checkbox" name="{{ permission }}" {% if has_access %}checked{% endif %}>
-                    <label for="{{ permission }}">{{ permission }}</label>
+                    <h1>{{ entity }}</h1>
+                    {% for permission, has_access in permissions.items %}
+                        <div>
+                            <input type="checkbox" name="{{ entity }}_{{ permission }}" {% if has_access %}checked{% endif %}>
+                            <label for="{{ entity }}_{{ permission }}">{{ permission }}</label>
+                        </div>
+                    {% endfor %}
                 </div>
             {% endfor %}
-        {% endfor %}
+            <button type="submit" id="saveChanges">Save</button>
+        </form>
     </main>
     <script>
 

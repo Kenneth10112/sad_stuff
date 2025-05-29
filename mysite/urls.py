@@ -24,5 +24,5 @@ urlpatterns = [
     path("digiledger/", include("digiledger.urls")),
     path("pos/", include("pos.urls")),
     path("ems/", include("ems.urls")),
-    path("accCtrl/", include("acs_ctrl.urls")),
+    path("acs_ctrl/", include("acs_ctrl.urls")),
 ]
