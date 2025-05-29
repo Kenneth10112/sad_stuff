@@ -11,6 +11,21 @@
 
 </head>
 <body>
+    <div id="addEntity">
+        <form action="{% url 'acs_ctrl:createNewEntity' %}" method="post">
+            {% csrf_token %}
+            <figure>
+                <fieldset>
+                    <legend>Add Entity</legend>
+                    <div id="addEntContent">
+                        <input type="text" name="newEntityName" placeholder="New Entity's Name">
+                        <button id="createNewEntBtn" type="submit">Create</button> {# Explicitly set type to submit for clarity #}
+                        <button id="closeNewEntBtn" type="button">Cancel</button> {# Set type to button to prevent submission #}
+                    </div>
+                </fieldset>
+            </figure>
+        </form>
+    </div>
     <header id="TOPBAR">
         <h1>Digiledger Access Control</h1>
         <button id="return_button">Return</button>
@@ -21,11 +36,15 @@
             <div id="role">
                 <p>{{role.entity_name}}</p>
                 <button>edit</button>
-                <button>delete</button>
+                <form action="{% url 'acs_ctrl:deleteEntity' %}" method="post" style="display: inline;"> 
+                    {% csrf_token %}
+                    <input type="hidden" name="role_to_delete" value="{{role.entity_name}}"> {# Hidden input with the value to send #}
+                    <button type="submit" class="delete-btn">delete</button> {# This button will submit this form #}
+                </form>
             </div>
             {% endfor %}
         </div>
-        <button>Add</button>
+        <button id="addEntityBtn">Add</button>
     </aside>
     <main id="mainContent">
         <form method="post" action="{% url 'acs_ctrl:access_control' %}">
@@ -46,11 +65,25 @@
     </main>
     <script>
 
-      const returnButton = document.getElementById('return_button');
-      returnButton.addEventListener('click', () => {
-            window.location.href = "{% url 'login:reroute' %}";
-      });
+        const returnButton = document.getElementById('return_button');
+        returnButton.addEventListener('click', () => {
+                window.location.href = "{% url 'login:reroute' %}";
+        });
 
+        // Get references to the button and the overlay div
+        const addEntityButton = document.getElementById('addEntityBtn');
+        const addEntityDiv = document.getElementById('addEntity');
+        const closeNewEntBtn = document.getElementById('closeNewEntBtn');
+        
+        // Add a click event listener to the button
+        addEntityButton.addEventListener('click', () => {
+            // Set the visibility of the #addEntity div to 'visible'
+            addEntityDiv.style.visibility = 'visible';
+        });
+        closeNewEntBtn.addEventListener('click', () => {
+            // Set the visibility of the #addEntity div to 'visible'
+            addEntityDiv.style.visibility = 'hidden';
+        });
     </script>
 </body>
 </html>

@@ -24,14 +24,12 @@ import json
 
 def access_control(request):
     if request.method == "POST":
-        entList = [item.entity_name for item in EntityType.objects.all()]
+        entList = [item.entity_name for item in EntityType.objects.exclude(entity_name="Admin")]
         sysList = [item.sysName for item in IntegratedSystem.objects.all()]
 
         # onState = []
         # offState = []
         for ent in entList:
-            if ent == "Admin":
-                continue
             for sys in sysList:
                 if f"{ent}_{sys}" in request.POST:
                     giveAccess(f"{ent}_{sys}")
@@ -47,7 +45,7 @@ def access_control(request):
 
         context = {
             'CurrentUser': current_user,
-            'Roles': EntityType.objects.all(),
+            'Roles': EntityType.objects.exclude(entity_name="Admin"),
             'Systems': IntegratedSystem.objects.all(),
             'entityDatas': getPermsSeperatedbyRole(),
         }
@@ -66,6 +64,45 @@ def access_control(request):
 
         return render(request, 'accCtrl/ac.html', context=context)
 
+def createNewEntity(request):
+    if request.method == "POST":
+        entName = request.POST['newEntityName']
+
+        if entName:
+            newEntity = EntityType.objects.create(
+                entity_name=entName
+            )
+
+        current_user_id = request.session.get('current_user_id')
+        current_user = DigiledgerUser.objects.get(id=current_user_id)
+
+        context = {
+            'CurrentUser': current_user,
+            'Roles': EntityType.objects.all(),
+            'Systems': IntegratedSystem.objects.all(),
+            'entityDatas': getPermsSeperatedbyRole(),
+        }
+        return redirect('acs_ctrl:access_control')
+
+def deleteEntity(request):
+    if request.method == "POST":
+        entToDel = request.POST['role_to_delete']
+        if entToDel:
+            deletedEnt = EntityType.objects.get(entity_name=entToDel).delete()
+
+
+        current_user_id = request.session.get('current_user_id')
+        current_user = DigiledgerUser.objects.get(id=current_user_id)
+
+        context = {
+            'CurrentUser': current_user,
+            'Roles': EntityType.objects.all(),
+            'Systems': IntegratedSystem.objects.all(),
+            'entityDatas': getPermsSeperatedbyRole(),
+        }
+        return redirect('acs_ctrl:access_control')
+
+
 def getPermsSeperatedbyRole():
     permsByRole = {}
 
@@ -78,7 +115,7 @@ def getPermsSeperatedbyRole():
 
         permsByRole[role.entity_name] = _
 
-    print(json.dumps(permsByRole, indent=2))
+    # print(json.dumps(permsByRole, indent=2))
     return permsByRole
 
 def isEntityHasSystem(entity, system):
