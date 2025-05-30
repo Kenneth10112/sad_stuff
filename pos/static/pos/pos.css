@@ -119,7 +119,7 @@ body {
 
 /* Existing .item:hover styles */
 .item:hover{
-    background-color: #45413869; /* Original hover background with transparency */
+    background-color: #454138cb; /* Original hover background with transparency */
     border: 1px solid #454138; /* Original hover border */
     color: #dcd8c0; /* Make text white on hover for better contrast */
 }
@@ -204,6 +204,12 @@ body {
     margin: 10px;
 }
 
-.hidden {
-    display: none;
+#hiddenStuffs {
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    width: 100%;
+    height: 100%;
+
+    visibility: hidden;
 }

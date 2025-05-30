@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <style>
+        /* Custom styles for plain thermal printer look and responsiveness */
+        body {
+            display: flex;
+            justify-content: center; /* Center content horizontally */
+            align-items: flex-start; /* Align to top for receipt-like flow */
+            box-sizing: border-box;
+        }
+
+        .container {
+            width: 90%; /* Use a percentage width for responsiveness on smaller screens */
+            max-width: 200px; /* Max width for thermal printer size, but centered on larger screens */
+            padding: 1rem;
+            box-sizing: border-box;
+            margin: 2rem auto; /* Center the container horizontally and add vertical margin */
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse; /* No borders for the table */
+            font-size: 1rem;
+        }
+
+        th, td {
+            padding: 0.25rem 0; /* Reduced padding for compact look */
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th:last-child, td:last-child {
+            text-align: right; /* Align cost column to the right */
+        }
+
+        /* Added style for separation */
+        .section-separator td {
+            padding-top: 0.75rem; /* More padding for separation above this row */
+        }
+    </style>
+</head>
+<body>
+    <div id="container">
+        <h2 onclick="window.location.href = '{% url 'pos:index' %}';">Rustan Marketing Specialists Inc</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Item</th>
+                    <th>Cost</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in cartItems %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.price }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td>Subtotal</td>
+                    <td>{{ cartSubtotal }}</td>
+                </tr>
+                <tr>
+                    <td>Tax</td>
+                    <td>{{ cartTax }}</td>
+                </tr>
+                <tr>
+                    <td>discount</td>
+                    <td>{{ cartDicount }}</td>
+                </tr>
+                <tr>
+                    <td><b>Total</b></td>
+                    <td><b>{{ cartTotal }}</b></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        // Wait for the DOM content to be fully loaded and parsed
+        document.addEventListener('DOMContentLoaded', () => { 
+            window.print()
+            window.location.href = '{% url 'pos:index' %}';
+        });
+    </script>
+</body>
+</html>

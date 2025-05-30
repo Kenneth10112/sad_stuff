@@ -8,7 +8,7 @@ class ItemGroup(models.Model):
         return self.name
 
 class Item(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     salePrice = models.DecimalField(max_digits=10, decimal_places=2)
     invPrice = models.DecimalField(max_digits=10, decimal_places=2)
     itemGroup = models.ForeignKey(ItemGroup, on_delete=models.CASCADE)

@@ -10,6 +10,15 @@
     <link rel="stylesheet" href="{% static 'pos/pos.css' %}">
 </head>
 <body>
+    <div id="hiddenStuffs">
+        <form id="cartItems" method="post" action="{% url 'pos:addTransact' %}">
+            {% csrf_token %}
+            <input id="cartSubtotal" type="hidden" name="cartSubtotal">
+            <input id="cartTax" type="hidden" name="cartTax">
+            <input id="cartDicount" type="hidden" name="cartDicount">
+            <input id="cartTotal" type="hidden" name="cartTotal">
+        </form>
+    </div>
     <div id="MC">
         <header id="TOPBAR">
             <h1>Digiledger POS</h1>
@@ -18,7 +27,7 @@
             <button id="return_button">Return</button>
         </header>
         <main id="MAINCONTENT">
-            <div>
+            <div style="display: none;">
                 <fieldset id="itemCatergories">
                     <legend>Groups</legend>
                     <button>All Items</button>
@@ -35,10 +44,11 @@
             <div id="itemList">
                 {% for item in Items %}
                     <div class="item" role="button" tabindex="0">
-                        <h1>{{item.name}} php</item></h1>
-                        <p>{{item.salePrice}} php</p>
-                        <p class="hidden">{{item.invPrice}}</p>
-                        <p class="hidden">{{item.itemGroup}}</p>
+                        <h1 class="cartItemName">{{item.name}}</item></h1>
+                        <div style="display: flex; justify-content: center; gap: 5px;">
+                            <p class="cartItemPrice">{{item.salePrice}}</p>
+                            <p>php</p>
+                        </div>
                     </div>
                 {% empty %}
                     <p>no items available</p>
@@ -65,94 +75,127 @@
             <button id="checkOut">Check Out</button>
         </aside>
     </div>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-<script>
-    const containerOfAllItems = document.getElementById('itemList');
-    const printBody = document.getElementById('printBody'); // Keep this as is, used in item adding
-    const printTotalDisplay = document.getElementById('printTotal');
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script>
+        const containerOfAllItems = document.getElementById('itemList');
+        const printBody = document.getElementById('printBody'); // Keep this as is, used in item adding
+        const printTotalDisplay = document.getElementById('printTotal');
 
-    const cartDisplay = document.getElementById('Cart');
-    const subtotalDisplay = document.getElementById('subtotalDisplay');
-    const taxDisplay = document.getElementById('taxDisplay');
-    const discountDisplay = document.getElementById('discountDisplay');
-    const totalDisplay = document.getElementById('totalDisplay');
-    const clearCartButton = document.getElementById('clearCartButton');
-    const checkOutButton = document.getElementById('checkOut');
+        const cartDisplay = document.getElementById('Cart');
+        const subtotalDisplay = document.getElementById('subtotalDisplay');
+        const taxDisplay = document.getElementById('taxDisplay');
+        const discountDisplay = document.getElementById('discountDisplay');
+        const totalDisplay = document.getElementById('totalDisplay');
+        const clearCartButton = document.getElementById('clearCartButton');
+        const checkOutButton = document.getElementById('checkOut');
 
-    let currentOrderTotal = 0;
+        let currentOrderTotal = 0;
 
-    // --- Helper function to update totals (Unchanged) ---
-    function updateTotals() {
-        const taxRate = 0.05;
-        const discountAmount = 0; // Assuming a fixed discount for now
+        // --- Helper function to update totals (Unchanged) ---
+        function updateTotals() {
+            const taxRate = 0.05;
+            const discountAmount = 0; // Assuming a fixed discount for now
 
-        const subtotal = currentOrderTotal;
-        const tax = subtotal * taxRate;
-        const total = subtotal + tax - discountAmount;
+            const subtotal = currentOrderTotal;
+            const tax = subtotal * taxRate;
+            const total = subtotal + tax - discountAmount;
 
-        subtotalDisplay.textContent = `${subtotal.toFixed(2)} php`;
-        taxDisplay.textContent = `${tax.toFixed(2)} php`;
-        discountDisplay.textContent = `${discountAmount.toFixed(2)} php`;
-        totalDisplay.textContent = `${total.toFixed(2)} php`;
+            subtotalDisplay.textContent = `${subtotal.toFixed(2)} php`;
+            taxDisplay.textContent = `${tax.toFixed(2)} php`;
+            discountDisplay.textContent = `${discountAmount.toFixed(2)} php`;
+            totalDisplay.textContent = `${total.toFixed(2)} php`;
 
-        // Ensure printTotalDisplay is updated as it's part of the #PRINT div
-        if (printTotalDisplay) {
-            printTotalDisplay.textContent = `${total.toFixed(2)} php`;
-        }
-    }
-
-    // --- Event Listener for adding items to cart (Unchanged) ---
-    containerOfAllItems.addEventListener('click', function(event) {
-        const clickedDiv = event.target.closest('.item');
-
-        if (clickedDiv) {
-            const itemName = clickedDiv.querySelector('h1').textContent;
-            const itemPriceText = clickedDiv.querySelector('p').textContent;
-            const itemPrice = parseFloat(itemPriceText.replace(' php', ''));
-
-            // Update the visible cart display
-            const newCartItemDisplay = document.createElement('div');
-            newCartItemDisplay.classList.add('cart-item-display');
-            newCartItemDisplay.innerHTML = `<span>${itemName}</span><span>${itemPriceText}</span>`;
-
-            if (cartDisplay.textContent.trim() === "No Items in Cart") {
-                cartDisplay.innerHTML = '';
+            // Ensure printTotalDisplay is updated as it's part of the #PRINT div
+            if (printTotalDisplay) {
+                printTotalDisplay.textContent = `${total.toFixed(2)} php`;
             }
-            cartDisplay.appendChild(newCartItemDisplay);
 
-            currentOrderTotal += itemPrice;
-            updateTotals();
-
-            console.log(`[VANESSA_DEBUG] Added to cart: ${itemName}, ${itemPriceText}`);
+            document.getElementById('cartSubtotal').value = subtotal.toFixed(2);
+            document.getElementById('cartTax').value = tax.toFixed(2);
+            document.getElementById('cartDicount').value = discountAmount.toFixed(2);
+            document.getElementById('cartTotal').value = total.toFixed(2);
         }
-    });
 
-    // --- Clear Cart Button Functionality (Unchanged) ---
-    clearCartButton.addEventListener('click', function() {
-        if (printBody) { // Check if printBody exists
-            printBody.innerHTML = ''; // Clear only the tbody content
-        }
-        cartDisplay.innerHTML = 'No Items in Cart';
-        currentOrderTotal = 0;
-        updateTotals(); // This will also update printTotalDisplay to "0 php" or total
-        console.log('[VANESSA_DEBUG] Cart cleared.');
-    });
-   
-    // --- Reworked Check Out Functionality ---
-    checkOutButton.addEventListener('click', function() {
-        console.log("CHECKED OUT")
-    });
+        // --- Event Listener for adding items to cart (Unchanged) ---
+        containerOfAllItems.addEventListener('click', function(event) {
+            const clickedDiv = event.target.closest('.item');
 
-    // Initialize totals when the page loads
-    updateTotals();
+            if (clickedDiv) {
+                const itemName = clickedDiv.querySelector('h1').textContent;
+                const itemPriceText = clickedDiv.querySelector('p').textContent;
+                const itemPrice = parseFloat(itemPriceText.replace(' php', ''));
+                const cartForm = document.getElementById('cartItems');
+                
+                // Create a new hidden input element
+                const hiddenInput = document.createElement('input');
+                hiddenInput.classList.add('hiddenCartItem')
+                hiddenInput.name = 'cartItem'; // The name of the input
+                hiddenInput.value = `${itemName}_${itemPrice}`; // The value in the desired format
+                // Append the hidden input to your form
+                cartForm.appendChild(hiddenInput);
 
-    // Return Button 
-    const returnButton = document.getElementById('return_button');
-    returnButton.addEventListener('click', () => {
-        window.location.href = "{% url 'login:reroute' %}";
-    });
+                // Update the visible cart display
+                const newCartItemDisplay = document.createElement('div');
+                newCartItemDisplay.classList.add('cart-item-display');
+                newCartItemDisplay.innerHTML = `<span>${itemName}</span><span>${itemPriceText}</span>`;
+
+                if (cartDisplay.textContent.trim() === "No Items in Cart") {
+                    cartDisplay.innerHTML = '';
+                }
+                cartDisplay.appendChild(newCartItemDisplay);
+
+                currentOrderTotal += itemPrice;
+                updateTotals();
 
 
-</script>
+            }
+        });
+
+        // --- Clear Cart Button Functionality (Unchanged) ---
+        clearCartButton.addEventListener('click', function() {
+            if (printBody) { // Check if printBody exists
+                printBody.innerHTML = ''; // Clear only the tbody content
+            }
+            cartDisplay.innerHTML = 'No Items in Cart';
+            currentOrderTotal = 0;
+
+            const parent = document.getElementById(`cartItems`);
+            const childrenToRemove = parent.querySelectorAll(`.hiddenCartItem`);
+
+            childrenToRemove.forEach(child => {
+                if (child.parentNode) {
+                    child.parentNode.removeChild(child);
+                }
+            });
+            updateTotals(); // This will also update printTotalDisplay to "0 php" or total
+        });
+    
+        // --- Reworked Check Out Functionality ---
+        checkOutButton.addEventListener('click', function() {
+            const myForm = document.getElementById('cartItems'); // Replace 'myFormId' with the actual ID of your form
+
+            // Log all direct child nodes of the form (could include text nodes, comments, etc.)
+            console.log("Form direct children:", myForm.children);
+
+            // Log all form control elements (input, select, textarea, button, fieldset)
+            // This is often more relevant for inspecting form data
+            console.log("Form elements (inputs, selects, etc.):", myForm.elements);
+
+            myForm.submit();
+        });
+
+        // Initialize totals when the page loads
+        updateTotals();
+
+        // Return Button 
+        const returnButton = document.getElementById('return_button');
+        returnButton.addEventListener('click', () => {
+            window.location.href = "{% url 'login:reroute' %}";
+        });
+
+
+
+        
+    </script>
 </body>
 </html>

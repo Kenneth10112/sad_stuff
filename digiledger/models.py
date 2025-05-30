@@ -93,3 +93,7 @@ class TransactionSource(models.Model):
 
     def __str__(self):
         return f"{self.transaction.ref_id} - Source: {self.source_account}"
+
+class LatestRefId(models.Model):
+    posRefId = models.CharField(max_length=255, unique=True, null=True)
+    emsRefId = models.CharField(max_length=255, unique=True, null=True)
