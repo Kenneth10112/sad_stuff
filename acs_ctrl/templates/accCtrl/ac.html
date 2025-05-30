@@ -35,7 +35,6 @@
             {% for role in Roles %}
             <div id="role">
                 <p>{{role.entity_name}}</p>
-                <button>edit</button>
                 <form action="{% url 'acs_ctrl:deleteEntity' %}" method="post" style="display: inline;"> 
                     {% csrf_token %}
                     <input type="hidden" name="role_to_delete" value="{{role.entity_name}}"> {# Hidden input with the value to send #}

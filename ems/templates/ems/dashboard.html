@@ -11,148 +11,120 @@
     <link rel="stylesheet" href="{% static 'ems/dashboard.css' %}">
 </head>
 <body>
-    <aside id="SIDEBAR">
-        <figure>
-            <figcaption><h1 id="sb_header">DIGILEDGER EMS</h1></figcaption>
-        </figure>
-        <div id="sb_nav">
-            <button class="sb_buttons">Set Budget</button>
-            <button class="sb_buttons">Expenses</button>
-            <button class="sb_buttons">Add Expenses</button>
-            <button class="sb_buttons">Manage Expenses</button>
-            <button class="sb_buttons">Expense Report</button>
-            <button class="sb_buttons">Datewise Report</button>
-            <button class="sb_buttons">Monthly Report</button>
-            <button class="sb_buttons">Yearly Report</button>
-        </div>
-    </aside>
     <header id="TOPBAR">
-        <button id="showHide_button" onclick="toggleSideBar()">≡</button>
-            <div id="searchFilter_nav">
-            </div>
-            <div id="tb_menu">
-                <p>User: user</p>
-                <button id="return_button">Return</button>
-            </div>
+        <div>
+            <h1 id="title-bar">Digiledger EMS</h1>
+        </div>
+        <div id="tb_menu">
+            <p>User: user</p>
+            <button id="return_button">Return</button>
+        </div>
     </header>
     <main id="MAINCONTENT">
-        <div id="mc_container">
-            <div class="mc_div">
-                <h1>Today's Expenses</h1>
-                <p>₱2000.00</p>
+        <div id="mc_subcon_manage_expense">
+            <div class="expense-controls">
+                <div class="search-filter">
+                    <input type="text" id="expense-search" placeholder="Search expenses...">
+                    <select id="category-filter">
+                        <option value="">All Categories</option>
+                        <option value="Utilities">Utilities</option>
+                        <option value="Supplies">Supplies</option>
+                        <option value="Maintenance">Maintenance</option>
+                        <option value="Team Activities">Team Activities</option>
+                    </select>
+                    <input type="date" id="date-filter">
+                </div>
+                <div class="expense-actions">
+                    <button class="action-btn" id="print-btn">Print Report</button>
+                </div>
             </div>
-            <div class="mc_div">
-                <h1>Yesterday's Expenses</h1>
-                <p>699.00</p>
+            <div class="expense-summary">
+                <div class="summary-item">
+                    <span>Total Expenses:</span>
+                    <span>₱17,500.00</span>
+                </div>
+                <div class="summary-item">
+                    <span>This Month:</span>
+                    <span>₱17,500.00</span>
+                </div>
+                <div class="summary-item">
+                    <span>Average per Day:</span>
+                    <span>₱3,500.00</span>
+                </div>
             </div>
-            <div class="mc_div">
-                <h1>Last 7 days Expenses</h1>
-                <p>₱2699.00</p>
-            </div>
-            <div class="mc_div">
-                <h1>Last 30 days Expenses</h1>
-                <p>₱2699.00</p>
-            </div>
-            <div class="mc_div">
-                <h1>Monthly Budget Left</h1>
-                <p>₱5196.00</p>
-            </div>
-            <div class="mc_div">
-                <h1>Total Expenses</h1>
-                <p>₱2895.00</p>
-            </div>    
-        </div>
-        <div id="mc_graph">
-            <canvas id="mc_graph_canvas"></canvas>
+            <table>
+                <tr>
+                    <th>Date</th>
+                    <th>Subject</th>
+                    <th>Description</th>
+                    <th>Amount</th>
+                    <th>Actions</th>
+                </tr>
+                <tr>
+                    <td>12/1/2025</td>
+                    <td>Water and Electricity</td>
+                    <td>Monthly utility bills for office</td>
+                    <td>5000</td>
+                    <td>
+                        <button class="action-icon edit-btn">✎</button>
+                        <button class="action-icon delete-btn">🗑</button>
+                        <button class="action-icon view-btn">👁</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>12/2/2025</td>
+                    <td>Office Supplies</td>
+                    <td>Purchase of stationery and printer ink</td>
+                    <td>2500</td>
+                    <td>
+                        <button class="action-icon edit-btn">✎</button>
+                        <button class="action-icon delete-btn">🗑</button>
+                        <button class="action-icon view-btn">👁</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>12/3/2025</td>
+                    <td>Internet Bill</td>
+                    <td>Monthly fiber internet subscription</td>
+                    <td>2000</td>
+                    <td>
+                        <button class="action-icon edit-btn">✎</button>
+                        <button class="action-icon delete-btn">🗑</button>
+                        <button class="action-icon view-btn">👁</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>12/4/2025</td>
+                    <td>Office Maintenance</td>
+                    <td>Regular cleaning and maintenance service</td>
+                    <td>3500</td>
+                    <td>
+                        <button class="action-icon edit-btn">✎</button>
+                        <button class="action-icon delete-btn">🗑</button>
+                        <button class="action-icon view-btn">👁</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>12/5/2025</td>
+                    <td>Team Lunch</td>
+                    <td>Monthly team building activity</td>
+                    <td>4500</td>
+                    <td>
+                        <button class="action-icon edit-btn">✎</button>
+                        <button class="action-icon delete-btn">🗑</button>
+                        <button class="action-icon view-btn">👁</button>
+                    </td>
+                </tr>
+            </table>
         </div>
     </main>
 
     <script>
-    window.onload = function() {
-        const canvas = document.getElementById('mc_graph_canvas');
-        const ctx = canvas.getContext('2d');
-        canvas.width = 1200;
-        canvas.height = 280;
-
-        // Extract data from MAINCONTENT
-        const cards = document.querySelectorAll('#mc_container .mc_div');
-        const data = [];
-        const labels = [];
-        cards.forEach(card => {
-            const label = card.querySelector('h1')?.textContent || '';
-            let valueText = card.querySelector('p')?.textContent || '0';
-            // Remove currency symbols and commas, then parse as float
-            valueText = valueText.replace(/[₱,]/g, '');
-            const value = parseFloat(valueText);
-            labels.push(label);
-            data.push(isNaN(value) ? 0 : value);
-        });
-
-        // Graph settings
-        const padding = 50;
-        const graphWidth = canvas.width - 2 * padding;
-        const graphHeight = canvas.height - 2 * padding;
-        const maxData = Math.max(...data);
-
-        // Draw axes
-        ctx.beginPath();
-        ctx.moveTo(padding, padding);
-        ctx.lineTo(padding, canvas.height - padding);
-        ctx.lineTo(canvas.width - padding, canvas.height - padding);
-        ctx.stroke();
-
-        // Draw line
-        ctx.beginPath();
-        data.forEach((val, i) => {
-            const x = padding + (i * (graphWidth / (data.length - 1)));
-            const y = canvas.height - padding - (val / maxData) * graphHeight;
-            if (i === 0) ctx.moveTo(x, y);
-            else ctx.lineTo(x, y);
-        });
-        ctx.strokeStyle = "#454138";
-        ctx.lineWidth = 2;
-        ctx.stroke();
-
-        // Draw points and labels
-        ctx.fillStyle = "#bab5a1";
-        ctx.font = "14px Arial";
-        data.forEach((val, i) => {
-            const x = padding + (i * (graphWidth / (data.length - 1)));
-            const y = canvas.height - padding - (val / maxData) * graphHeight;
-            ctx.beginPath();
-            ctx.arc(x, y, 4, 0, 2 * Math.PI);
-            ctx.fill();
-            ctx.fillText(labels[i], x - 40, canvas.height - padding + 20);
-        });
-    };
-
-    // Toggle Side Bar
-    function toggleSideBar() {
-    const sideBar = document.getElementById("SIDEBAR");
-    const topBar = document.getElementById("TOPBAR");
-    const mainContent = document.getElementById("MAINCONTENT");
-    const showHide_button = document.getElementById("showHide_button");
-
-    if (sideBar.style.display === 'none') {
-        sideBar.style.display = 'grid'
-        topBar.style.gridColumn = 'span 1'
-        mainContent.style.gridColumn = 'span 1'
-
-    } else {
-        sideBar.style.display = 'none'
-        topBar.style.gridColumn = 'span 2'
-        mainContent.style.gridColumn = 'span 2'
-    }
-
-    }
-
     // Return Button 
     const returnButton = document.getElementById('return_button');
     returnButton.addEventListener('click', () => {
         window.location.href = "{% url 'login:reroute' %}";
     });
-
-
     </script>
 </body>
 </html>

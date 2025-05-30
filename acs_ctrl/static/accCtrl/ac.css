@@ -90,7 +90,7 @@ body > * {
     border-radius: 5px;
 
     display: grid;
-    grid-template-columns: 1fr .5fr .5fr;
+    grid-template-columns: 1fr .5fr;
     grid-auto-rows: min-content;
     padding: 10px;
 
