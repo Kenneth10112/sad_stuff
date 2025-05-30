@@ -19,7 +19,11 @@ from digiledger.models import (
 
 
 def index(request):
+    current_user_id = request.session.get('current_user_id')
+    current_user = DigiledgerUser.objects.get(id=current_user_id)
+
     context = {
+        'currentUser': current_user,
         'Items': Item.objects.all(),
         'ItemGroups': ItemGroup.objects.all()
     }

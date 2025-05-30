@@ -21,7 +21,7 @@ body {
 #TOPBAR {
     grid-column: span 2;
     display: grid;
-    grid-template-columns: 5fr 0.4fr 0.7fr 0.8fr;
+    grid-template-columns: 5fr 0.4fr 0.8fr;
     padding: 5px;
     gap: 5px;
     background-color: #454138cb;

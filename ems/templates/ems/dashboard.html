@@ -16,7 +16,7 @@
             <h1 id="title-bar">Digiledger EMS</h1>
         </div>
         <div id="tb_menu">
-            <p>User: user</p>
+            <p>{{currentUser.entity_type}}: {{currentUser.name}}</p>
             <button id="return_button">Return</button>
         </div>
     </header>
@@ -35,86 +35,41 @@
                     <input type="date" id="date-filter">
                 </div>
                 <div class="expense-actions">
+                    <button>Add Expense</button>
                     <button class="action-btn" id="print-btn">Print Report</button>
                 </div>
             </div>
             <div class="expense-summary">
                 <div class="summary-item">
                     <span>Total Expenses:</span>
-                    <span>₱17,500.00</span>
+                    <span>₱{{ grandTotal }}</span>
                 </div>
                 <div class="summary-item">
                     <span>This Month:</span>
-                    <span>₱17,500.00</span>
+                    <span>x</span>
                 </div>
                 <div class="summary-item">
                     <span>Average per Day:</span>
-                    <span>₱3,500.00</span>
+                    <span>x</span>
                 </div>
             </div>
             <table>
                 <tr>
-                    <th>Date</th>
                     <th>Subject</th>
-                    <th>Description</th>
                     <th>Amount</th>
                     <th>Actions</th>
                 </tr>
-                <tr>
-                    <td>12/1/2025</td>
-                    <td>Water and Electricity</td>
-                    <td>Monthly utility bills for office</td>
-                    <td>5000</td>
-                    <td>
-                        <button class="action-icon edit-btn">✎</button>
-                        <button class="action-icon delete-btn">🗑</button>
-                        <button class="action-icon view-btn">👁</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>12/2/2025</td>
-                    <td>Office Supplies</td>
-                    <td>Purchase of stationery and printer ink</td>
-                    <td>2500</td>
-                    <td>
-                        <button class="action-icon edit-btn">✎</button>
-                        <button class="action-icon delete-btn">🗑</button>
-                        <button class="action-icon view-btn">👁</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>12/3/2025</td>
-                    <td>Internet Bill</td>
-                    <td>Monthly fiber internet subscription</td>
-                    <td>2000</td>
-                    <td>
-                        <button class="action-icon edit-btn">✎</button>
-                        <button class="action-icon delete-btn">🗑</button>
-                        <button class="action-icon view-btn">👁</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>12/4/2025</td>
-                    <td>Office Maintenance</td>
-                    <td>Regular cleaning and maintenance service</td>
-                    <td>3500</td>
-                    <td>
-                        <button class="action-icon edit-btn">✎</button>
-                        <button class="action-icon delete-btn">🗑</button>
-                        <button class="action-icon view-btn">👁</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>12/5/2025</td>
-                    <td>Team Lunch</td>
-                    <td>Monthly team building activity</td>
-                    <td>4500</td>
-                    <td>
-                        <button class="action-icon edit-btn">✎</button>
-                        <button class="action-icon delete-btn">🗑</button>
-                        <button class="action-icon view-btn">👁</button>
-                    </td>
-                </tr>
+                {% for item in individualTotals %}
+                    <tr>
+                        <td>{{ item.destination__account_name }}</td>
+                        <td>{{ item.account_total }} php</td>
+                        <td>
+                            <button class="action-icon edit-btn">✎</button>
+                            <button class="action-icon delete-btn">🗑</button>
+                            <button class="action-icon view-btn">👁</button>
+                        </td>
+                    </tr>
+                {% endfor %}
             </table>
         </div>
     </main>
